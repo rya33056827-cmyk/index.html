@@ -559,64 +559,173 @@
     updateCartUI();
   </script>
 
-  <!-- Кнопки звонков и чата (R) + окно чата runotoks (Firebase) -->
-  <button id="rtkCallBtn" type="button" aria-label="Звонки"
-    style="position:fixed;top:16px;right:72px;z-index:9999;width:48px;height:48px;border-radius:16px;border:none;background:#10b981;color:#ffffff;box-shadow:0 6px 20px rgba(15,23,42,0.18);display:flex;align-items:center;justify-content:center;cursor:pointer;">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/>
-    </svg>
+  <!-- Кнопка мессенджера runotoks (опущена вниз, чтобы не перекрывать шапку) -->
+  <button id="rtkChatBtn" type="button"
+    style="position:fixed;top:84px;right:16px;z-index:9998;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;">
+    <span>💬</span>
+    <span>Чат</span>
   </button>
 
-  <button id="rtkChatBtn" type="button" aria-label="Открыть чат"
-    style="position:fixed;top:16px;right:16px;z-index:9999;width:48px;height:48px;border-radius:16px;border:none;background:#ffffff;box-shadow:0 6px 20px rgba(15,23,42,0.18);display:flex;align-items:center;justify-content:center;cursor:pointer;">
-    <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
-      <defs>
-        <linearGradient id="rtkRGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ff2a85"/>
-          <stop offset="35%" stop-color="#ff7a00"/>
-          <stop offset="70%" stop-color="#00c2ff"/>
-          <stop offset="100%" stop-color="#7b2cbf"/>
-        </linearGradient>
-      </defs>
-      <text x="16" y="23" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="url(#rtkRGrad)">R</text>
-    </svg>
-  </button>
+  <!-- Полноэкранный мессенджер runotoks -->
+  <div id="rtkMessenger" style="display:none;position:fixed;inset:0;z-index:10000;background:#0b1120;color:#f8fafc;font-family:Inter,system-ui,sans-serif;flex-direction:column;">
+    <!-- Экран входа через Google -->
+    <div id="rtkAuthScreen" style="flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#1d4ed8 0%,#0b1120 55%);">
+      <div style="width:100%;max-width:400px;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,0.45);text-align:center;">
+        <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
+        <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks Messenger</h2>
+        <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
+          Войдите через Google, чтобы создать профиль с @username, находить друзей и переписываться в реальном времени.
+        </p>
+        <button id="rtkGoogleLoginBtn" type="button"
+          style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 20px rgba(255,255,255,0.12);">
+          <span>G</span>
+          <span>Войти через Google</span>
+        </button>
+        <button id="rtkAuthBackToSite" type="button"
+          style="margin-top:14px;width:100%;padding:10px 14px;border-radius:12px;border:1px solid #334155;background:transparent;color:#cbd5e1;font-size:13px;font-weight:600;cursor:pointer;">
+          ← Вернуться в магазин runotoks
+        </button>
+      </div>
+    </div>
 
-  <div id="rtkCallBox" style="display:none;position:fixed;top:74px;right:16px;z-index:9999;width:300px;max-width:calc(100vw - 32px);background:#ffffff;color:#0f172a;border:1px solid #cbd5e1;border-radius:14px;padding:14px;box-shadow:0 12px 32px rgba(15,23,42,0.22);font-family:Inter,system-ui,sans-serif;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <span style="font-weight:700;font-size:15px;">Звонки runotoks</span>
-      <button id="rtkCallClose" type="button" style="border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer;color:#475569;">×</button>
-    </div>
-    <div style="font-size:13px;color:#475569;margin-bottom:10px;">
-      Кнопка звонков добавлена. Настройка самих звонков будет следующим шагом.
-    </div>
-    <button id="rtkCallOpenChat" type="button" style="width:100%;padding:8px 12px;border:none;border-radius:8px;background:#10b981;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">
-      Открыть чат вместо звонка
-    </button>
-  </div>
+    <!-- Основной интерфейс мессенджера после входа -->
+    <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
+      <!-- Верхняя панель мессенджера -->
+      <div style="height:60px;padding:0 16px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <button id="rtkExitToSiteBtn" type="button"
+            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ← В магазин
+          </button>
+          <span style="font-weight:800;font-size:16px;letter-spacing:-0.02em;white-space:nowrap;">runotoks Чат</span>
+        </div>
 
-  <div id="rtkChatBox" style="display:none;position:fixed;top:74px;right:16px;z-index:9999;width:320px;max-width:calc(100vw - 32px);background:#ffffff;color:#0f172a;border:1px solid #cbd5e1;border-radius:14px;padding:12px;box-shadow:0 12px 32px rgba(15,23,42,0.22);font-family:Inter,system-ui,sans-serif;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <span style="font-weight:700;font-size:15px;">Чат runotoks</span>
-      <button id="rtkChatClose" type="button" style="border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer;color:#475569;">×</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="rtkTabChats" type="button"
+            style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;">
+            Чаты
+          </button>
+          <button id="rtkTabProfile" type="button"
+            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
+            Профиль
+          </button>
+          <button id="rtkLogoutBtn" type="button"
+            style="padding:8px 10px;border-radius:10px;border:1px solid #3f1d2e;background:#2a121c;color:#fda4af;font-size:12px;font-weight:600;cursor:pointer;">
+            Выйти
+          </button>
+        </div>
+      </div>
+
+      <!-- Вкладка 1: Чаты и поиск друзей по @username -->
+      <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;flex-wrap:wrap;">
+        <!-- Левая колонка: поиск и список чатов -->
+        <div id="rtkSidebar" style="width:100%;max-width:360px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;">
+          <div style="padding:12px;border-bottom:1px solid #1f2937;">
+            <div style="display:flex;gap:8px;">
+              <input id="rtkSearchUsernameInput" type="text" placeholder="Найти по @username..."
+                style="flex:1;padding:9px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:13px;outline:none;" />
+              <button id="rtkSearchUserBtn" type="button"
+                style="padding:9px 14px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
+                Найти
+              </button>
+            </div>
+            <div id="rtkSearchResults" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
+          </div>
+
+          <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">
+            Ваши диалоги
+          </div>
+          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:0 8px 12px;display:flex;flex-direction:column;gap:4px;"></div>
+        </div>
+
+        <!-- Правая область: окно переписки -->
+        <div id="rtkChatPane" style="flex:1;min-width:280px;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;">
+          <div id="rtkActiveChatHeader" style="height:56px;padding:0 16px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <span style="color:#94a3b8;font-size:14px;">Выберите чат слева или найдите друга по @username</span>
+          </div>
+
+          <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;"></div>
+
+          <form id="rtkSendMessageForm" style="display:none;padding:12px 16px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
+            <input id="rtkMessageInput" type="text" placeholder="Написать сообщение..." required
+              style="flex:1;padding:11px 14px;border-radius:14px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
+            <button type="submit"
+              style="padding:11px 18px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
+              Отправить
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Вкладка 2: Профиль пользователя (как в Telegram) -->
+      <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:24px 16px;">
+        <form id="rtkProfileForm" style="max-width:480px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <img id="rtkProfileAvatarPreview" src="" alt="Avatar"
+              style="width:72px;height:72px;border-radius:50%;object-fit:cover;background:#1e293b;border:2px solid #3b82f6;" />
+            <div>
+              <div id="rtkProfileGoogleEmail" style="font-size:12px;color:#94a3b8;"></div>
+              <div style="font-size:16px;font-weight:800;margin-top:2px;">Настройка профиля</div>
+            </div>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Имя</label>
+            <input id="rtkProfileName" type="text" required placeholder="Ваше имя"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Имя пользователя (@username для поиска)</label>
+            <input id="rtkProfileUsername" type="text" required placeholder="naprimer_alex"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">О себе (описание)</label>
+            <textarea id="rtkProfileBio" rows="3" placeholder="Расскажите немного о себе..."
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;resize:vertical;"></textarea>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Фотография профиля (выбрать файл или ссылка)</label>
+            <input id="rtkProfilePhotoFile" type="file" accept="image/*"
+              style="width:100%;font-size:12px;color:#94a3b8;margin-bottom:8px;" />
+            <input id="rtkProfilePhotoUrl" type="url" placeholder="https://... (ссылка на фото или загрузится автоматически)"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
+          </div>
+
+          <button type="submit"
+            style="padding:12px 16px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:14px;font-weight:700;cursor:pointer;">
+            Сохранить профиль
+          </button>
+          <div id="rtkProfileStatus" style="font-size:12px;color:#34d399;min-height:18px;"></div>
+        </form>
+      </div>
     </div>
-    <input id="rtkChatUser" type="text" placeholder="Ваше имя"
-      style="width:100%;box-sizing:border-box;padding:6px 8px;margin-bottom:8px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;" />
-    <div id="rtkChatMessages" style="height:190px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px;padding:8px;margin-bottom:8px;background:#f8fafc;font-size:13px;"></div>
-    <form id="rtkChatForm" style="display:flex;gap:6px;">
-      <input id="rtkChatInput" type="text" placeholder="Написать сообщение..." required
-        style="flex:1;padding:6px 8px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;" />
-      <button type="submit" style="padding:6px 12px;border:none;border-radius:8px;background:#0f172a;color:#fff;font-size:13px;cursor:pointer;">Отпр.</button>
-    </form>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithRedirect,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import {
       getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      updateDoc,
       collection,
-      addDoc,
       query,
+      where,
+      getDocs,
+      addDoc,
       orderBy,
       onSnapshot,
       serverTimestamp
@@ -633,82 +742,378 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
-    const messagesRef = collection(db, "messages");
+    const provider = new GoogleAuthProvider();
 
-    const callBtn = document.getElementById("rtkCallBtn");
-    const callBox = document.getElementById("rtkCallBox");
-    const callClose = document.getElementById("rtkCallClose");
-    const callOpenChat = document.getElementById("rtkCallOpenChat");
+    const openBtn = document.getElementById("rtkChatBtn");
+    const messengerEl = document.getElementById("rtkMessenger");
+    const authScreen = document.getElementById("rtkAuthScreen");
+    const mainApp = document.getElementById("rtkMainApp");
+    const googleLoginBtn = document.getElementById("rtkGoogleLoginBtn");
+    const authBackToSite = document.getElementById("rtkAuthBackToSite");
+    const exitToSiteBtn = document.getElementById("rtkExitToSiteBtn");
+    const logoutBtn = document.getElementById("rtkLogoutBtn");
 
-    const btn = document.getElementById("rtkChatBtn");
-    const box = document.getElementById("rtkChatBox");
-    const closeBtn = document.getElementById("rtkChatClose");
-    const userInput = document.getElementById("rtkChatUser");
-    const listEl = document.getElementById("rtkChatMessages");
-    const form = document.getElementById("rtkChatForm");
-    const textInput = document.getElementById("rtkChatInput");
+    const tabChats = document.getElementById("rtkTabChats");
+    const tabProfile = document.getElementById("rtkTabProfile");
+    const chatsView = document.getElementById("rtkChatsView");
+    const profileView = document.getElementById("rtkProfileView");
 
-    callBtn.addEventListener("click", () => {
-      const isOpen = callBox.style.display === "block";
-      box.style.display = "none";
-      callBox.style.display = isOpen ? "none" : "block";
+    const searchInput = document.getElementById("rtkSearchUsernameInput");
+    const searchBtn = document.getElementById("rtkSearchUserBtn");
+    const searchResultsEl = document.getElementById("rtkSearchResults");
+    const chatListEl = document.getElementById("rtkChatList");
+    const activeChatHeader = document.getElementById("rtkActiveChatHeader");
+    const messagesListEl = document.getElementById("rtkMessagesList");
+    const sendMsgForm = document.getElementById("rtkSendMessageForm");
+    const msgInput = document.getElementById("rtkMessageInput");
+
+    const profileForm = document.getElementById("rtkProfileForm");
+    const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
+    const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
+    const profileName = document.getElementById("rtkProfileName");
+    const profileUsername = document.getElementById("rtkProfileUsername");
+    const profileBio = document.getElementById("rtkProfileBio");
+    const profilePhotoFile = document.getElementById("rtkProfilePhotoFile");
+    const profilePhotoUrl = document.getElementById("rtkProfilePhotoUrl");
+    const profileStatus = document.getElementById("rtkProfileStatus");
+
+    const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128";
+
+    let currentUser = null;
+    let currentProfile = null;
+    let activeChatId = null;
+    let unsubChats = null;
+    let unsubMessages = null;
+    const usersCache = new Map();
+
+    const cleanUsername = (u) => (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
+
+    function openMessenger() {
+      messengerEl.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMessenger() {
+      messengerEl.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    openBtn.addEventListener("click", openMessenger);
+    authBackToSite.addEventListener("click", closeMessenger);
+    exitToSiteBtn.addEventListener("click", closeMessenger);
+
+    googleLoginBtn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") {
+          await signInWithRedirect(auth, provider);
+        } else {
+          alert("Ошибка входа через Google: " + (err.message || err.code));
+        }
+      }
     });
 
-    callClose.addEventListener("click", () => {
-      callBox.style.display = "none";
+    logoutBtn.addEventListener("click", async () => {
+      if (unsubChats) unsubChats();
+      if (unsubMessages) unsubMessages();
+      activeChatId = null;
+      await signOut(auth);
     });
 
-    callOpenChat.addEventListener("click", () => {
-      callBox.style.display = "none";
-      box.style.display = "block";
-      listEl.scrollTop = listEl.scrollHeight;
+    tabChats.addEventListener("click", () => {
+      chatsView.style.display = "flex";
+      profileView.style.display = "none";
+      tabChats.style.background = "#2563eb";
+      tabChats.style.border = "none";
+      tabProfile.style.background = "#1e293b";
+      tabProfile.style.border = "1px solid #334155";
     });
 
-    btn.addEventListener("click", () => {
-      const isOpen = box.style.display === "block";
-      callBox.style.display = "none";
-      box.style.display = isOpen ? "none" : "block";
-      if (!isOpen) listEl.scrollTop = listEl.scrollHeight;
+    tabProfile.addEventListener("click", () => {
+      chatsView.style.display = "none";
+      profileView.style.display = "block";
+      tabProfile.style.background = "#2563eb";
+      tabProfile.style.border = "none";
+      tabChats.style.background = "#1e293b";
+      tabChats.style.border = "1px solid #334155";
     });
 
-    closeBtn.addEventListener("click", () => {
-      box.style.display = "none";
+    profilePhotoFile.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const size = 180;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          const compressed = canvas.toDataURL("image/jpeg", 0.8);
+          profilePhotoUrl.value = compressed;
+          profileAvatarPreview.src = compressed;
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
     });
 
-    form.addEventListener("submit", async (e) => {
+    profilePhotoUrl.addEventListener("input", () => {
+      profileAvatarPreview.src = profilePhotoUrl.value.trim() || DEFAULT_AVATAR;
+    });
+
+    async function ensureUserProfile(user) {
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
+      const baseUsername = cleanUsername(user.email?.split("@")[0] || `user_${user.uid.slice(0, 6)}`) || `user_${user.uid.slice(0, 6)}`;
+
+      if (!snap.exists()) {
+        const profile = {
+          uid: user.uid,
+          email: user.email || "",
+          name: user.displayName || "Пользователь",
+          username: baseUsername,
+          bio: "",
+          photoURL: user.photoURL || DEFAULT_AVATAR,
+          updatedAt: serverTimestamp()
+        };
+        await setDoc(ref, profile);
+        return profile;
+      }
+      return { uid: user.uid, ...snap.data() };
+    }
+
+    function fillProfileForm(profile, user) {
+      profileGoogleEmail.textContent = user.email || "";
+      profileName.value = profile.name || "";
+      profileUsername.value = profile.username || "";
+      profileBio.value = profile.bio || "";
+      profilePhotoUrl.value = profile.photoURL || "";
+      profileAvatarPreview.src = profile.photoURL || user.photoURL || DEFAULT_AVATAR;
+    }
+
+    profileForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const author = (userInput.value.trim() || "Гость").slice(0, 30);
-      const text = textInput.value.trim();
-      if (!text) return;
+      if (!currentUser) return;
+      const uname = cleanUsername(profileUsername.value);
+      if (!uname) {
+        profileStatus.style.color = "#f87171";
+        profileStatus.textContent = "Введите корректный @username (латиница, цифры, _).";
+        return;
+      }
 
-      textInput.value = "";
-      await addDoc(messagesRef, {
-        author,
+      const qUsers = query(collection(db, "users"), where("username", "==", uname));
+      const snapUsers = await getDocs(qUsers);
+      const takenByOther = snapUsers.docs.some((d) => d.id !== currentUser.uid);
+      if (takenByOther) {
+        profileStatus.style.color = "#f87171";
+        profileStatus.textContent = `Имя @${uname} уже занято.`;
+        return;
+      }
+
+      const updated = {
+        name: profileName.value.trim() || "Пользователь",
+        username: uname,
+        bio: profileBio.value.trim().slice(0, 200),
+        photoURL: profilePhotoUrl.value.trim() || DEFAULT_AVATAR,
+        updatedAt: serverTimestamp()
+      };
+
+      await updateDoc(doc(db, "users", currentUser.uid), updated);
+      currentProfile = { ...currentProfile, ...updated };
+      usersCache.set(currentUser.uid, currentProfile);
+      profileAvatarPreview.src = currentProfile.photoURL;
+      profileStatus.style.color = "#34d399";
+      profileStatus.textContent = "Профиль сохранён!";
+      setTimeout(() => { profileStatus.textContent = ""; }, 2500);
+    });
+
+    async function getUserById(uid) {
+      if (usersCache.has(uid)) return usersCache.get(uid);
+      const snap = await getDoc(doc(db, "users", uid));
+      const data = snap.exists()
+        ? { uid, ...snap.data() }
+        : { uid, name: "Пользователь", username: "user", bio: "", photoURL: DEFAULT_AVATAR };
+      usersCache.set(uid, data);
+      return data;
+    }
+
+    searchBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+      const target = cleanUsername(searchInput.value);
+      searchResultsEl.innerHTML = "";
+      if (!target) return;
+
+      const qU = query(collection(db, "users"), where("username", "==", target));
+      const snap = await getDocs(qU);
+
+      if (snap.empty) {
+        searchResultsEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;padding:4px;">Пользователь @${target} не найден</div>`;
+        return;
+      }
+
+      snap.forEach((d) => {
+        const u = { uid: d.id, ...d.data() };
+        usersCache.set(u.uid, u);
+        if (u.uid === currentUser.uid) return;
+
+        const item = document.createElement("div");
+        item.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:12px;background:#0b1120;border:1px solid #1f2937;";
+        item.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+            <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" />
+            <div style="min-width:0;">
+              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name)}</div>
+              <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username)}</div>
+            </div>
+          </div>
+          <button type="button" data-uid="${u.uid}" style="padding:6px 10px;border-radius:9px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
+        `;
+        item.querySelector("button").addEventListener("click", () => startOrOpenChat(u));
+        searchResultsEl.appendChild(item);
+      });
+    });
+
+    async function startOrOpenChat(otherUser) {
+      if (!currentUser) return;
+      const pairKey = [currentUser.uid, otherUser.uid].sort().join("_");
+      const qC = query(collection(db, "chats"), where("pairKey", "==", pairKey));
+      const snap = await getDocs(qC);
+
+      let chatId;
+      if (!snap.empty) {
+        chatId = snap.docs[0].id;
+      } else {
+        const created = await addDoc(collection(db, "chats"), {
+          pairKey,
+          members: [currentUser.uid, otherUser.uid],
+          lastMessage: "",
+          updatedAt: serverTimestamp()
+        });
+        chatId = created.id;
+      }
+      selectChat(chatId, otherUser);
+    }
+
+    function subscribeChats(uid) {
+      if (unsubChats) unsubChats();
+      const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
+      unsubChats = onSnapshot(qC, async (snap) => {
+        const items = [];
+        for (const d of snap.docs) {
+          const chat = { id: d.id, ...d.data() };
+          const otherId = (chat.members || []).find((m) => m !== uid) || uid;
+          const otherProfile = await getUserById(otherId);
+          items.push({ chat, otherProfile });
+        }
+        items.sort((a, b) => (b.chat.updatedAt?.seconds || 0) - (a.chat.updatedAt?.seconds || 0));
+
+        chatListEl.innerHTML = "";
+        if (items.length === 0) {
+          chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет чатов. Найдите друга по @username выше.</div>`;
+          return;
+        }
+
+        for (const { chat, otherProfile } of items) {
+          const row = document.createElement("button");
+          row.type = "button";
+          const isSelected = activeChatId === chat.id;
+          row.style.cssText = `width:100%;text-align:left;padding:10px;border-radius:14px;border:none;background:${isSelected ? "#1e293b" : "transparent"};color:#f8fafc;cursor:pointer;display:flex;align-items:center;gap:10px;`;
+          row.innerHTML = `
+            <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <div style="min-width:0;flex:1;">
+              <div style="display:flex;justify-content:space-between;gap:6px;">
+                <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.name)}</span>
+                <span style="font-size:11px;color:#60a5fa;">@${escapeHtml(otherProfile.username)}</span>
+              </div>
+              <div style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
+                ${escapeHtml(chat.lastMessage || otherProfile.bio || "Нажмите, чтобы написать")}
+              </div>
+            </div>
+          `;
+          row.addEventListener("click", () => selectChat(chat.id, otherProfile));
+          chatListEl.appendChild(row);
+        }
+      });
+    }
+
+    function selectChat(chatId, otherProfile) {
+      activeChatId = chatId;
+      sendMsgForm.style.display = "flex";
+
+      activeChatHeader.innerHTML = `
+        <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
+        <div style="min-width:0;">
+          <div style="font-size:14px;font-weight:700;line-height:1.2;">${escapeHtml(otherProfile.name)} <span style="font-size:12px;color:#60a5fa;font-weight:500;">@${escapeHtml(otherProfile.username)}</span></div>
+          <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.bio || "Пользователь runotoks")}</div>
+        </div>
+      `;
+
+      if (unsubMessages) unsubMessages();
+      const qM = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
+      unsubMessages = onSnapshot(qM, (snap) => {
+        messagesListEl.innerHTML = "";
+        snap.forEach((d) => {
+          const m = d.data();
+          const mine = m.senderId === currentUser?.uid;
+          const bubble = document.createElement("div");
+          bubble.style.cssText = `max-width:78%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#ffffff;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.45;word-break:break-word;`;
+          bubble.textContent = m.text || "";
+          messagesListEl.appendChild(bubble);
+        });
+        messagesListEl.scrollTop = messagesListEl.scrollHeight;
+      });
+    }
+
+    sendMsgForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUser || !activeChatId) return;
+      const text = msgInput.value.trim();
+      if (!text) return;
+      msgInput.value = "";
+
+      await addDoc(collection(db, "chats", activeChatId, "messages"), {
+        senderId: currentUser.uid,
         text,
         createdAt: serverTimestamp()
       });
+
+      await updateDoc(doc(db, "chats", activeChatId), {
+        lastMessage: text,
+        updatedAt: serverTimestamp()
+      });
     });
 
-    const q = query(messagesRef, orderBy("createdAt", "asc"));
-    onSnapshot(q, (snapshot) => {
-      listEl.innerHTML = "";
-      snapshot.forEach((doc) => {
-        const m = doc.data();
-        const row = document.createElement("div");
-        row.style.marginBottom = "6px";
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
-        const nameEl = document.createElement("strong");
-        nameEl.textContent = `${m.author || "Гость"}: `;
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (!user) {
+        authScreen.style.display = "flex";
+        mainApp.style.display = "none";
+        return;
+      }
 
-        const textEl = document.createElement("span");
-        textEl.textContent = m.text || "";
-
-        row.appendChild(nameEl);
-        row.appendChild(textEl);
-        listEl.appendChild(row);
-      });
-      listEl.scrollTop = listEl.scrollHeight;
+      authScreen.style.display = "none";
+      mainApp.style.display = "flex";
+      currentProfile = await ensureUserProfile(user);
+      usersCache.set(user.uid, currentProfile);
+      fillProfileForm(currentProfile, user);
+      subscribeChats(user.uid);
     });
   </script>
 </body>
