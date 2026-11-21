@@ -8,14 +8,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; }
+    input, textarea, select { user-select: text; -webkit-user-select: text; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
-  <!-- Шапка -->
+  <!-- Шапка магазина -->
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
       <a href="#" class="flex items-center gap-2.5 shrink-0">
@@ -45,7 +46,6 @@
       </div>
     </div>
 
-    <!-- Мобильный поиск -->
     <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-3">
       <input id="searchInputMobile" type="text" placeholder="Найти наушники, часы, клавиатуру..."
         class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none" />
@@ -107,7 +107,7 @@
 
   <!-- Модальное окно товара -->
   <div id="productModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl">
       <div class="relative bg-slate-100 h-64 flex items-center justify-center">
         <img id="modalImg" src="" alt="" class="h-full w-full object-cover" />
         <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-700 font-bold shadow">✕</button>
@@ -144,10 +144,8 @@
         <button onclick="closeCart()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-600">✕</button>
       </div>
 
-      <!-- Шаг 1: Список товаров -->
       <div id="cartStepItems" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
 
-      <!-- Шаг 2: Форма оформления заказа -->
       <form id="checkoutForm" class="hidden flex-1 overflow-y-auto p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -199,7 +197,6 @@
         </div>
       </form>
 
-      <!-- Шаг 3: Чек подтверждения -->
       <div id="orderSuccessStep" class="hidden flex-1 overflow-y-auto p-6 text-center flex flex-col items-center justify-center">
         <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-4">✓</div>
         <h4 class="text-xl font-extrabold text-slate-900">Заказ успешно оформлен!</h4>
@@ -210,7 +207,6 @@
         </button>
       </div>
 
-      <!-- Нижняя панель итогов -->
       <div id="cartFooter" class="p-5 border-t border-slate-200 bg-slate-50">
         <div class="space-y-1 text-sm mb-4">
           <div class="flex justify-between text-slate-500">
@@ -559,11 +555,15 @@
     updateCartUI();
   </script>
 
-  <!-- Кнопка мессенджера runotoks -->
+  <!-- Кнопка мессенджера со счётчиком новых сообщений в покупках -->
   <button id="rtkChatBtn" type="button"
     style="position:fixed;top:84px;right:16px;z-index:9998;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;">
     <span>💬</span>
     <span>Чат</span>
+    <span id="rtkUnreadBadge"
+      style="display:none;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#ef4444;color:#ffffff;font-size:11px;font-weight:800;align-items:center;justify-content:center;line-height:1;">
+      0
+    </span>
   </button>
 
   <!-- Полноэкранный мессенджер runotoks -->
@@ -574,7 +574,7 @@
         <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
         <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks Messenger</h2>
         <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы открыть диалоги, звонки и найти друзей по @username.
+          Войдите через Google, чтобы общаться, звонить, заходить в чат-рулетку и смотреть фильмы вместе.
         </p>
         <button id="rtkGoogleLoginBtn" type="button"
           style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 20px rgba(255,255,255,0.12);">
@@ -588,34 +588,57 @@
       </div>
     </div>
 
-    <!-- Основной интерфейс мессенджера после входа -->
+    <!-- Основной интерфейс мессенджера -->
     <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
-      <!-- Верхняя панель мессенджера -->
-      <div style="height:60px;padding:0 16px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+      <!-- Верхняя панель -->
+      <div style="height:60px;padding:0 14px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0;">
           <button id="rtkExitToSiteBtn" type="button"
-            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            ← В магазин
+            style="padding:8px 11px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ← Покупки
           </button>
-          <span style="font-weight:800;font-size:16px;letter-spacing:-0.02em;white-space:nowrap;">runotoks Чат</span>
+          <span style="font-weight:800;font-size:15px;white-space:nowrap;">runotoks</span>
         </div>
 
-        <div style="display:flex;align-items:center;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;">
           <button id="rtkTabChats" type="button"
-            style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;">
+            style="padding:7px 10px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;">
             Диалоги
           </button>
+          <button id="rtkTabRoulette" type="button"
+            style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
+            🎲 Рулетка
+          </button>
           <button id="rtkTabProfile" type="button"
-            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
+            style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
             Профиль
           </button>
         </div>
       </div>
 
-      <!-- Вкладка 1: Диалоги, люди и переписка -->
+      <!-- Вкладка 1: Диалоги и переписка -->
       <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden;">
-        <!-- Левая колонка: поиск, люди и список диалогов -->
-        <div id="rtkSidebar" style="width:100%;max-width:380px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
+        <!-- Левая колонка -->
+        <div id="rtkSidebar" style="width:100%;max-width:390px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
+          <!-- Панель массового выбора (появляется после удержания 3 сек) -->
+          <div id="rtkBulkBar" style="display:none;padding:10px 12px;background:#1e293b;border-bottom:1px solid #334155;align-items:center;justify-content:space-between;gap:8px;">
+            <span id="rtkBulkCount" style="font-size:12px;font-weight:700;color:#93c5fd;">Выбрано: 0</span>
+            <div style="display:flex;gap:6px;">
+              <button id="rtkBulkBlockBtn" type="button"
+                style="padding:6px 10px;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#f8fafc;font-size:11px;font-weight:700;cursor:pointer;">
+                Блок
+              </button>
+              <button id="rtkBulkDeleteBtn" type="button"
+                style="padding:6px 10px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:11px;font-weight:700;cursor:pointer;">
+                Удалить
+              </button>
+              <button id="rtkBulkCancelBtn" type="button"
+                style="padding:6px 8px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;font-size:11px;font-weight:700;cursor:pointer;">
+                ✕
+              </button>
+            </div>
+          </div>
+
           <div style="padding:12px;border-bottom:1px solid #1f2937;">
             <div style="display:flex;gap:8px;">
               <input id="rtkSearchUsernameInput" type="text" placeholder="Найти по @username..."
@@ -628,22 +651,23 @@
             <div id="rtkSearchResults" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
           </div>
 
-          <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">
-            Люди и диалоги
+          <div style="padding:8px 14px 4px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">Диалоги</span>
+            <span style="font-size:10px;color:#64748b;">Удерживайте 3 сек для выбора</span>
           </div>
-          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:0 8px 12px;display:flex;flex-direction:column;gap:6px;"></div>
+          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:4px 8px 12px;display:flex;flex-direction:column;gap:6px;"></div>
         </div>
 
-        <!-- Правая область: открытый диалог со стрелкой назад и кнопкой звонка в углу -->
+        <!-- Правая область: открытый диалог -->
         <div id="rtkChatPane" style="flex:1;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;min-width:0;">
-          <div id="rtkActiveChatHeader" style="height:60px;padding:0 14px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
+          <div id="rtkActiveChatHeader" style="height:60px;padding:0 12px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:10px;min-width:0;">
               <button id="rtkBackToDialogsBtn" type="button" title="Назад к диалогам"
                 style="display:none;padding:8px 11px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#ffffff;font-size:15px;font-weight:700;line-height:1;cursor:pointer;flex-shrink:0;">
                 ←
               </button>
               <div id="rtkPeerInfoBox" style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <span style="color:#94a3b8;font-size:13px;">Нажмите на человека слева, чтобы открыть диалог</span>
+                <span style="color:#94a3b8;font-size:13px;">Выберите диалог слева или откройте рулетку</span>
               </div>
             </div>
 
@@ -653,39 +677,84 @@
                 📞
               </button>
               <button id="rtkBlockPeerBtn" type="button"
-                style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:700;cursor:pointer;">
+                style="padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:700;cursor:pointer;">
                 Блок
               </button>
               <button id="rtkDeletePeerBtn" type="button"
-                style="padding:7px 10px;border-radius:10px;border:1px solid #7f1d1d;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;">
+                style="padding:7px 9px;border-radius:10px;border:1px solid #7f1d1d;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;">
                 Удалить
               </button>
             </div>
           </div>
 
-          <!-- Баннер статуса звонка -->
-          <div id="rtkCallBanner" style="display:none;padding:8px 14px;background:#14532d;color:#dcfce7;font-size:12px;font-weight:600;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
-            <span id="rtkCallStatusText">Звонок...</span>
-            <button id="rtkHangupCallBtn" type="button"
-              style="padding:5px 10px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:11px;font-weight:700;cursor:pointer;">
-              Завершить
-            </button>
+          <div id="rtkTypingIndicator" style="display:none;padding:4px 16px;font-size:11px;color:#60a5fa;background:#0b1120;flex-shrink:0;">
+            печатает...
           </div>
 
-          <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;"></div>
+          <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <form id="rtkSendMessageForm" style="display:none;padding:12px 14px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
-            <input id="rtkMessageInput" type="text" placeholder="Написать сообщение..." required
-              style="flex:1;padding:11px 14px;border-radius:14px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
+          <!-- Панель медиа: фото/видео, голосовое, кружок -->
+          <div id="rtkMediaPreviewBar" style="display:none;padding:8px 14px;background:#111827;border-top:1px solid #1f2937;align-items:center;justify-content:space-between;gap:8px;">
+            <span id="rtkMediaPreviewLabel" style="font-size:12px;color:#93c5fd;"></span>
+            <div style="display:flex;gap:6px;">
+              <button id="rtkSendMediaBtn" type="button" style="padding:6px 12px;border-radius:9px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">Отправить медиа</button>
+              <button id="rtkCancelMediaBtn" type="button" style="padding:6px 10px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:12px;cursor:pointer;">✕</button>
+            </div>
+          </div>
+
+          <form id="rtkSendMessageForm" style="display:none;padding:10px 12px;border-top:1px solid #1f2937;background:#111827;gap:6px;align-items:center;flex-shrink:0;">
+            <input id="rtkMediaFileInput" type="file" accept="image/*,video/*" style="display:none;" />
+            <button id="rtkAttachMediaBtn" type="button" title="Фото или видео"
+              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
+              📎
+            </button>
+            <button id="rtkVoiceRecordBtn" type="button" title="Голосовое сообщение"
+              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
+              🎤
+            </button>
+            <button id="rtkCircleRecordBtn" type="button" title="Видео-кружок"
+              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
+              ⏺
+            </button>
+            <input id="rtkMessageInput" type="text" placeholder="Сообщение..."
+              style="flex:1;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
             <button type="submit"
-              style="padding:11px 18px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
+              style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
               ➤
             </button>
           </form>
         </div>
       </div>
 
-      <!-- Вкладка 2: Профиль пользователя -->
+      <!-- Вкладка 2: Чат-рулетка (случайные знакомства по звонку и переписке) -->
+      <div id="rtkRouletteView" style="display:none;flex:1;overflow-y:auto;padding:20px 14px;">
+        <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div>
+              <div style="font-size:18px;font-weight:800;">🎲 Чат-рулетка</div>
+              <div style="font-size:12px;color:#94a3b8;">Случайный собеседник для звонка и переписки</div>
+            </div>
+            <button id="rtkRouletteNextBtn" type="button"
+              style="padding:10px 16px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+              Найти случайного
+            </button>
+          </div>
+
+          <div id="rtkRouletteCard" style="padding:14px;border-radius:18px;background:#0b1120;border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span style="font-size:13px;color:#94a3b8;">Нажмите «Найти случайного», чтобы подключиться к новому человеку</span>
+          </div>
+
+          <div id="rtkRouletteMessages" style="height:220px;overflow-y:auto;padding:12px;border-radius:16px;background:#0b1120;border:1px solid #1f2937;display:flex;flex-direction:column;gap:8px;"></div>
+
+          <form id="rtkRouletteForm" style="display:flex;gap:8px;">
+            <input id="rtkRouletteInput" type="text" placeholder="Написать случайному собеседнику..."
+              style="flex:1;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;outline:none;" />
+            <button type="submit" style="padding:10px 16px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-weight:700;font-size:13px;cursor:pointer;">➤</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Вкладка 3: Профиль пользователя -->
       <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:24px 16px;">
         <form id="rtkProfileForm" style="max-width:480px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;gap:14px;">
@@ -729,6 +798,64 @@
           </button>
           <div id="rtkProfileStatus" style="font-size:12px;color:#34d399;min-height:18px;"></div>
         </form>
+      </div>
+    </div>
+
+    <!-- Полноэкранное окно звонка: аватар собеседника на весь экран, камера, демонстрация экрана и совместный просмотр -->
+    <div id="rtkCallOverlay" style="display:none;position:fixed;inset:0;z-index:10020;background:#060911;color:#fff;flex-direction:column;justify-content:space-between;padding:18px;">
+      <!-- Аватар собеседника во весь экран -->
+      <img id="rtkCallFullAvatar" src="" alt=""
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.32;pointer-events:none;" />
+
+      <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div id="rtkCallPeerTitle" style="font-size:18px;font-weight:800;">Собеседник</div>
+          <div id="rtkCallStageLabel" style="font-size:12px;color:#86efac;">Соединение...</div>
+        </div>
+        <button id="rtkToggleWatchTogetherBtn" type="button"
+          style="padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(15,23,42,0.8);color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
+          🎬 Фильм вместе
+        </button>
+      </div>
+
+      <!-- Центр: видео/экран/совместный просмотр и крупный аватар -->
+      <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin:12px 0;">
+        <img id="rtkCallCenterAvatar" src="" alt=""
+          style="width:128px;height:128px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.85);box-shadow:0 16px 40px rgba(0,0,0,0.6);" />
+        <video id="rtkRemoteVideo" autoplay playsinline
+          style="display:none;width:100%;max-width:520px;max-height:240px;border-radius:16px;background:#000;object-fit:cover;"></video>
+        <video id="rtkLocalVideo" autoplay playsinline muted
+          style="display:none;width:130px;height:90px;border-radius:12px;background:#000;object-fit:cover;border:2px solid #3b82f6;"></video>
+
+        <!-- Блок совместного просмотра фильмов/видео -->
+        <div id="rtkWatchTogetherBox" style="display:none;width:100%;max-width:520px;background:rgba(15,23,42,0.92);border:1px solid rgba(255,255,255,0.16);border-radius:18px;padding:12px;">
+          <div style="display:flex;gap:6px;margin-bottom:8px;">
+            <input id="rtkWatchUrlInput" type="url" placeholder="Вставьте прямую ссылку на видео (.mp4)..."
+              style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:12px;" />
+            <button id="rtkLoadWatchBtn" type="button"
+              style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
+              Запустить
+            </button>
+          </div>
+          <video id="rtkWatchPlayer" controls playsinline
+            style="width:100%;max-height:220px;border-radius:12px;background:#000;"></video>
+        </div>
+      </div>
+
+      <!-- Нижняя панель звонка -->
+      <div style="position:relative;z-index:2;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;">
+        <button id="rtkToggleCamBtn" type="button"
+          style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+          📷 Камера
+        </button>
+        <button id="rtkShareScreenBtn" type="button"
+          style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+          🖥 Экран
+        </button>
+        <button id="rtkEndCallOverlayBtn" type="button"
+          style="padding:11px 18px;border-radius:14px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
+          Завершить
+        </button>
       </div>
     </div>
   </div>
@@ -777,6 +904,7 @@
     const provider = new GoogleAuthProvider();
 
     const openBtn = document.getElementById("rtkChatBtn");
+    const unreadBadge = document.getElementById("rtkUnreadBadge");
     const messengerEl = document.getElementById("rtkMessenger");
     const authScreen = document.getElementById("rtkAuthScreen");
     const mainApp = document.getElementById("rtkMainApp");
@@ -785,12 +913,20 @@
     const exitToSiteBtn = document.getElementById("rtkExitToSiteBtn");
 
     const tabChats = document.getElementById("rtkTabChats");
+    const tabRoulette = document.getElementById("rtkTabRoulette");
     const tabProfile = document.getElementById("rtkTabProfile");
     const chatsView = document.getElementById("rtkChatsView");
+    const rouletteView = document.getElementById("rtkRouletteView");
     const profileView = document.getElementById("rtkProfileView");
 
     const sidebarEl = document.getElementById("rtkSidebar");
     const chatPaneEl = document.getElementById("rtkChatPane");
+    const bulkBar = document.getElementById("rtkBulkBar");
+    const bulkCountEl = document.getElementById("rtkBulkCount");
+    const bulkBlockBtn = document.getElementById("rtkBulkBlockBtn");
+    const bulkDeleteBtn = document.getElementById("rtkBulkDeleteBtn");
+    const bulkCancelBtn = document.getElementById("rtkBulkCancelBtn");
+
     const searchInput = document.getElementById("rtkSearchUsernameInput");
     const searchBtn = document.getElementById("rtkSearchUserBtn");
     const searchResultsEl = document.getElementById("rtkSearchResults");
@@ -801,14 +937,45 @@
     const callPeerBtn = document.getElementById("rtkCallPeerBtn");
     const blockPeerBtn = document.getElementById("rtkBlockPeerBtn");
     const deletePeerBtn = document.getElementById("rtkDeletePeerBtn");
-    const callBannerEl = document.getElementById("rtkCallBanner");
-    const callStatusTextEl = document.getElementById("rtkCallStatusText");
-    const hangupCallBtn = document.getElementById("rtkHangupCallBtn");
+    const typingIndicatorEl = document.getElementById("rtkTypingIndicator");
     const messagesListEl = document.getElementById("rtkMessagesList");
     const sendMsgForm = document.getElementById("rtkSendMessageForm");
     const msgInput = document.getElementById("rtkMessageInput");
-    const remoteAudio = document.getElementById("rtkRemoteAudio");
+    const mediaFileInput = document.getElementById("rtkMediaFileInput");
+    const attachMediaBtn = document.getElementById("rtkAttachMediaBtn");
+    const voiceRecordBtn = document.getElementById("rtkVoiceRecordBtn");
+    const circleRecordBtn = document.getElementById("rtkCircleRecordBtn");
+    const mediaPreviewBar = document.getElementById("rtkMediaPreviewBar");
+    const mediaPreviewLabel = document.getElementById("rtkMediaPreviewLabel");
+    const sendMediaBtn = document.getElementById("rtkSendMediaBtn");
+    const cancelMediaBtn = document.getElementById("rtkCancelMediaBtn");
 
+    // Рулетка
+    const rouletteNextBtn = document.getElementById("rtkRouletteNextBtn");
+    const rouletteCardEl = document.getElementById("rtkRouletteCard");
+    const rouletteMessagesEl = document.getElementById("rtkRouletteMessages");
+    const rouletteForm = document.getElementById("rtkRouletteForm");
+    const rouletteInput = document.getElementById("rtkRouletteInput");
+
+    // Звонок, экран и совместный просмотр
+    const callOverlay = document.getElementById("rtkCallOverlay");
+    const callFullAvatar = document.getElementById("rtkCallFullAvatar");
+    const callCenterAvatar = document.getElementById("rtkCallCenterAvatar");
+    const callPeerTitle = document.getElementById("rtkCallPeerTitle");
+    const callStageLabel = document.getElementById("rtkCallStageLabel");
+    const remoteVideo = document.getElementById("rtkRemoteVideo");
+    const localVideo = document.getElementById("rtkLocalVideo");
+    const remoteAudio = document.getElementById("rtkRemoteAudio");
+    const toggleCamBtn = document.getElementById("rtkToggleCamBtn");
+    const shareScreenBtn = document.getElementById("rtkShareScreenBtn");
+    const endCallOverlayBtn = document.getElementById("rtkEndCallOverlayBtn");
+    const toggleWatchBtn = document.getElementById("rtkToggleWatchTogetherBtn");
+    const watchTogetherBox = document.getElementById("rtkWatchTogetherBox");
+    const watchUrlInput = document.getElementById("rtkWatchUrlInput");
+    const loadWatchBtn = document.getElementById("rtkLoadWatchBtn");
+    const watchPlayer = document.getElementById("rtkWatchPlayer");
+
+    // Профиль
     const profileForm = document.getElementById("rtkProfileForm");
     const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
     const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
@@ -825,33 +992,39 @@
     let currentProfile = null;
     let activeChatId = null;
     let activePeer = null;
+    let roulettePeer = null;
+    let rouletteChatId = null;
     let allUsers = [];
     let chatsMap = new Map();
     let blockedIds = new Set();
     let hiddenIds = new Set();
+    let selectedPeerIds = new Set();
+    let selectionMode = false;
+    let pendingMedia = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
     let unsubChats = null;
     let unsubUsers = null;
     let unsubMessages = null;
+    let unsubRouletteMsgs = null;
     let unsubCall = null;
     let unsubCandidates = null;
     let localStream = null;
+    let screenStream = null;
     let peerConnection = null;
 
-    const rtcConfig = {
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-    };
-
+    const rtcConfig = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
     const isMobileLayout = () => window.innerWidth < 768;
 
     function syncResponsiveDialogLayout() {
       if (!isMobileLayout()) {
         sidebarEl.style.display = "flex";
-        sidebarEl.style.maxWidth = "380px";
+        sidebarEl.style.maxWidth = "390px";
         chatPaneEl.style.display = "flex";
         backToDialogsBtn.style.display = activeChatId ? "inline-flex" : "none";
         return;
       }
-
       sidebarEl.style.maxWidth = "100%";
       if (activeChatId) {
         sidebarEl.style.display = "none";
@@ -869,6 +1042,12 @@
     const cleanUsername = (u) =>
       (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
 
+    const formatTime = (ts) => {
+      if (!ts) return "";
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    };
+
     function openMessenger() {
       messengerEl.style.display = "flex";
       document.body.style.overflow = "hidden";
@@ -878,11 +1057,51 @@
     function closeMessenger() {
       messengerEl.style.display = "none";
       document.body.style.overflow = "";
+      updateUnreadBadge();
     }
 
     openBtn.addEventListener("click", openMessenger);
     authBackToSite.addEventListener("click", closeMessenger);
     exitToSiteBtn.addEventListener("click", closeMessenger);
+
+    function setActiveTab(tab) {
+      chatsView.style.display = tab === "chats" ? "flex" : "none";
+      rouletteView.style.display = tab === "roulette" ? "block" : "none";
+      profileView.style.display = tab === "profile" ? "block" : "none";
+
+      [
+        [tabChats, tab === "chats"],
+        [tabRoulette, tab === "roulette"],
+        [tabProfile, tab === "profile"]
+      ].forEach(([btn, active]) => {
+        btn.style.background = active ? "#2563eb" : "#1e293b";
+        btn.style.border = active ? "none" : "1px solid #334155";
+      });
+      if (tab === "chats") syncResponsiveDialogLayout();
+    }
+
+    tabChats.addEventListener("click", () => setActiveTab("chats"));
+    tabRoulette.addEventListener("click", () => setActiveTab("roulette"));
+    tabProfile.addEventListener("click", () => setActiveTab("profile"));
+
+    function updateUnreadBadge() {
+      if (!currentUser) {
+        unreadBadge.style.display = "none";
+        return;
+      }
+      let unread = 0;
+      chatsMap.forEach((chat) => {
+        if (chat.lastSenderId && chat.lastSenderId !== currentUser.uid && chat.lastReadByPeer === false) {
+          unread += 1;
+        }
+      });
+      if (unread > 0) {
+        unreadBadge.textContent = String(unread);
+        unreadBadge.style.display = "inline-flex";
+      } else {
+        unreadBadge.style.display = "none";
+      }
+    }
 
     googleLoginBtn.addEventListener("click", async () => {
       try {
@@ -896,25 +1115,6 @@
       }
     });
 
-    tabChats.addEventListener("click", () => {
-      chatsView.style.display = "flex";
-      profileView.style.display = "none";
-      tabChats.style.background = "#2563eb";
-      tabChats.style.border = "none";
-      tabProfile.style.background = "#1e293b";
-      tabProfile.style.border = "1px solid #334155";
-      syncResponsiveDialogLayout();
-    });
-
-    tabProfile.addEventListener("click", () => {
-      chatsView.style.display = "none";
-      profileView.style.display = "block";
-      tabProfile.style.background = "#2563eb";
-      tabProfile.style.border = "none";
-      tabChats.style.background = "#1e293b";
-      tabChats.style.border = "1px solid #334155";
-    });
-
     profilePhotoFile.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -923,14 +1123,11 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement("canvas");
-          const size = 180;
-          canvas.width = size;
-          canvas.height = size;
+          canvas.width = 180;
+          canvas.height = 180;
           const ctx = canvas.getContext("2d");
           const minSide = Math.min(img.width, img.height);
-          const sx = (img.width - minSide) / 2;
-          const sy = (img.height - minSide) / 2;
-          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          ctx.drawImage(img, (img.width - minSide) / 2, (img.height - minSide) / 2, minSide, minSide, 0, 0, 180, 180);
           const compressed = canvas.toDataURL("image/jpeg", 0.8);
           profilePhotoUrl.value = compressed;
           profileAvatarPreview.src = compressed;
@@ -982,19 +1179,16 @@
       const uname = cleanUsername(profileUsername.value);
       if (!uname) {
         profileStatus.style.color = "#f87171";
-        profileStatus.textContent = "Введите корректный @username (латиница, цифры, _).";
+        profileStatus.textContent = "Введите корректный @username.";
         return;
       }
-
       const qUsers = query(collection(db, "users"), where("username", "==", uname));
       const snapUsers = await getDocs(qUsers);
-      const takenByOther = snapUsers.docs.some((d) => d.id !== currentUser.uid);
-      if (takenByOther) {
+      if (snapUsers.docs.some((d) => d.id !== currentUser.uid)) {
         profileStatus.style.color = "#f87171";
         profileStatus.textContent = `Имя @${uname} уже занято.`;
         return;
       }
-
       const updated = {
         name: profileName.value.trim() || "Пользователь",
         username: uname,
@@ -1002,13 +1196,46 @@
         photoURL: profilePhotoUrl.value.trim() || DEFAULT_AVATAR,
         updatedAt: serverTimestamp()
       };
-
       await updateDoc(doc(db, "users", currentUser.uid), updated);
       currentProfile = { ...currentProfile, ...updated };
       profileAvatarPreview.src = currentProfile.photoURL;
       profileStatus.style.color = "#34d399";
       profileStatus.textContent = "Профиль сохранён!";
       setTimeout(() => { profileStatus.textContent = ""; }, 2500);
+    });
+
+    function syncBulkBar() {
+      if (!selectionMode || selectedPeerIds.size === 0) {
+        selectionMode = false;
+        selectedPeerIds.clear();
+        bulkBar.style.display = "none";
+        return;
+      }
+      bulkBar.style.display = "flex";
+      bulkCountEl.textContent = `Выбрано: ${selectedPeerIds.size}`;
+    }
+
+    bulkCancelBtn.addEventListener("click", () => {
+      selectionMode = false;
+      selectedPeerIds.clear();
+      syncBulkBar();
+      renderPeopleAndDialogs();
+    });
+
+    bulkBlockBtn.addEventListener("click", async () => {
+      for (const uid of selectedPeerIds) await blockUser(uid, false);
+      selectionMode = false;
+      selectedPeerIds.clear();
+      syncBulkBar();
+      renderPeopleAndDialogs();
+    });
+
+    bulkDeleteBtn.addEventListener("click", async () => {
+      for (const uid of selectedPeerIds) await deleteUserFromList(uid, false);
+      selectionMode = false;
+      selectedPeerIds.clear();
+      syncBulkBar();
+      renderPeopleAndDialogs();
     });
 
     function renderPeopleAndDialogs() {
@@ -1022,64 +1249,82 @@
       peers.sort((a, b) => {
         const pairA = [currentUser.uid, a.uid].sort().join("_");
         const pairB = [currentUser.uid, b.uid].sort().join("_");
-        const tA = chatsMap.get(pairA)?.updatedAt?.seconds || 0;
-        const tB = chatsMap.get(pairB)?.updatedAt?.seconds || 0;
-        return tB - tA;
+        return (chatsMap.get(pairB)?.updatedAt?.seconds || 0) - (chatsMap.get(pairA)?.updatedAt?.seconds || 0);
       });
 
       if (!peers.length) {
-        chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет доступных пользователей.</div>`;
+        chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет доступных диалогов.</div>`;
         return;
       }
 
       for (const peer of peers) {
         const pairKey = [currentUser.uid, peer.uid].sort().join("_");
         const chatMeta = chatsMap.get(pairKey);
-        const isSelected = activeChatId === pairKey;
+        const isSelectedChat = activeChatId === pairKey;
+        const isChecked = selectedPeerIds.has(peer.uid);
+        const hasUnread = chatMeta?.lastSenderId && chatMeta.lastSenderId !== currentUser.uid && chatMeta.lastReadByPeer === false;
 
         const row = document.createElement("div");
-        row.style.cssText = `width:100%;padding:10px;border-radius:14px;background:${isSelected ? "#1e293b" : "#0f172a"};border:1px solid #1f2937;color:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px;`;
+        row.style.cssText = `width:100%;padding:10px;border-radius:14px;background:${isChecked ? "#172554" : isSelectedChat ? "#1e293b" : "#0f172a"};border:1px solid ${isChecked ? "#3b82f6" : "#1f2937"};color:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;`;
 
-        const openArea = document.createElement("div");
-        openArea.style.cssText = "display:flex;align-items:center;gap:10px;min-width:0;flex:1;cursor:pointer;";
-        openArea.innerHTML = `
-          <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
-          <div style="min-width:0;flex:1;">
-            <div style="display:flex;justify-content:space-between;gap:6px;align-items:baseline;">
-              <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(peer.name || "Пользователь")}</span>
-              <span style="font-size:11px;color:#60a5fa;flex-shrink:0;">@${escapeHtml(peer.username || "user")}</span>
-            </div>
-            <div style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
-              ${escapeHtml(chatMeta?.lastMessage || peer.bio || "Нажмите, чтобы войти в диалог")}
+        let holdTimer = null;
+        let longPressed = false;
+
+        const startHold = () => {
+          longPressed = false;
+          holdTimer = setTimeout(() => {
+            longPressed = true;
+            selectionMode = true;
+            selectedPeerIds.add(peer.uid);
+            syncBulkBar();
+            renderPeopleAndDialogs();
+          }, 3000);
+        };
+
+        const cancelHold = () => {
+          if (holdTimer) clearTimeout(holdTimer);
+        };
+
+        row.addEventListener("pointerdown", startHold);
+        row.addEventListener("pointerup", cancelHold);
+        row.addEventListener("pointerleave", cancelHold);
+        row.addEventListener("pointercancel", cancelHold);
+
+        row.addEventListener("click", () => {
+          if (longPressed) return;
+          if (selectionMode) {
+            if (selectedPeerIds.has(peer.uid)) selectedPeerIds.delete(peer.uid);
+            else selectedPeerIds.add(peer.uid);
+            syncBulkBar();
+            renderPeopleAndDialogs();
+            return;
+          }
+          startOrOpenChat(peer);
+        });
+
+        const checkBox = selectionMode
+          ? `<input type="checkbox" ${isChecked ? "checked" : ""} style="width:16px;height:16px;accent-color:#2563eb;pointer-events:none;" />`
+          : "";
+
+        row.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
+            ${checkBox}
+            <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <div style="min-width:0;flex:1;">
+              <div style="display:flex;justify-content:space-between;gap:6px;align-items:center;">
+                <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(peer.name || "Пользователь")}</span>
+                <span style="font-size:10px;color:#94a3b8;flex-shrink:0;">${formatTime(chatMeta?.updatedAt)}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:2px;">
+                <span style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  ${escapeHtml(chatMeta?.lastMessage || "@" + (peer.username || "user"))}
+                </span>
+                ${hasUnread ? `<span style="background:#ef4444;color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:999px;flex-shrink:0;">1</span>` : ""}
+              </div>
             </div>
           </div>
         `;
-        openArea.addEventListener("click", () => startOrOpenChat(peer));
 
-        const miniBtns = document.createElement("div");
-        miniBtns.style.cssText = "display:flex;gap:4px;flex-shrink:0;";
-
-        const bBtn = document.createElement("button");
-        bBtn.type = "button";
-        bBtn.textContent = "Блок";
-        bBtn.style.cssText = "padding:5px 7px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:10px;font-weight:700;cursor:pointer;";
-        bBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          blockUser(peer.uid);
-        });
-
-        const dBtn = document.createElement("button");
-        dBtn.type = "button";
-        dBtn.textContent = "✕";
-        dBtn.title = "Удалить";
-        dBtn.style.cssText = "padding:5px 7px;border-radius:8px;border:1px solid #7f1d1d;background:#450a0a;color:#fca5a5;font-size:10px;font-weight:700;cursor:pointer;";
-        dBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          deleteUserFromList(peer.uid);
-        });
-
-        miniBtns.append(bBtn, dBtn);
-        row.append(openArea, miniBtns);
         chatListEl.appendChild(row);
       }
     }
@@ -1089,19 +1334,15 @@
       const target = cleanUsername(searchInput.value);
       searchResultsEl.innerHTML = "";
       if (!target) return;
-
       const qU = query(collection(db, "users"), where("username", "==", target));
       const snap = await getDocs(qU);
-
       if (snap.empty) {
-        searchResultsEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;padding:4px;">Пользователь @${target} не найден</div>`;
+        searchResultsEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;padding:4px;">@${target} не найден</div>`;
         return;
       }
-
       snap.forEach((d) => {
         const u = { uid: d.id, ...d.data() };
         if (u.uid === currentUser.uid) return;
-
         const item = document.createElement("div");
         item.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:12px;background:#0b1120;border:1px solid #1f2937;";
         item.innerHTML = `
@@ -1124,11 +1365,7 @@
       const pairKey = [currentUser.uid, otherUser.uid].sort().join("_");
       await setDoc(
         doc(db, "chats", pairKey),
-        {
-          pairKey,
-          members: [currentUser.uid, otherUser.uid],
-          updatedAt: serverTimestamp()
-        },
+        { pairKey, members: [currentUser.uid, otherUser.uid], updatedAt: serverTimestamp() },
         { merge: true }
       );
       selectChat(pairKey, otherUser);
@@ -1138,28 +1375,66 @@
       await hangupCall();
       activeChatId = null;
       activePeer = null;
-      if (unsubMessages) {
-        unsubMessages();
-        unsubMessages = null;
-      }
-      if (unsubCall) {
-        unsubCall();
-        unsubCall = null;
-      }
-      if (unsubCandidates) {
-        unsubCandidates();
-        unsubCandidates = null;
-      }
+      if (unsubMessages) { unsubMessages(); unsubMessages = null; }
+      if (unsubCall) { unsubCall(); unsubCall = null; }
+      if (unsubCandidates) { unsubCandidates(); unsubCandidates = null; }
       sendMsgForm.style.display = "none";
       dialogActionsEl.style.display = "none";
       backToDialogsBtn.style.display = "none";
+      typingIndicatorEl.style.display = "none";
       messagesListEl.innerHTML = "";
-      peerInfoBox.innerHTML = `<span style="color:#94a3b8;font-size:13px;">Нажмите на человека слева, чтобы открыть диалог</span>`;
+      peerInfoBox.innerHTML = `<span style="color:#94a3b8;font-size:13px;">Выберите диалог слева или откройте рулетку</span>`;
       syncResponsiveDialogLayout();
       renderPeopleAndDialogs();
     }
 
     backToDialogsBtn.addEventListener("click", backToDialogsList);
+
+    function renderMessageBubble(m, isMine) {
+      const wrap = document.createElement("div");
+      wrap.style.cssText = `max-width:80%;align-self:${isMine ? "flex-end" : "flex-start"};background:${isMine ? "#2563eb" : "#1e293b"};color:#ffffff;padding:9px 12px;border-radius:15px;font-size:13px;line-height:1.4;word-break:break-word;display:flex;flex-direction:column;gap:5px;`;
+
+      if (m.kind === "image" && m.mediaData) {
+        const img = document.createElement("img");
+        img.src = m.mediaData;
+        img.style.cssText = "max-width:220px;max-height:220px;border-radius:10px;object-fit:cover;";
+        wrap.appendChild(img);
+      } else if (m.kind === "video" && m.mediaData) {
+        const vid = document.createElement("video");
+        vid.src = m.mediaData;
+        vid.controls = true;
+        vid.style.cssText = "max-width:230px;max-height:200px;border-radius:10px;";
+        wrap.appendChild(vid);
+      } else if (m.kind === "circle" && m.mediaData) {
+        const vid = document.createElement("video");
+        vid.src = m.mediaData;
+        vid.controls = true;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.style.cssText = "width:160px;height:160px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.4);";
+        wrap.appendChild(vid);
+      } else if (m.kind === "voice" && m.mediaData) {
+        const aud = document.createElement("audio");
+        aud.src = m.mediaData;
+        aud.controls = true;
+        aud.style.cssText = "max-width:220px;height:34px;";
+        wrap.appendChild(aud);
+      }
+
+      if (m.text) {
+        const txt = document.createElement("div");
+        txt.textContent = m.text;
+        wrap.appendChild(txt);
+      }
+
+      const meta = document.createElement("div");
+      meta.style.cssText = "display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:10px;opacity:0.85;";
+      const seenMark = isMine ? (m.seen ? "✓✓" : "✓") : "";
+      meta.textContent = `${formatTime(m.createdAt)} ${seenMark}`;
+      wrap.appendChild(meta);
+
+      return wrap;
+    }
 
     function selectChat(chatId, otherProfile) {
       activeChatId = chatId;
@@ -1180,93 +1455,286 @@
 
       if (unsubMessages) unsubMessages();
       const qM = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
-      unsubMessages = onSnapshot(qM, (snap) => {
+      unsubMessages = onSnapshot(qM, async (snap) => {
         messagesListEl.innerHTML = "";
+        const unreadDocs = [];
         snap.forEach((d) => {
           const m = d.data();
           const mine = m.senderId === currentUser?.uid;
-          const bubble = document.createElement("div");
-          bubble.style.cssText = `max-width:78%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#ffffff;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.45;word-break:break-word;`;
-          bubble.textContent = m.text || "";
-          messagesListEl.appendChild(bubble);
+          if (!mine && !m.seen) unreadDocs.push(d.ref);
+          messagesListEl.appendChild(renderMessageBubble(m, mine));
         });
         messagesListEl.scrollTop = messagesListEl.scrollHeight;
+
+        if (unreadDocs.length && messengerEl.style.display !== "none") {
+          for (const r of unreadDocs) {
+            await updateDoc(r, { seen: true }).catch(() => {});
+          }
+          await setDoc(doc(db, "chats", chatId), { lastReadByPeer: true }, { merge: true }).catch(() => {});
+        }
       });
 
       subscribeCall(chatId);
     }
 
-    sendMsgForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    let typingTimeout = null;
+    msgInput.addEventListener("input", async () => {
+      if (!currentUser || !activeChatId) return;
+      await setDoc(doc(db, "chats", activeChatId), { typingUid: currentUser.uid }, { merge: true }).catch(() => {});
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        setDoc(doc(db, "chats", activeChatId), { typingUid: "" }, { merge: true }).catch(() => {});
+      }, 1600);
+    });
+
+    async function pushMessage({ text = "", kind = "text", mediaData = "" }) {
       if (!currentUser || !activeChatId || !activePeer) return;
       if (blockedIds.has(activePeer.uid)) return;
-      const text = msgInput.value.trim();
-      if (!text) return;
-      msgInput.value = "";
 
       await addDoc(collection(db, "chats", activeChatId, "messages"), {
         senderId: currentUser.uid,
         text,
+        kind,
+        mediaData,
+        seen: false,
         createdAt: serverTimestamp()
       });
+
+      const preview =
+        text ||
+        (kind === "image" ? "📷 Фото" : kind === "video" ? "🎥 Видео" : kind === "circle" ? "⚪ Кружок" : "🎤 Голосовое");
 
       await setDoc(
         doc(db, "chats", activeChatId),
         {
-          lastMessage: text,
+          lastMessage: preview,
+          lastSenderId: currentUser.uid,
+          lastReadByPeer: false,
+          typingUid: "",
           updatedAt: serverTimestamp()
         },
         { merge: true }
       );
-    });
-
-    async function blockUser(targetUid) {
-      if (!currentUser || !targetUid) return;
-      blockedIds.add(targetUid);
-      await setDoc(doc(db, "users", currentUser.uid, "blocked", targetUid), {
-        blockedAt: serverTimestamp()
-      });
-      if (activePeer?.uid === targetUid) {
-        await backToDialogsList();
-      } else {
-        renderPeopleAndDialogs();
-      }
     }
 
-    async function deleteUserFromList(targetUid) {
+    sendMsgForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (pendingMedia) {
+        await sendMediaBtn.click();
+        return;
+      }
+      const text = msgInput.value.trim();
+      if (!text) return;
+      msgInput.value = "";
+      await pushMessage({ text, kind: "text" });
+    });
+
+    // Фото / видео
+    attachMediaBtn.addEventListener("click", () => mediaFileInput.click());
+    mediaFileInput.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (file.size > 750 * 1024) {
+        alert("Выберите файл до 750 КБ для быстрой отправки через базу.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        pendingMedia = {
+          kind: file.type.startsWith("video/") ? "video" : "image",
+          mediaData: reader.result
+        };
+        mediaPreviewLabel.textContent = `Готово к отправке: ${file.name}`;
+        mediaPreviewBar.style.display = "flex";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Голосовое сообщение
+    voiceRecordBtn.addEventListener("click", async () => {
+      try {
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          mediaRecorder.stop();
+          voiceRecordBtn.textContent = "🎤";
+          return;
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (ev) => { if (ev.data.size) recordedChunks.push(ev.data); };
+        mediaRecorder.onstop = () => {
+          stream.getTracks().forEach((t) => t.stop());
+          const blob = new Blob(recordedChunks, { type: "audio/webm" });
+          const reader = new FileReader();
+          reader.onload = () => {
+            pendingMedia = { kind: "voice", mediaData: reader.result };
+            mediaPreviewLabel.textContent = "Голосовое сообщение записано";
+            mediaPreviewBar.style.display = "flex";
+          };
+          reader.readAsDataURL(blob);
+        };
+        mediaRecorder.start();
+        voiceRecordBtn.textContent = "⏹";
+      } catch (_) {
+        alert("Нет доступа к микрофону");
+      }
+    });
+
+    // Видео-кружок
+    circleRecordBtn.addEventListener("click", async () => {
+      try {
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          mediaRecorder.stop();
+          circleRecordBtn.textContent = "⏺";
+          return;
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (ev) => { if (ev.data.size) recordedChunks.push(ev.data); };
+        mediaRecorder.onstop = () => {
+          stream.getTracks().forEach((t) => t.stop());
+          const blob = new Blob(recordedChunks, { type: "video/webm" });
+          const reader = new FileReader();
+          reader.onload = () => {
+            pendingMedia = { kind: "circle", mediaData: reader.result };
+            mediaPreviewLabel.textContent = "Видео-кружок записан";
+            mediaPreviewBar.style.display = "flex";
+          };
+          reader.readAsDataURL(blob);
+        };
+        mediaRecorder.start();
+        circleRecordBtn.textContent = "⏹";
+      } catch (_) {
+        alert("Нет доступа к камере");
+      }
+    });
+
+    sendMediaBtn.addEventListener("click", async () => {
+      if (!pendingMedia) return;
+      const caption = msgInput.value.trim();
+      msgInput.value = "";
+      await pushMessage({ text: caption, kind: pendingMedia.kind, mediaData: pendingMedia.mediaData });
+      pendingMedia = null;
+      mediaPreviewBar.style.display = "none";
+      mediaFileInput.value = "";
+    });
+
+    cancelMediaBtn.addEventListener("click", () => {
+      pendingMedia = null;
+      mediaPreviewBar.style.display = "none";
+      mediaFileInput.value = "";
+    });
+
+    async function blockUser(targetUid, rerender = true) {
+      if (!currentUser || !targetUid) return;
+      blockedIds.add(targetUid);
+      await setDoc(doc(db, "users", currentUser.uid, "blocked", targetUid), { blockedAt: serverTimestamp() });
+      if (activePeer?.uid === targetUid) await backToDialogsList();
+      else if (rerender) renderPeopleAndDialogs();
+    }
+
+    async function deleteUserFromList(targetUid, rerender = true) {
       if (!currentUser || !targetUid) return;
       hiddenIds.add(targetUid);
-      await setDoc(doc(db, "users", currentUser.uid, "hiddenUsers", targetUid), {
-        hiddenAt: serverTimestamp()
-      });
-      if (activePeer?.uid === targetUid) {
-        await backToDialogsList();
-      } else {
-        renderPeopleAndDialogs();
-      }
+      await setDoc(doc(db, "users", currentUser.uid, "hiddenUsers", targetUid), { hiddenAt: serverTimestamp() });
+      if (activePeer?.uid === targetUid) await backToDialogsList();
+      else if (rerender) renderPeopleAndDialogs();
     }
 
     blockPeerBtn.addEventListener("click", () => activePeer && blockUser(activePeer.uid));
     deletePeerBtn.addEventListener("click", () => activePeer && deleteUserFromList(activePeer.uid));
 
-    async function setupLocalAudio() {
-      if (localStream) return localStream;
-      localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-      return localStream;
-    }
+    // Чат-рулетка
+    rouletteNextBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+      const candidates = allUsers.filter(
+        (u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid) && (!roulettePeer || u.uid !== roulettePeer.uid)
+      );
+      if (!candidates.length) {
+        rouletteCardEl.innerHTML = `<span style="font-size:13px;color:#94a3b8;">Пока нет других пользователей онлайн в базе</span>`;
+        return;
+      }
+      roulettePeer = candidates[Math.floor(Math.random() * candidates.length)];
+      rouletteChatId = [currentUser.uid, roulettePeer.uid].sort().join("_");
 
-    async function createPeerConnection(chatId) {
+      await setDoc(
+        doc(db, "chats", rouletteChatId),
+        { pairKey: rouletteChatId, members: [currentUser.uid, roulettePeer.uid], updatedAt: serverTimestamp() },
+        { merge: true }
+      );
+
+      rouletteCardEl.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <img src="${roulettePeer.photoURL || DEFAULT_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;" />
+          <div style="min-width:0;">
+            <div style="font-size:14px;font-weight:700;">${escapeHtml(roulettePeer.name || "Случайный гость")}</div>
+            <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(roulettePeer.username || "guest")}</div>
+          </div>
+        </div>
+        <button id="rtkRouletteCallBtn" type="button" style="padding:8px 12px;border-radius:10px;border:none;background:#16a34a;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📞 Звонок</button>
+      `;
+
+      document.getElementById("rtkRouletteCallBtn").addEventListener("click", () => {
+        activeChatId = rouletteChatId;
+        activePeer = roulettePeer;
+        startCall(true);
+      });
+
+      if (unsubRouletteMsgs) unsubRouletteMsgs();
+      const qRM = query(collection(db, "chats", rouletteChatId, "messages"), orderBy("createdAt", "asc"));
+      unsubRouletteMsgs = onSnapshot(qRM, (snap) => {
+        rouletteMessagesEl.innerHTML = "";
+        snap.forEach((d) => {
+          const m = d.data();
+          const mine = m.senderId === currentUser.uid;
+          rouletteMessagesEl.appendChild(renderMessageBubble(m, mine));
+        });
+        rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
+      });
+    });
+
+    rouletteForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUser || !rouletteChatId || !roulettePeer) return;
+      const text = rouletteInput.value.trim();
+      if (!text) return;
+      rouletteInput.value = "";
+      await addDoc(collection(db, "chats", rouletteChatId, "messages"), {
+        senderId: currentUser.uid,
+        text,
+        kind: "text",
+        seen: false,
+        createdAt: serverTimestamp()
+      });
+      await setDoc(
+        doc(db, "chats", rouletteChatId),
+        { lastMessage: text, lastSenderId: currentUser.uid, lastReadByPeer: false, updatedAt: serverTimestamp() },
+        { merge: true }
+      );
+    });
+
+    // Звонок, камера, демонстрация экрана и совместный просмотр
+    async function createPeerConnection(chatId, withVideo = false) {
       if (peerConnection) peerConnection.close();
       peerConnection = new RTCPeerConnection(rtcConfig);
 
-      const stream = await setupLocalAudio();
-      stream.getTracks().forEach((track) => {
-        peerConnection.addTrack(track, stream);
-      });
+      localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: withVideo });
+      localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
+
+      if (withVideo) {
+        localVideo.srcObject = localStream;
+        localVideo.style.display = "block";
+      }
 
       peerConnection.ontrack = (event) => {
-        if (event.streams && event.streams[0]) {
-          remoteAudio.srcObject = event.streams[0];
+        const stream = event.streams?.[0];
+        if (!stream) return;
+        remoteAudio.srcObject = stream;
+        if (stream.getVideoTracks().length > 0) {
+          remoteVideo.srcObject = stream;
+          remoteVideo.style.display = "block";
+          callCenterAvatar.style.display = "none";
         }
       };
 
@@ -1282,88 +1750,141 @@
       return peerConnection;
     }
 
-    callPeerBtn.addEventListener("click", async () => {
+    function openCallScreen(peer, stageText) {
+      const av = peer?.photoURL || DEFAULT_AVATAR;
+      callFullAvatar.src = av;
+      callCenterAvatar.src = av;
+      callCenterAvatar.style.display = "block";
+      callPeerTitle.textContent = peer?.name || "Собеседник";
+      callStageLabel.textContent = stageText;
+      callOverlay.style.display = "flex";
+    }
+
+    async function startCall(withVideo = false) {
       if (!currentUser || !activePeer || !activeChatId) return;
+      openCallScreen(activePeer, `Звонок ${activePeer.name || "собеседнику"}...`);
       try {
-        const pc = await createPeerConnection(activeChatId);
+        const pc = await createPeerConnection(activeChatId, withVideo);
         const offer = await pc.createOffer();
         await pc.setLocalDescription(offer);
 
         await setDoc(doc(db, "chats", activeChatId, "call", "current"), {
           callerId: currentUser.uid,
           callerName: currentProfile?.name || currentUser.displayName || "Пользователь",
+          callerAvatar: currentProfile?.photoURL || DEFAULT_AVATAR,
           calleeId: activePeer.uid,
           offer: { type: offer.type, sdp: offer.sdp },
           status: "calling",
           updatedAt: serverTimestamp()
         });
-
-        callStatusTextEl.textContent = `Звонок ${activePeer.name || "собеседнику"}...`;
-        callBannerEl.style.display = "flex";
       } catch (_) {
-        callStatusTextEl.textContent = "Нет доступа к микрофону";
-        callBannerEl.style.display = "flex";
+        callStageLabel.textContent = "Разрешите микрофон/камеру в браузере";
+      }
+    }
+
+    callPeerBtn.addEventListener("click", () => startCall(true));
+
+    toggleCamBtn.addEventListener("click", async () => {
+      if (!peerConnection || !localStream) return;
+      const videoTrack = localStream.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.enabled = !videoTrack.enabled;
+        callStageLabel.textContent = videoTrack.enabled ? "Камера включена" : "Камера выключена";
+      } else {
+        try {
+          const camStream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const newTrack = camStream.getVideoTracks()[0];
+          localStream.addTrack(newTrack);
+          peerConnection.addTrack(newTrack, localStream);
+          localVideo.srcObject = localStream;
+          localVideo.style.display = "block";
+        } catch (_) {}
       }
     });
 
+    shareScreenBtn.addEventListener("click", async () => {
+      if (!peerConnection) return;
+      try {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        const screenTrack = screenStream.getVideoTracks()[0];
+        const sender = peerConnection.getSenders().find((s) => s.track && s.track.kind === "video");
+        if (sender) await sender.replaceTrack(screenTrack);
+        else peerConnection.addTrack(screenTrack, screenStream);
+        localVideo.srcObject = screenStream;
+        localVideo.style.display = "block";
+        callStageLabel.textContent = "Демонстрация экрана активна";
+      } catch (_) {
+        callStageLabel.textContent = "Демонстрация экрана недоступна на устройстве";
+      }
+    });
+
+    toggleWatchBtn.addEventListener("click", () => {
+      watchTogetherBox.style.display = watchTogetherBox.style.display === "none" ? "block" : "none";
+    });
+
+    loadWatchBtn.addEventListener("click", async () => {
+      const url = watchUrlInput.value.trim();
+      if (!url || !activeChatId) return;
+      watchPlayer.src = url;
+      watchPlayer.play().catch(() => {});
+      await setDoc(doc(db, "chats", activeChatId, "call", "current"), { watchUrl: url }, { merge: true }).catch(() => {});
+    });
+
     async function hangupCall() {
-      if (peerConnection) {
-        peerConnection.close();
-        peerConnection = null;
-      }
-      if (localStream) {
-        localStream.getTracks().forEach((t) => t.stop());
-        localStream = null;
-      }
+      if (peerConnection) { peerConnection.close(); peerConnection = null; }
+      if (localStream) { localStream.getTracks().forEach((t) => t.stop()); localStream = null; }
+      if (screenStream) { screenStream.getTracks().forEach((t) => t.stop()); screenStream = null; }
       if (activeChatId) {
         await deleteDoc(doc(db, "chats", activeChatId, "call", "current")).catch(() => {});
       }
-      callBannerEl.style.display = "none";
+      remoteVideo.style.display = "none";
+      localVideo.style.display = "none";
+      watchTogetherBox.style.display = "none";
+      callOverlay.style.display = "none";
     }
 
-    hangupCallBtn.addEventListener("click", hangupCall);
+    endCallOverlayBtn.addEventListener("click", hangupCall);
 
     function subscribeCall(chatId) {
       if (unsubCall) unsubCall();
       if (unsubCandidates) unsubCandidates();
 
-      unsubCandidates = onSnapshot(
-        collection(db, "chats", chatId, "call", "current", "candidates"),
-        async (snap) => {
-          if (!peerConnection || !currentUser) return;
-          for (const change of snap.docChanges()) {
-            if (change.type === "added") {
-              const cData = change.doc.data();
-              if (cData.senderId !== currentUser.uid && cData.candidate) {
-                try {
-                  await peerConnection.addIceCandidate(new RTCIceCandidate(cData.candidate));
-                } catch (_) {}
-              }
+      unsubCandidates = onSnapshot(collection(db, "chats", chatId, "call", "current", "candidates"), async (snap) => {
+        if (!peerConnection || !currentUser) return;
+        for (const ch of snap.docChanges()) {
+          if (ch.type === "added") {
+            const cData = ch.doc.data();
+            if (cData.senderId !== currentUser.uid && cData.candidate) {
+              try { await peerConnection.addIceCandidate(new RTCIceCandidate(cData.candidate)); } catch (_) {}
             }
           }
         }
-      );
+      });
 
       unsubCall = onSnapshot(doc(db, "chats", chatId, "call", "current"), async (snap) => {
         if (!snap.exists()) {
-          callBannerEl.style.display = "none";
+          callOverlay.style.display = "none";
           return;
         }
         const data = snap.data();
-        callBannerEl.style.display = "flex";
+        if (data.watchUrl && watchPlayer.src !== data.watchUrl) {
+          watchTogetherBox.style.display = "block";
+          watchPlayer.src = data.watchUrl;
+        }
 
         if (data.callerId === currentUser.uid) {
-          callStatusTextEl.textContent = data.answer
-            ? "Звонок активен"
-            : `Звонок ${activePeer?.name || "собеседнику"}...`;
+          callStageLabel.textContent = data.answer ? "Разговор идёт" : `Звонок ${activePeer?.name || "собеседнику"}...`;
           if (data.answer && peerConnection && !peerConnection.currentRemoteDescription) {
             await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
           }
         } else {
-          callStatusTextEl.textContent = `Входящий звонок от ${data.callerName || activePeer?.name || "собеседника"}`;
+          openCallScreen(
+            activePeer || { name: data.callerName, photoURL: data.callerAvatar },
+            `Входящий звонок от ${data.callerName || "собеседника"}`
+          );
           if (data.offer && !peerConnection) {
             try {
-              const pc = await createPeerConnection(chatId);
+              const pc = await createPeerConnection(chatId, true);
               await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
               const answer = await pc.createAnswer();
               await pc.setLocalDescription(answer);
@@ -1372,7 +1893,7 @@
                 { answer: { type: answer.type, sdp: answer.sdp }, status: "connected" },
                 { merge: true }
               );
-              callStatusTextEl.textContent = "Звонок активен";
+              callStageLabel.textContent = "Разговор идёт";
             } catch (_) {}
           }
         }
@@ -1401,8 +1922,13 @@
       unsubChats = onSnapshot(qC, (snap) => {
         chatsMap = new Map();
         snap.forEach((d) => {
-          chatsMap.set(d.id, d.data());
+          const data = d.data();
+          chatsMap.set(d.id, data);
+          if (activeChatId === d.id) {
+            typingIndicatorEl.style.display = data.typingUid && data.typingUid !== uid ? "block" : "none";
+          }
         });
+        updateUnreadBadge();
         renderPeopleAndDialogs();
       });
     }
@@ -1420,9 +1946,9 @@
       if (!user) {
         authScreen.style.display = "flex";
         mainApp.style.display = "none";
+        unreadBadge.style.display = "none";
         return;
       }
-
       authScreen.style.display = "none";
       mainApp.style.display = "flex";
       currentProfile = await ensureUserProfile(user);
