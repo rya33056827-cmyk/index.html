@@ -574,7 +574,7 @@
         <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
         <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks Messenger</h2>
         <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы общаться, звонить, заходить в чат-рулетку и смотреть фильмы вместе.
+          Войдите через Google, чтобы общаться, звонить, заходить в чат-рулетку и общаться с ассистентом Рунотокс.
         </p>
         <button id="rtkGoogleLoginBtn" type="button"
           style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 20px rgba(255,255,255,0.12);">
@@ -620,22 +620,12 @@
       <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden;">
         <!-- Левая колонка -->
         <div id="rtkSidebar" style="width:100%;max-width:390px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
-          <!-- Панель массового выбора (появляется после удержания 3 сек) -->
           <div id="rtkBulkBar" style="display:none;padding:10px 12px;background:#1e293b;border-bottom:1px solid #334155;align-items:center;justify-content:space-between;gap:8px;">
             <span id="rtkBulkCount" style="font-size:12px;font-weight:700;color:#93c5fd;">Выбрано: 0</span>
             <div style="display:flex;gap:6px;">
-              <button id="rtkBulkBlockBtn" type="button"
-                style="padding:6px 10px;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#f8fafc;font-size:11px;font-weight:700;cursor:pointer;">
-                Блок
-              </button>
-              <button id="rtkBulkDeleteBtn" type="button"
-                style="padding:6px 10px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:11px;font-weight:700;cursor:pointer;">
-                Удалить
-              </button>
-              <button id="rtkBulkCancelBtn" type="button"
-                style="padding:6px 8px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;font-size:11px;font-weight:700;cursor:pointer;">
-                ✕
-              </button>
+              <button id="rtkBulkBlockBtn" type="button" style="padding:6px 10px;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#f8fafc;font-size:11px;font-weight:700;cursor:pointer;">Блок</button>
+              <button id="rtkBulkDeleteBtn" type="button" style="padding:6px 10px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:11px;font-weight:700;cursor:pointer;">Удалить</button>
+              <button id="rtkBulkCancelBtn" type="button" style="padding:6px 8px;border-radius:8px;border:1px solid #475569;background:transparent;color:#cbd5e1;font-size:11px;font-weight:700;cursor:pointer;">✕</button>
             </div>
           </div>
 
@@ -683,31 +673,10 @@
             </div>
           </div>
 
-          <!-- Выпадающее меню трёх точек диалога -->
-          <div id="rtkThreeDotsMenu" style="display:none;position:absolute;top:64px;right:12px;z-index:30;width:230px;background:#111827;border:1px solid #334155;border-radius:16px;padding:8px;box-shadow:0 16px 40px rgba(0,0,0,0.5);flex-direction:column;gap:4px;">
-            <button id="rtkToggleThemeBtn" type="button" style="width:100%;text-align:left;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-              🌓 Тема: Чёрная / Белая
-            </button>
-            <button id="rtkOpenMediaGalleryBtn" type="button" style="width:100%;text-align:left;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-              🖼 Медиа (фото и видео)
-            </button>
-            <button id="rtkOpenBgModalBtn" type="button" style="width:100%;text-align:left;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-              🎨 Фон диалога
-            </button>
-            <div style="height:1px;background:#1f2937;margin:4px 0;"></div>
-            <button id="rtkMenuBlockBtn" type="button" style="width:100%;text-align:left;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:#fbbf24;font-size:12px;font-weight:700;cursor:pointer;">
-              🚫 Заблокировать
-            </button>
-            <button id="rtkMenuDeleteBtn" type="button" style="width:100%;text-align:left;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:#f87171;font-size:12px;font-weight:700;cursor:pointer;">
-              🗑 Удалить диалог
-            </button>
-          </div>
-
           <div id="rtkTypingIndicator" style="display:none;padding:4px 16px;font-size:11px;color:#60a5fa;background:rgba(11,17,32,0.75);flex-shrink:0;">
             печатает...
           </div>
 
-          <!-- Строка ответа / редактирования -->
           <div id="rtkReplyEditBar" style="display:none;padding:8px 14px;background:#1e293b;border-top:1px solid #334155;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
             <div style="min-width:0;flex:1;">
               <div id="rtkReplyEditTitle" style="font-size:11px;font-weight:800;color:#60a5fa;"></div>
@@ -718,7 +687,7 @@
 
           <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <!-- Живое превью при записи кружка (чтобы вы видели себя) -->
+          <!-- Живое превью при записи кружка -->
           <div id="rtkCircleLiveBox" style="display:none;padding:10px 14px;background:#111827;border-top:1px solid #1f2937;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:10px;">
               <video id="rtkCirclePreviewVideo" autoplay playsinline muted
@@ -731,7 +700,6 @@
             <button id="rtkStopCircleBtn" type="button" style="padding:8px 14px;border-radius:10px;border:none;background:#dc2626;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">⏹ Стоп</button>
           </div>
 
-          <!-- Панель медиа: фото/видео, голосовое, кружок -->
           <div id="rtkMediaPreviewBar" style="display:none;padding:8px 14px;background:#111827;border-top:1px solid #1f2937;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
             <span id="rtkMediaPreviewLabel" style="font-size:12px;color:#93c5fd;"></span>
             <div style="display:flex;gap:6px;">
@@ -742,35 +710,51 @@
 
           <form id="rtkSendMessageForm" style="display:none;padding:10px 12px;border-top:1px solid #1f2937;background:#111827;gap:6px;align-items:center;flex-shrink:0;">
             <input id="rtkMediaFileInput" type="file" accept="image/*,video/*" style="display:none;" />
-            <button id="rtkAttachMediaBtn" type="button" title="Фото или видео"
-              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
-              📎
-            </button>
-            <button id="rtkVoiceRecordBtn" type="button" title="Голосовое сообщение"
-              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
-              🎤
-            </button>
-            <button id="rtkCircleRecordBtn" type="button" title="Видео-кружок"
-              style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">
-              ⏺
-            </button>
+            <button id="rtkAttachMediaBtn" type="button" title="Фото или видео" style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">📎</button>
+            <button id="rtkVoiceRecordBtn" type="button" title="Голосовое сообщение" style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">🎤</button>
+            <button id="rtkCircleRecordBtn" type="button" title="Видео-кружок" style="padding:9px 10px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;cursor:pointer;">⏺</button>
             <input id="rtkMessageInput" type="text" placeholder="Сообщение..."
               style="flex:1;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
-            <button type="submit"
-              style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
-              ➤
-            </button>
+            <button type="submit" style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
           </form>
+        </div>
+
+        <!-- Полноэкранное меню трёх точек с возвратом на галочку ✓ -->
+        <div id="rtkFullThreeDotsScreen" style="display:none;position:fixed;inset:0;z-index:10014;background:#0b1120;color:#f8fafc;flex-direction:column;">
+          <div style="height:60px;padding:0 16px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:16px;font-weight:800;">Настройки диалога</span>
+            <button id="rtkConfirmThreeDotsBtn" type="button" title="Применить и вернуться"
+              style="padding:8px 14px;border-radius:12px;border:none;background:#16a34a;color:#ffffff;font-size:16px;font-weight:800;cursor:pointer;">
+              ✓
+            </button>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:20px 16px;max-width:480px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px;">
+            <button id="rtkToggleThemeBtn" type="button" style="padding:14px 16px;border-radius:16px;border:1px solid #334155;background:#111827;color:#fff;text-align:left;font-size:14px;font-weight:700;cursor:pointer;">
+              🌓 Поменять цвет: Белый / Чёрный
+            </button>
+            <button id="rtkOpenMediaGalleryBtn" type="button" style="padding:14px 16px;border-radius:16px;border:1px solid #334155;background:#111827;color:#fff;text-align:left;font-size:14px;font-weight:700;cursor:pointer;">
+              🖼 Медиа (все фото и видео диалога)
+            </button>
+            <button id="rtkOpenBgModalBtn" type="button" style="padding:14px 16px;border-radius:16px;border:1px solid #334155;background:#111827;color:#fff;text-align:left;font-size:14px;font-weight:700;cursor:pointer;">
+              🎨 Поменять фон диалога (своё фото или готовый)
+            </button>
+            <button id="rtkMenuBlockBtn" type="button" style="padding:14px 16px;border-radius:16px;border:1px solid #78350f;background:#451a03;color:#fde68a;text-align:left;font-size:14px;font-weight:700;cursor:pointer;">
+              🚫 Заблокировать собеседника
+            </button>
+            <button id="rtkMenuDeleteBtn" type="button" style="padding:14px 16px;border-radius:16px;border:1px solid #7f1d1d;background:#450a0a;color:#fecaca;text-align:left;font-size:14px;font-weight:700;cursor:pointer;">
+              🗑 Удалить диалог
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Вкладка 2: Чат-рулетка (случайные знакомства по звонку и переписке) -->
-      <div id="rtkRouletteView" style="display:none;flex:1;overflow-y:auto;padding:20px 14px;">
-        <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+      <!-- Вкладка 2: Чат-рулетка только с живыми пользователями и фильтрами -->
+      <div id="rtkRouletteView" style="display:none;flex:1;overflow-y:auto;padding:18px 14px;">
+        <div style="max-width:540px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
             <div>
               <div style="font-size:18px;font-weight:800;">🎲 Чат-рулетка</div>
-              <div style="font-size:12px;color:#94a3b8;">Случайный незнакомец для переписки и звонка с камерой</div>
+              <div id="rtkRouletteOnlineCount" style="font-size:12px;color:#60a5fa;font-weight:700;">В рулетке сейчас: 0 живых пользователей</div>
             </div>
             <button id="rtkRouletteNextBtn" type="button"
               style="padding:10px 16px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
@@ -778,11 +762,38 @@
             </button>
           </div>
 
-          <div id="rtkRouletteCard" style="padding:14px;border-radius:18px;background:#0b1120;border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <span style="font-size:13px;color:#94a3b8;">Нажмите «Найти случайного», чтобы подключиться к новому человеку</span>
+          <!-- Заполнение параметров: возраст, пол, кого хочешь найти -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#0b1120;padding:12px;border-radius:16px;border:1px solid #1f2937;">
+            <div>
+              <label style="display:block;font-size:11px;color:#94a3b8;margin-bottom:4px;">Ваш возраст</label>
+              <input id="rtkRoulMyAge" type="number" min="13" max="99" placeholder="18"
+                style="width:100%;box-sizing:border-box;padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:12px;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;color:#94a3b8;margin-bottom:4px;">Ваш пол</label>
+              <select id="rtkRoulMyGender"
+                style="width:100%;box-sizing:border-box;padding:7px 8px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:12px;">
+                <option value="any">Не указан</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;color:#94a3b8;margin-bottom:4px;">Кого ищете</label>
+              <select id="rtkRoulSeekGender"
+                style="width:100%;box-sizing:border-box;padding:7px 8px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:12px;">
+                <option value="any">Любой пол</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+              </select>
+            </div>
           </div>
 
-          <div id="rtkRouletteMessages" style="height:220px;overflow-y:auto;padding:12px;border-radius:16px;background:#0b1120;border:1px solid #1f2937;display:flex;flex-direction:column;gap:8px;"></div>
+          <div id="rtkRouletteCard" style="padding:14px;border-radius:18px;background:#0b1120;border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span style="font-size:13px;color:#94a3b8;">Укажите параметры и нажмите «Найти случайного»</span>
+          </div>
+
+          <div id="rtkRouletteMessages" style="height:210px;overflow-y:auto;padding:12px;border-radius:16px;background:#0b1120;border:1px solid #1f2937;display:flex;flex-direction:column;gap:8px;"></div>
 
           <form id="rtkRouletteForm" style="display:flex;gap:8px;">
             <input id="rtkRouletteInput" type="text" placeholder="Написать случайному собеседнику..."
@@ -816,6 +827,23 @@
               style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
           </div>
 
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Возраст</label>
+              <input id="rtkProfileAge" type="number" min="13" max="99" placeholder="18"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Пол</label>
+              <select id="rtkProfileGender"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;">
+                <option value="any">Не указан</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+              </select>
+            </div>
+          </div>
+
           <div>
             <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">О себе (описание)</label>
             <textarea id="rtkProfileBio" rows="3" placeholder="Расскажите немного о себе..."
@@ -824,14 +852,12 @@
 
           <div>
             <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Фотография профиля (выбрать файл или ссылка)</label>
-            <input id="rtkProfilePhotoFile" type="file" accept="image/*"
-              style="width:100%;font-size:12px;color:#94a3b8;margin-bottom:8px;" />
+            <input id="rtkProfilePhotoFile" type="file" accept="image/*" style="width:100%;font-size:12px;color:#94a3b8;margin-bottom:8px;" />
             <input id="rtkProfilePhotoUrl" type="url" placeholder="https://... (ссылка на фото или загрузится автоматически)"
               style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
           </div>
 
-          <button type="submit"
-            style="padding:12px 16px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:14px;font-weight:700;cursor:pointer;">
+          <button type="submit" style="padding:12px 16px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:14px;font-weight:700;cursor:pointer;">
             Сохранить профиль
           </button>
           <div id="rtkProfileStatus" style="font-size:12px;color:#34d399;min-height:18px;"></div>
@@ -891,7 +917,7 @@
       </div>
     </div>
 
-    <!-- Полноэкранное окно звонка: аватар собеседника на весь экран, камера, демонстрация экрана и совместный просмотр -->
+    <!-- Полноэкранное окно звонка -->
     <div id="rtkCallOverlay" style="display:none;position:fixed;inset:0;z-index:10020;background:#060911;color:#fff;flex-direction:column;justify-content:space-between;padding:18px;">
       <img id="rtkCallFullAvatar" src="" alt=""
         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.32;pointer-events:none;" />
@@ -899,6 +925,7 @@
       <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div id="rtkCallPeerTitle" style="font-size:18px;font-weight:800;">Собеседник</div>
+          <div id="rtkCallOnlineStatus" style="font-size:11px;color:#93c5fd;">в сети</div>
           <div id="rtkCallStageLabel" style="font-size:12px;color:#86efac;">Звоню...</div>
         </div>
         <button id="rtkToggleWatchTogetherBtn" type="button"
@@ -930,18 +957,9 @@
       </div>
 
       <div style="position:relative;z-index:2;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;">
-        <button id="rtkToggleCamBtn" type="button"
-          style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
-          📷 Камера
-        </button>
-        <button id="rtkShareScreenBtn" type="button"
-          style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
-          🖥 Экран
-        </button>
-        <button id="rtkEndCallOverlayBtn" type="button"
-          style="padding:11px 18px;border-radius:14px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
-          Завершить
-        </button>
+        <button id="rtkToggleCamBtn" type="button" style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📷 Камера</button>
+        <button id="rtkShareScreenBtn" type="button" style="padding:11px 14px;border-radius:14px;border:none;background:rgba(30,41,59,0.92);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">🖥 Экран</button>
+        <button id="rtkEndCallOverlayBtn" type="button" style="padding:11px 18px;border-radius:14px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Завершить</button>
       </div>
     </div>
   </div>
@@ -1022,7 +1040,8 @@
     const dialogActionsEl = document.getElementById("rtkDialogActions");
     const callPeerBtn = document.getElementById("rtkCallPeerBtn");
     const threeDotsBtn = document.getElementById("rtkThreeDotsBtn");
-    const threeDotsMenu = document.getElementById("rtkThreeDotsMenu");
+    const fullThreeDotsScreen = document.getElementById("rtkFullThreeDotsScreen");
+    const confirmThreeDotsBtn = document.getElementById("rtkConfirmThreeDotsBtn");
     const toggleThemeBtn = document.getElementById("rtkToggleThemeBtn");
     const openMediaGalleryBtn = document.getElementById("rtkOpenMediaGalleryBtn");
     const openBgModalBtn = document.getElementById("rtkOpenBgModalBtn");
@@ -1051,7 +1070,6 @@
     const sendMediaBtn = document.getElementById("rtkSendMediaBtn");
     const cancelMediaBtn = document.getElementById("rtkCancelMediaBtn");
 
-    // Контекстное меню сообщения и наклейки
     const msgContextModal = document.getElementById("rtkMsgContextModal");
     const ctxReplyBtn = document.getElementById("rtkCtxReplyBtn");
     const ctxEditBtn = document.getElementById("rtkCtxEditBtn");
@@ -1065,7 +1083,6 @@
     const stickerGrid = document.getElementById("rtkStickerGrid");
     const closeStickerBtn = document.getElementById("rtkCloseStickerBtn");
 
-    // Галерея медиа и фон диалога
     const mediaGalleryModal = document.getElementById("rtkMediaGalleryModal");
     const mediaGalleryGrid = document.getElementById("rtkMediaGalleryGrid");
     const closeMediaGalleryBtn = document.getElementById("rtkCloseMediaGalleryBtn");
@@ -1075,18 +1092,21 @@
     const customBgFile = document.getElementById("rtkCustomBgFile");
     const presetBgGrid = document.getElementById("rtkPresetBgGrid");
 
-    // Рулетка
+    const rouletteOnlineCountEl = document.getElementById("rtkRouletteOnlineCount");
+    const roulMyAgeInput = document.getElementById("rtkRoulMyAge");
+    const roulMyGenderSelect = document.getElementById("rtkRoulMyGender");
+    const roulSeekGenderSelect = document.getElementById("rtkRoulSeekGender");
     const rouletteNextBtn = document.getElementById("rtkRouletteNextBtn");
     const rouletteCardEl = document.getElementById("rtkRouletteCard");
     const rouletteMessagesEl = document.getElementById("rtkRouletteMessages");
     const rouletteForm = document.getElementById("rtkRouletteForm");
     const rouletteInput = document.getElementById("rtkRouletteInput");
 
-    // Звонок, экран и совместный просмотр
     const callOverlay = document.getElementById("rtkCallOverlay");
     const callFullAvatar = document.getElementById("rtkCallFullAvatar");
     const callCenterAvatar = document.getElementById("rtkCallCenterAvatar");
     const callPeerTitle = document.getElementById("rtkCallPeerTitle");
+    const callOnlineStatus = document.getElementById("rtkCallOnlineStatus");
     const callStageLabel = document.getElementById("rtkCallStageLabel");
     const remoteVideo = document.getElementById("rtkRemoteVideo");
     const localVideo = document.getElementById("rtkLocalVideo");
@@ -1100,18 +1120,29 @@
     const loadWatchBtn = document.getElementById("rtkLoadWatchBtn");
     const watchPlayer = document.getElementById("rtkWatchPlayer");
 
-    // Профиль
     const profileForm = document.getElementById("rtkProfileForm");
     const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
     const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
     const profileName = document.getElementById("rtkProfileName");
     const profileUsername = document.getElementById("rtkProfileUsername");
+    const profileAge = document.getElementById("rtkProfileAge");
+    const profileGender = document.getElementById("rtkProfileGender");
     const profileBio = document.getElementById("rtkProfileBio");
     const profilePhotoFile = document.getElementById("rtkProfilePhotoFile");
     const profilePhotoUrl = document.getElementById("rtkProfilePhotoUrl");
     const profileStatus = document.getElementById("rtkProfileStatus");
 
     const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128";
+    const AI_ASSISTANT_ID = "runotoks_ai_assistant";
+    const AI_ASSISTANT_USER = {
+      uid: AI_ASSISTANT_ID,
+      name: "Рунотокс",
+      username: "runotoks_ai",
+      bio: "ИИ-ассистент • Ответы, обучение, помощь и звонки",
+      photoURL: "https://ui-avatars.com/api/?name=R&background=2563eb&color=ffffff&size=128",
+      isAI: true
+    };
+
     const RUSSIAN_STICKERS = [
       { label: "Привет!", icon: "👋" },
       { label: "Огонь!", icon: "🔥" },
@@ -1137,10 +1168,10 @@
     let activeChatId = null;
     let activePeer = null;
     let currentMessagesCache = [];
+    let aiMessagesCache = JSON.parse(localStorage.getItem("rtk_ai_messages") || "[]");
     let contextMessage = null;
     let replyToMessage = null;
     let editingMessage = null;
-    let forwardedText = "";
 
     let roulettePeer = null;
     let rouletteChatId = null;
@@ -1155,7 +1186,7 @@
     let circleStream = null;
     let recordedChunks = [];
 
-    let dialogTheme = localStorage.getItem("rtk_dialog_theme") || "dark"; // "dark" | "light"
+    let dialogTheme = localStorage.getItem("rtk_dialog_theme") || "dark";
     let chatBgMap = JSON.parse(localStorage.getItem("rtk_chat_bg_map") || "{}");
 
     let unsubChats = null;
@@ -1168,10 +1199,26 @@
     let screenStream = null;
     let peerConnection = null;
     let ringtoneTimer = null;
+    let missedCallTimer = null;
     let audioCtx = null;
+    let presenceTimer = null;
 
     const rtcConfig = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
     const isMobileLayout = () => window.innerWidth < 768;
+
+    function getOnlineStatusText(peer) {
+      if (!peer) return "";
+      if (peer.isAI) return "в сети • ИИ-ассистент";
+      if (blockedIds.has(peer.uid)) return "очень давно";
+      const lastMs = peer.lastSeen?.toMillis ? peer.lastSeen.toMillis() : (peer.lastSeen || 0);
+      if (!lastMs) return "был(а) давно";
+      const diffMin = Math.floor((Date.now() - lastMs) / 60000);
+      if (diffMin <= 2) return "в сети";
+      if (diffMin < 60) return `был(а) в сети ${diffMin} мин. назад`;
+      const diffHours = Math.floor(diffMin / 60);
+      if (diffHours < 24) return `был(а) в сети ${diffHours} ч. назад`;
+      return "был(а) в сети давно";
+    }
 
     function playRingtone() {
       stopRingtone();
@@ -1358,13 +1405,17 @@
           email: user.email || "",
           name: user.displayName || "Пользователь",
           username: baseUsername,
+          age: 18,
+          gender: "any",
           bio: "",
           photoURL: user.photoURL || DEFAULT_AVATAR,
+          lastSeen: Date.now(),
           updatedAt: serverTimestamp()
         };
         await setDoc(ref, profile);
         return profile;
       }
+      await updateDoc(ref, { lastSeen: Date.now() }).catch(() => {});
       return { uid: user.uid, ...snap.data() };
     }
 
@@ -1372,6 +1423,8 @@
       profileGoogleEmail.textContent = user.email || "";
       profileName.value = profile.name || "";
       profileUsername.value = profile.username || "";
+      profileAge.value = profile.age || "";
+      profileGender.value = profile.gender || "any";
       profileBio.value = profile.bio || "";
       profilePhotoUrl.value = profile.photoURL || "";
       profileAvatarPreview.src = profile.photoURL || user.photoURL || DEFAULT_AVATAR;
@@ -1396,8 +1449,11 @@
       const updated = {
         name: profileName.value.trim() || "Пользователь",
         username: uname,
+        age: Number(profileAge.value) || 0,
+        gender: profileGender.value || "any",
         bio: profileBio.value.trim().slice(0, 200),
         photoURL: profilePhotoUrl.value.trim() || DEFAULT_AVATAR,
+        lastSeen: Date.now(),
         updatedAt: serverTimestamp()
       };
       await updateDoc(doc(db, "users", currentUser.uid), updated);
@@ -1446,6 +1502,28 @@
       if (!currentUser) return;
       chatListEl.innerHTML = "";
 
+      // ИИ-ассистент Рунотокс всегда первым в диалогах
+      const aiRow = document.createElement("div");
+      const isAiSelected = activePeer?.isAI;
+      aiRow.style.cssText = `width:100%;padding:10px;border-radius:14px;background:${isAiSelected ? "#172554" : "#0f172a"};border:1px solid ${isAiSelected ? "#3b82f6" : "#1e3a8a"};color:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;`;
+      const lastAiMsg = aiMessagesCache[aiMessagesCache.length - 1]?.text || "Чем могу помочь?";
+      aiRow.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
+          <img src="${AI_ASSISTANT_USER.photoURL}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+          <div style="min-width:0;flex:1;">
+            <div style="display:flex;justify-content:space-between;gap:6px;align-items:center;">
+              <span style="font-size:13px;font-weight:800;color:#93c5fd;">Рунотокс • ИИ</span>
+              <span style="font-size:10px;color:#34d399;">в сети</span>
+            </div>
+            <div style="font-size:12px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
+              ${escapeHtml(lastAiMsg)}
+            </div>
+          </div>
+        </div>
+      `;
+      aiRow.addEventListener("click", () => openAIAssistantChat());
+      chatListEl.appendChild(aiRow);
+
       const peers = allUsers.filter(
         (u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid) && !hiddenIds.has(u.uid)
       );
@@ -1455,11 +1533,6 @@
         const pairB = [currentUser.uid, b.uid].sort().join("_");
         return (chatsMap.get(pairB)?.updatedAt?.seconds || 0) - (chatsMap.get(pairA)?.updatedAt?.seconds || 0);
       });
-
-      if (!peers.length) {
-        chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет доступных диалогов.</div>`;
-        return;
-      }
 
       for (const peer of peers) {
         const pairKey = [currentUser.uid, peer.uid].sort().join("_");
@@ -1484,10 +1557,7 @@
             renderPeopleAndDialogs();
           }, 3000);
         };
-
-        const cancelHold = () => {
-          if (holdTimer) clearTimeout(holdTimer);
-        };
+        const cancelHold = () => { if (holdTimer) clearTimeout(holdTimer); };
 
         row.addEventListener("pointerdown", startHold);
         row.addEventListener("pointerup", cancelHold);
@@ -1521,7 +1591,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:2px;">
                 <span style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                  ${escapeHtml(chatMeta?.lastMessage || "@" + (peer.username || "user"))}
+                  ${escapeHtml(chatMeta?.lastMessage || getOnlineStatusText(peer))}
                 </span>
                 ${hasUnread ? `<span style="background:#ef4444;color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:999px;flex-shrink:0;">1</span>` : ""}
               </div>
@@ -1531,6 +1601,60 @@
 
         chatListEl.appendChild(row);
       }
+
+      updateRouletteLiveCount();
+    }
+
+    // Чат с ИИ-ассистентом Рунотокс
+    function generateAIResponse(promptText) {
+      const p = promptText.toLowerCase();
+      if (p.includes("привет") || p.includes("здравств")) {
+        return "Привет! Я Рунотокс — ваш ИИ-ассистент. Чем могу помочь?";
+      }
+      if (p.includes("научи") || p.includes("объясни") || p.includes("как работает")) {
+        return `С удовольствием помогу разобраться! Тема «${promptText}» включает базовые принципы, пошаговую практику и разбор ошибок. Напишите, с какого уровня начнём или какой конкретный пример разобрать.`;
+      }
+      if (p.includes("код") || p.includes("python") || p.includes("html") || p.includes("js")) {
+        return `Понял задачу по коду: «${promptText}». Опишите входные данные и желаемый результат — составлю понятное решение и объясню каждую строку.`;
+      }
+      return `Я Рунотокс, ваш ИИ-помощник. По вопросу «${promptText}»: могу дать подробный ответ, научить шаг за шагом, предложить идеи или помочь с задачей. Уточните, что именно вам нужно сделать?`;
+    }
+
+    function openAIAssistantChat() {
+      activeChatId = `ai_${currentUser.uid}`;
+      activePeer = AI_ASSISTANT_USER;
+      if (unsubMessages) { unsubMessages(); unsubMessages = null; }
+      if (unsubCall) { unsubCall(); unsubCall = null; }
+
+      if (!aiMessagesCache.length) {
+        aiMessagesCache = [
+          {
+            id: "ai_welcome_1",
+            senderId: AI_ASSISTANT_ID,
+            text: "Чем могу помочь?",
+            createdAt: new Date().toISOString()
+          }
+        ];
+        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+      }
+
+      currentMessagesCache = [...aiMessagesCache];
+      sendMsgForm.style.display = "flex";
+      dialogActionsEl.style.display = "flex";
+      backToDialogsBtn.style.display = "inline-flex";
+      applyDialogThemeAndBg();
+      syncResponsiveDialogLayout();
+      renderPeopleAndDialogs();
+
+      peerInfoBox.innerHTML = `
+        <img src="${AI_ASSISTANT_USER.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+        <div style="min-width:0;">
+          <div style="font-size:14px;font-weight:800;line-height:1.2;">Рунотокс <span style="font-size:11px;color:#60a5fa;">ИИ-ассистент</span></div>
+          <div style="font-size:11px;color:#34d399;">в сети</div>
+        </div>
+      `;
+
+      renderMessagesList();
     }
 
     searchBtn.addEventListener("click", async () => {
@@ -1566,6 +1690,10 @@
 
     async function startOrOpenChat(otherUser) {
       if (!currentUser || !otherUser) return;
+      if (otherUser.isAI) {
+        openAIAssistantChat();
+        return;
+      }
       const pairKey = [currentUser.uid, otherUser.uid].sort().join("_");
       await setDoc(
         doc(db, "chats", pairKey),
@@ -1577,7 +1705,7 @@
 
     async function backToDialogsList() {
       await hangupCall();
-      threeDotsMenu.style.display = "none";
+      fullThreeDotsScreen.style.display = "none";
       activeChatId = null;
       activePeer = null;
       if (unsubMessages) { unsubMessages(); unsubMessages = null; }
@@ -1596,14 +1724,16 @@
 
     backToDialogsBtn.addEventListener("click", backToDialogsList);
 
-    // Меню трёх точек
-    threeDotsBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      threeDotsMenu.style.display = threeDotsMenu.style.display === "flex" ? "none" : "flex";
+    // Полноэкранное меню трёх точек + возврат на галочку ✓
+    threeDotsBtn.addEventListener("click", () => {
+      if (!activePeer) return;
+      fullThreeDotsScreen.style.display = "flex";
     });
 
-    document.addEventListener("click", () => {
-      threeDotsMenu.style.display = "none";
+    confirmThreeDotsBtn.addEventListener("click", () => {
+      fullThreeDotsScreen.style.display = "none";
+      applyDialogThemeAndBg();
+      renderMessagesList();
     });
 
     toggleThemeBtn.addEventListener("click", () => {
@@ -1622,11 +1752,9 @@
         mediaItems.forEach((m) => {
           const box = document.createElement("div");
           box.style.cssText = "border-radius:10px;overflow:hidden;background:#0b1120;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;";
-          if (m.kind === "image") {
-            box.innerHTML = `<img src="${m.mediaData}" style="width:100%;height:100%;object-fit:cover;" />`;
-          } else {
-            box.innerHTML = `<video src="${m.mediaData}" controls style="width:100%;height:100%;object-fit:cover;"></video>`;
-          }
+          box.innerHTML = m.kind === "image"
+            ? `<img src="${m.mediaData}" style="width:100%;height:100%;object-fit:cover;" />`
+            : `<video src="${m.mediaData}" controls style="width:100%;height:100%;object-fit:cover;"></video>`;
           mediaGalleryGrid.appendChild(box);
         });
       }
@@ -1673,20 +1801,18 @@
       reader.readAsDataURL(file);
     });
 
-    menuBlockBtn.addEventListener("click", () => activePeer && blockUser(activePeer.uid));
-    menuDeleteBtn.addEventListener("click", () => activePeer && deleteUserFromList(activePeer.uid));
+    menuBlockBtn.addEventListener("click", () => activePeer && !activePeer.isAI && blockUser(activePeer.uid));
+    menuDeleteBtn.addEventListener("click", () => activePeer && !activePeer.isAI && deleteUserFromList(activePeer.uid));
 
     // Контекстное меню сообщения по удержанию (на русском)
     function openMessageContextMenu(msg) {
       contextMessage = msg;
-      ctxEditBtn.style.display = msg.senderId === currentUser?.uid && msg.kind === "text" ? "block" : "none";
+      ctxEditBtn.style.display = msg.senderId === currentUser?.uid && (!msg.kind || msg.kind === "text") ? "block" : "none";
       ctxDeleteBtn.style.display = msg.senderId === currentUser?.uid ? "block" : "none";
       msgContextModal.style.display = "flex";
     }
 
-    ctxCloseBtn.addEventListener("click", () => {
-      msgContextModal.style.display = "none";
-    });
+    ctxCloseBtn.addEventListener("click", () => { msgContextModal.style.display = "none"; });
 
     ctxReplyBtn.addEventListener("click", () => {
       if (!contextMessage) return;
@@ -1719,8 +1845,7 @@
 
     ctxForwardBtn.addEventListener("click", () => {
       if (!contextMessage) return;
-      forwardedText = contextMessage.text || "Пересланное медиа";
-      msgInput.value = `Переслано: ${forwardedText}`;
+      msgInput.value = `Переслано: ${contextMessage.text || "Медиа"}`;
       msgContextModal.style.display = "none";
       msgInput.focus();
     });
@@ -1735,22 +1860,34 @@
         btn.innerHTML = `<span style="font-size:22px;">${st.icon}</span><span>${st.label}</span>`;
         btn.addEventListener("click", async () => {
           stickerModal.style.display = "none";
-          if (!contextMessage || !activeChatId) return;
+          if (!contextMessage) return;
           const nextSticker = `${st.icon} ${st.label}`;
-          await updateDoc(doc(db, "chats", activeChatId, "messages", contextMessage.id), { sticker: nextSticker });
+          if (activePeer?.isAI) {
+            aiMessagesCache = aiMessagesCache.map((item) => item.id === contextMessage.id ? { ...item, sticker: nextSticker } : item);
+            localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+            currentMessagesCache = [...aiMessagesCache];
+            renderMessagesList();
+          } else if (activeChatId) {
+            await updateDoc(doc(db, "chats", activeChatId, "messages", contextMessage.id), { sticker: nextSticker });
+          }
         });
         stickerGrid.appendChild(btn);
       });
       stickerModal.style.display = "flex";
     });
 
-    closeStickerBtn.addEventListener("click", () => {
-      stickerModal.style.display = "none";
-    });
+    closeStickerBtn.addEventListener("click", () => { stickerModal.style.display = "none"; });
 
     ctxDeleteBtn.addEventListener("click", async () => {
-      if (!contextMessage || !activeChatId) return;
-      await deleteDoc(doc(db, "chats", activeChatId, "messages", contextMessage.id)).catch(() => {});
+      if (!contextMessage) return;
+      if (activePeer?.isAI) {
+        aiMessagesCache = aiMessagesCache.filter((item) => item.id !== contextMessage.id);
+        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+        currentMessagesCache = [...aiMessagesCache];
+        renderMessagesList();
+      } else if (activeChatId) {
+        await deleteDoc(doc(db, "chats", activeChatId, "messages", contextMessage.id)).catch(() => {});
+      }
       msgContextModal.style.display = "none";
     });
 
@@ -1767,15 +1904,10 @@
       wrap.style.cssText = `max-width:80%;align-self:${isMine ? "flex-end" : "flex-start"};background:${isMine ? "#2563eb" : isLight ? "#ffffff" : "#1e293b"};color:${isMine ? "#ffffff" : isLight ? "#0f172a" : "#ffffff"};padding:9px 12px;border-radius:15px;font-size:13px;line-height:1.4;word-break:break-word;display:flex;flex-direction:column;gap:5px;box-shadow:0 2px 10px rgba(0,0,0,0.12);cursor:pointer;`;
 
       let holdTimer = null;
-      wrap.addEventListener("pointerdown", () => {
-        holdTimer = setTimeout(() => openMessageContextMenu(m), 550);
-      });
+      wrap.addEventListener("pointerdown", () => { holdTimer = setTimeout(() => openMessageContextMenu(m), 550); });
       wrap.addEventListener("pointerup", () => { if (holdTimer) clearTimeout(holdTimer); });
       wrap.addEventListener("pointerleave", () => { if (holdTimer) clearTimeout(holdTimer); });
-      wrap.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        openMessageContextMenu(m);
-      });
+      wrap.addEventListener("contextmenu", (e) => { e.preventDefault(); openMessageContextMenu(m); });
 
       if (m.replyToText) {
         const rep = document.createElement("div");
@@ -1857,7 +1989,7 @@
         <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
         <div style="min-width:0;">
           <div style="font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.name || "Собеседник")} <span style="font-size:12px;color:#60a5fa;font-weight:500;">@${escapeHtml(otherProfile.username || "user")}</span></div>
-          <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.bio || "Пользователь runotoks")}</div>
+          <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(getOnlineStatusText(otherProfile))}</div>
         </div>
       `;
 
@@ -1882,7 +2014,7 @@
 
     let typingTimeout = null;
     msgInput.addEventListener("input", async () => {
-      if (!currentUser || !activeChatId) return;
+      if (!currentUser || !activeChatId || activePeer?.isAI) return;
       await setDoc(doc(db, "chats", activeChatId), { typingUid: currentUser.uid }, { merge: true }).catch(() => {});
       clearTimeout(typingTimeout);
       typingTimeout = setTimeout(() => {
@@ -1893,6 +2025,47 @@
     async function pushMessage({ text = "", kind = "text", mediaData = "" }) {
       if (!currentUser || !activeChatId || !activePeer) return;
       if (blockedIds.has(activePeer.uid)) return;
+
+      if (activePeer.isAI) {
+        if (editingMessage && kind === "text") {
+          aiMessagesCache = aiMessagesCache.map((item) => item.id === editingMessage.id ? { ...item, text, edited: true } : item);
+          editingMessage = null;
+          replyEditBar.style.display = "none";
+          localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+          currentMessagesCache = [...aiMessagesCache];
+          renderMessagesList();
+          return;
+        }
+        const replyToText = replyToMessage ? (replyToMessage.text || "Медиа") : "";
+        replyToMessage = null;
+        replyEditBar.style.display = "none";
+
+        const userMsg = {
+          id: "ai_" + Date.now(),
+          senderId: currentUser.uid,
+          text,
+          kind,
+          mediaData,
+          replyToText,
+          seen: true,
+          createdAt: new Date().toISOString()
+        };
+        aiMessagesCache.push(userMsg);
+        const aiReply = {
+          id: "ai_reply_" + (Date.now() + 1),
+          senderId: AI_ASSISTANT_ID,
+          text: generateAIResponse(text || "медиасообщение"),
+          kind: "text",
+          seen: true,
+          createdAt: new Date().toISOString()
+        };
+        aiMessagesCache.push(aiReply);
+        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+        currentMessagesCache = [...aiMessagesCache];
+        renderMessagesList();
+        renderPeopleAndDialogs();
+        return;
+      }
 
       if (editingMessage && kind === "text") {
         await updateDoc(doc(db, "chats", activeChatId, "messages", editingMessage.id), {
@@ -1947,7 +2120,6 @@
       await pushMessage({ text, kind: "text" });
     });
 
-    // Фото / видео
     attachMediaBtn.addEventListener("click", () => mediaFileInput.click());
     mediaFileInput.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
@@ -1968,7 +2140,6 @@
       reader.readAsDataURL(file);
     });
 
-    // Голосовое сообщение
     voiceRecordBtn.addEventListener("click", async () => {
       try {
         if (mediaRecorder && mediaRecorder.state === "recording") {
@@ -1998,7 +2169,6 @@
       }
     });
 
-    // Видео-кружок с живым превью (вы видите себя во время записи)
     async function startCircleRecording() {
       try {
         circleStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -2074,41 +2244,65 @@
       else if (rerender) renderPeopleAndDialogs();
     }
 
-    // Чат-рулетка: всегда случайный собеседник (из пользователей или случайный гость)
+    // Чат-рулетка только с живыми пользователями из базы (без ботов и без людей из диалогов)
+    function getLiveRoulettePool() {
+      if (!currentUser) return [];
+      const existingDialogPeerIds = new Set();
+      chatsMap.forEach((chat) => {
+        if (Array.isArray(chat.members)) {
+          chat.members.forEach((m) => { if (m !== currentUser.uid) existingDialogPeerIds.add(m); });
+        }
+      });
+
+      const seekGender = roulSeekGenderSelect.value;
+      const myAge = Number(roulMyAgeInput.value) || 0;
+
+      return allUsers.filter((u) => {
+        if (!u.uid || u.uid === currentUser.uid) return false;
+        if (blockedIds.has(u.uid)) return false;
+        if (existingDialogPeerIds.has(u.uid)) return false;
+        if (seekGender !== "any" && u.gender && u.gender !== seekGender) return false;
+        if (myAge > 0 && u.age > 0 && Math.abs(u.age - myAge) > 15) return false;
+        return true;
+      });
+    }
+
+    function updateRouletteLiveCount() {
+      const liveCount = getLiveRoulettePool().length;
+      rouletteOnlineCountEl.textContent = `В рулетке сейчас: ${liveCount} живых пользователей`;
+    }
+
+    roulSeekGenderSelect.addEventListener("change", updateRouletteLiveCount);
+    roulMyAgeInput.addEventListener("input", updateRouletteLiveCount);
+
     rouletteNextBtn.addEventListener("click", async () => {
       if (!currentUser) return;
-      const realCandidates = allUsers.filter(
-        (u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid) && (!roulettePeer || u.uid !== roulettePeer.uid)
-      );
+      const pool = getLiveRoulettePool().filter((u) => !roulettePeer || u.uid !== roulettePeer.uid);
+      updateRouletteLiveCount();
 
-      if (realCandidates.length > 0) {
-        roulettePeer = realCandidates[Math.floor(Math.random() * realCandidates.length)];
-        rouletteChatId = [currentUser.uid, roulettePeer.uid].sort().join("_");
-        await setDoc(
-          doc(db, "chats", rouletteChatId),
-          { pairKey: rouletteChatId, members: [currentUser.uid, roulettePeer.uid], updatedAt: serverTimestamp() },
-          { merge: true }
-        );
-      } else {
-        const randNum = Math.floor(1000 + Math.random() * 9000);
-        const guestNames = ["Артём", "София", "Максим", "Алиса", "Даниил", "Вика"];
-        const gName = guestNames[Math.floor(Math.random() * guestNames.length)];
-        roulettePeer = {
-          uid: `roulette_guest_${randNum}`,
-          name: `${gName} #${randNum}`,
-          username: `random_${randNum}`,
-          photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(gName)}&background=2563eb&color=ffffff&size=128`,
-          isGuest: true
-        };
+      if (!pool.length) {
+        roulettePeer = null;
         rouletteChatId = null;
+        rouletteCardEl.innerHTML = `<span style="font-size:13px;color:#f87171;font-weight:700;">Никого нет</span>`;
+        rouletteMessagesEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;text-align:center;">Подходящих живых людей в рулетке сейчас нет.</div>`;
+        return;
       }
+
+      roulettePeer = pool[Math.floor(Math.random() * pool.length)];
+      rouletteChatId = [currentUser.uid, roulettePeer.uid].sort().join("_");
+
+      await setDoc(
+        doc(db, "chats", rouletteChatId),
+        { pairKey: rouletteChatId, members: [currentUser.uid, roulettePeer.uid], updatedAt: serverTimestamp() },
+        { merge: true }
+      );
 
       rouletteCardEl.innerHTML = `
         <div style="display:flex;align-items:center;gap:10px;min-width:0;">
           <img src="${roulettePeer.photoURL || DEFAULT_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;" />
           <div style="min-width:0;">
-            <div style="font-size:14px;font-weight:700;">${escapeHtml(roulettePeer.name)}</div>
-            <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(roulettePeer.username)}</div>
+            <div style="font-size:14px;font-weight:700;">${escapeHtml(roulettePeer.name || "Пользователь")} ${roulettePeer.age ? `• ${roulettePeer.age} лет` : ""}</div>
+            <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(roulettePeer.username || "user")} • ${escapeHtml(getOnlineStatusText(roulettePeer))}</div>
           </div>
         </div>
         <button id="rtkRouletteCallBtn" type="button" style="padding:8px 12px;border-radius:10px;border:none;background:#16a34a;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📹 Звонок</button>
@@ -2116,54 +2310,43 @@
 
       document.getElementById("rtkRouletteCallBtn").addEventListener("click", () => {
         activePeer = roulettePeer;
-        activeChatId = rouletteChatId || `roulette_call_${roulettePeer.uid}`;
+        activeChatId = rouletteChatId;
         startCall(true);
       });
 
-      rouletteMessagesEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;text-align:center;">Подключён случайный собеседник: ${escapeHtml(roulettePeer.name)}</div>`;
-
-      if (unsubRouletteMsgs) { unsubRouletteMsgs(); unsubRouletteMsgs = null; }
-      if (rouletteChatId) {
-        const qRM = query(collection(db, "chats", rouletteChatId, "messages"), orderBy("createdAt", "asc"));
-        unsubRouletteMsgs = onSnapshot(qRM, (snap) => {
-          rouletteMessagesEl.innerHTML = "";
-          snap.forEach((d) => {
-            const m = d.data();
-            rouletteMessagesEl.appendChild(renderMessageBubble(m, m.senderId === currentUser.uid));
-          });
-          rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
+      if (unsubRouletteMsgs) unsubRouletteMsgs();
+      const qRM = query(collection(db, "chats", rouletteChatId, "messages"), orderBy("createdAt", "asc"));
+      unsubRouletteMsgs = onSnapshot(qRM, (snap) => {
+        rouletteMessagesEl.innerHTML = "";
+        snap.forEach((d) => {
+          const m = d.data();
+          rouletteMessagesEl.appendChild(renderMessageBubble(m, m.senderId === currentUser.uid));
         });
-      }
+        rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
+      });
     });
 
     rouletteForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!currentUser || !roulettePeer) return;
+      if (!currentUser || !rouletteChatId || !roulettePeer) return;
       const text = rouletteInput.value.trim();
       if (!text) return;
       rouletteInput.value = "";
-
-      if (rouletteChatId) {
-        await addDoc(collection(db, "chats", rouletteChatId, "messages"), {
-          senderId: currentUser.uid,
-          text,
-          kind: "text",
-          seen: false,
-          createdAt: serverTimestamp()
-        });
-      } else {
-        rouletteMessagesEl.appendChild(renderMessageBubble({ text, createdAt: new Date() }, true));
-        setTimeout(() => {
-          rouletteMessagesEl.appendChild(
-            renderMessageBubble({ text: `Привет! Я ${roulettePeer.name}, как дела?`, createdAt: new Date() }, false)
-          );
-          rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
-        }, 700);
-      }
-      rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
+      await addDoc(collection(db, "chats", rouletteChatId, "messages"), {
+        senderId: currentUser.uid,
+        text,
+        kind: "text",
+        seen: false,
+        createdAt: serverTimestamp()
+      });
+      await setDoc(
+        doc(db, "chats", rouletteChatId),
+        { lastMessage: text, lastSenderId: currentUser.uid, lastReadByPeer: false, updatedAt: serverTimestamp() },
+        { merge: true }
+      );
     });
 
-    // Звонок, статус сети и гудки
+    // Звонок, пропущенный звонок, статус сети и гудки
     async function createPeerConnection(chatId, withVideo = false) {
       if (peerConnection) peerConnection.close();
       peerConnection = new RTCPeerConnection(rtcConfig);
@@ -2188,7 +2371,7 @@
       };
 
       peerConnection.onicecandidate = async (event) => {
-        if (event.candidate && currentUser && chatId && !activePeer?.isGuest) {
+        if (event.candidate && currentUser && chatId && !activePeer?.isAI) {
           await addDoc(collection(db, "chats", chatId, "call", "current", "candidates"), {
             senderId: currentUser.uid,
             candidate: event.candidate.toJSON()
@@ -2205,21 +2388,57 @@
       callCenterAvatar.src = av;
       callCenterAvatar.style.display = "block";
       callPeerTitle.textContent = peer?.name || "Собеседник";
+      callOnlineStatus.textContent = getOnlineStatusText(peer);
       callStageLabel.textContent = stageText;
       callOverlay.style.display = "flex";
+    }
+
+    async function recordMissedCall() {
+      if (activePeer?.isAI) {
+        aiMessagesCache.push({
+          id: "ai_missed_" + Date.now(),
+          senderId: AI_ASSISTANT_ID,
+          text: "Пропущенный звонок",
+          kind: "text",
+          seen: true,
+          createdAt: new Date().toISOString()
+        });
+        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+        currentMessagesCache = [...aiMessagesCache];
+        renderMessagesList();
+        return;
+      }
+      if (activeChatId && currentUser) {
+        await addDoc(collection(db, "chats", activeChatId, "messages"), {
+          senderId: currentUser.uid,
+          text: "Пропущенный звонок",
+          kind: "text",
+          seen: false,
+          createdAt: serverTimestamp()
+        }).catch(() => {});
+      }
     }
 
     async function startCall(withVideo = false) {
       if (!currentUser || !activePeer || !activeChatId) return;
       if (!navigator.onLine) {
-        openCallScreen(activePeer, "Нет соединения • Звоню...");
+        openCallScreen(activePeer, "Нет интернета • Звоню...");
         return;
       }
       openCallScreen(activePeer, "Звоню...");
       playRingtone();
+
+      clearTimeout(missedCallTimer);
+      missedCallTimer = setTimeout(async () => {
+        if (callOverlay.style.display !== "none" && callStageLabel.textContent === "Звоню...") {
+          await recordMissedCall();
+          await hangupCall();
+        }
+      }, 20000);
+
       try {
         const pc = await createPeerConnection(activeChatId, withVideo);
-        if (!activePeer.isGuest) {
+        if (!activePeer.isAI) {
           const offer = await pc.createOffer();
           await pc.setLocalDescription(offer);
           await setDoc(doc(db, "chats", activeChatId, "call", "current"), {
@@ -2286,17 +2505,18 @@
       if (!url) return;
       watchPlayer.src = url;
       watchPlayer.play().catch(() => {});
-      if (activeChatId && !activePeer?.isGuest) {
+      if (activeChatId && !activePeer?.isAI) {
         await setDoc(doc(db, "chats", activeChatId, "call", "current"), { watchUrl: url }, { merge: true }).catch(() => {});
       }
     });
 
     async function hangupCall() {
+      clearTimeout(missedCallTimer);
       stopRingtone();
       if (peerConnection) { peerConnection.close(); peerConnection = null; }
       if (localStream) { localStream.getTracks().forEach((t) => t.stop()); localStream = null; }
       if (screenStream) { screenStream.getTracks().forEach((t) => t.stop()); screenStream = null; }
-      if (activeChatId && !activePeer?.isGuest) {
+      if (activeChatId && !activePeer?.isAI) {
         await deleteDoc(doc(db, "chats", activeChatId, "call", "current")).catch(() => {});
       }
       remoteVideo.style.display = "none";
@@ -2305,7 +2525,12 @@
       callOverlay.style.display = "none";
     }
 
-    endCallOverlayBtn.addEventListener("click", hangupCall);
+    endCallOverlayBtn.addEventListener("click", async () => {
+      if (callStageLabel.textContent === "Звоню...") {
+        await recordMissedCall();
+      }
+      await hangupCall();
+    });
 
     function subscribeCall(chatId) {
       if (unsubCall) unsubCall();
@@ -2337,6 +2562,7 @@
 
         if (data.callerId === currentUser.uid) {
           if (data.answer) {
+            clearTimeout(missedCallTimer);
             stopRingtone();
             callStageLabel.textContent = "Разговор идёт";
           } else {
@@ -2401,6 +2627,11 @@
         updateUnreadBadge();
         renderPeopleAndDialogs();
       });
+
+      if (presenceTimer) clearInterval(presenceTimer);
+      presenceTimer = setInterval(() => {
+        updateDoc(doc(db, "users", uid), { lastSeen: Date.now() }).catch(() => {});
+      }, 45000);
     }
 
     function escapeHtml(str) {
