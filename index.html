@@ -3,617 +3,742 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Runotoks — Магазин, чат и звонки</title>
+  <title>runotoks — Официальный интернет-магазин электроники и гаджетов</title>
+  <meta name="description" content="Интернет-магазин runotoks: беспроводная акустика, умные часы, периферия и аксессуары с гарантией и быстрой доставкой." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #0b0f14;
-      --panel: #11161d;
-      --panel-2: #18202c;
-      --panel-3: #222c3c;
-      --text: #f3f6fa;
-      --muted: #9fb0c7;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --danger: #ef4444;
-      --danger-soft: rgba(239, 68, 68, 0.2);
-      --danger-text: #fca5a5;
-      --ok-bg: #14532d;
-      --ok-text: #dcfce7;
-      --border: rgba(255, 255, 255, 0.08);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.45;
-    }
-
-    .rt-wrap {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 16px;
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 18px;
-      align-items: start;
-    }
-
-    @media (max-width: 860px) {
-      .rt-wrap {
-        grid-template-columns: 1fr;
-        padding: 10px;
-      }
-    }
-
-    .rt-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .rt-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 14px 16px;
-      background: var(--panel-2);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .rt-brand {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-    }
-
-    .rt-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .rt-tabs {
-      display: flex;
-      gap: 6px;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .rt-tab {
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      border: none;
-      border-radius: 9px;
-      padding: 7px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .rt-tab.active {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .rt-shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 12px;
-      padding: 16px;
-    }
-
-    .rt-product {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .rt-product-title {
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .rt-product-desc {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .rt-product-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .rt-price {
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .rt-cart-box {
-      margin: 0 16px 16px;
-      padding: 12px 14px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 13px;
-    }
-
-    .rt-cart-items {
-      margin: 8px 0;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    /* Стили мессенджера и звонков */
-    .rm-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      background: var(--panel-2);
-      border-bottom: 1px solid var(--border);
-      gap: 8px;
-    }
-
-    .rm-header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .rm-title-wrap {
-      min-width: 0;
-    }
-
-    .rm-title {
-      font-weight: 700;
-      font-size: 15px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .rm-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .rm-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .rm-icon-btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 8px 11px;
-      cursor: pointer;
-      font-size: 15px;
-      line-height: 1;
-    }
-
-    .rm-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    .rm-primary-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 8px 13px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .rm-primary-btn:hover {
-      background: var(--accent-hover);
-    }
-
-    .rm-mini-btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
-      border: none;
-      border-radius: 8px;
-      padding: 6px 9px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .rm-mini-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    .rm-mini-btn.danger {
-      background: var(--danger-soft);
-      color: var(--danger-text);
-    }
-
-    .rm-mini-btn.danger:hover {
-      background: rgba(239, 68, 68, 0.34);
-    }
-
-    .rm-auth-panel {
-      padding: 22px 16px;
-      text-align: center;
-      display: none;
-    }
-
-    .rm-auth-panel.active {
-      display: block;
-    }
-
-    .rm-auth-panel p {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .rm-list {
-      max-height: 450px;
-      overflow-y: auto;
-    }
-
-    .rm-user-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      gap: 10px;
-    }
-
-    .rm-user-row:hover {
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .rm-user-main {
-      flex: 1;
-      min-width: 0;
-      cursor: pointer;
-    }
-
-    .rm-user-name {
-      font-weight: 600;
-      font-size: 14px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .rm-user-sub {
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .rm-mini-actions {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .rm-dialog {
-      display: none;
-      flex-direction: column;
-      height: 500px;
-    }
-
-    .rm-dialog.active {
-      display: flex;
-    }
-
-    .rm-call-banner {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 12px;
-      background: var(--ok-bg);
-      color: var(--ok-text);
-      font-size: 13px;
-    }
-
-    .rm-call-banner.active {
-      display: flex;
-    }
-
-    .rm-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .rm-msg {
-      max-width: 78%;
-      padding: 9px 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      word-break: break-word;
-      background: var(--panel-3);
-    }
-
-    .rm-msg.mine {
-      align-self: flex-end;
-      background: var(--accent);
-    }
-
-    .rm-form {
-      display: flex;
-      gap: 8px;
-      padding: 10px 12px;
-      background: var(--panel-2);
-      border-top: 1px solid var(--border);
-    }
-
-    .rm-input {
-      flex: 1;
-      background: #0b1017;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .rm-input:focus {
-      border-color: var(--accent);
-    }
-
-    .rm-send {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 0 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .rm-error {
-      padding: 8px 12px;
-      font-size: 12px;
-      color: var(--danger-text);
-      background: rgba(127, 29, 29, 0.35);
-      display: none;
-    }
-
-    .rm-error.active {
-      display: block;
-    }
+    body { font-family: 'Inter', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body>
-  <div class="rt-wrap">
-    <!-- ЛЕВАЯ КОЛОНКА: МАГАЗИН RUNOTOKS -->
-    <section class="rt-card" id="runotoksShop">
-      <div class="rt-topbar">
+<body class="bg-slate-50 text-slate-900 antialiased">
+
+  <!-- Шапка -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <a href="#" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
         <div>
-          <div class="rt-brand">RUNOTOKS</div>
-          <div class="rt-sub">Каталог и заказ</div>
+          <div class="font-extrabold text-lg tracking-tight leading-none">runotoks</div>
+          <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">TECH STORE</div>
         </div>
-        <div class="rt-sub" id="rtCartCount">Корзина: 0</div>
+      </a>
+
+      <div class="hidden md:flex flex-1 max-w-md mx-4">
+        <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу runotoks..."
+          class="w-full px-4 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 text-sm outline-none transition" />
       </div>
 
-      <div class="rt-tabs">
-        <button type="button" class="rt-tab active" data-cat="all">Все товары</button>
-        <button type="button" class="rt-tab" data-cat="audio">Аудио</button>
-        <button type="button" class="rt-tab" data-cat="accessories">Аксессуары</button>
+      <div class="flex items-center gap-2">
+        <button id="toggleSearchBtn" class="md:hidden p-2.5 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <button id="ordersHistoryBtn" class="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 relative" title="Мои заказы">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        </button>
+        <button id="openCartBtn" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span id="cartCount" class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+        </button>
       </div>
+    </div>
 
-      <div class="rt-shop-grid" id="rtProductsGrid"></div>
+    <!-- Мобильный поиск -->
+    <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-3">
+      <input id="searchInputMobile" type="text" placeholder="Найти наушники, часы, клавиатуру..."
+        class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none" />
+    </div>
+  </header>
 
-      <div class="rt-cart-box">
-        <strong>Корзина</strong>
-        <div class="rt-cart-items" id="rtCartItems">Пока пусто</div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-          <span id="rtCartTotal">Итого: 0 грн</span>
-          <button type="button" class="rm-primary-btn" id="rtCheckoutBtn">Оформить заказ</button>
+  <!-- Баннер -->
+  <section class="max-w-6xl mx-auto px-4 pt-6">
+    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-7 md:p-12 shadow-xl">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200 mb-4">
+        ✨ Новая коллекция runotoks 2026
+      </span>
+      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight max-w-2xl leading-tight">
+        Технологии, созданные для вашего комфорта
+      </h1>
+      <p class="text-slate-300 text-sm md:text-base max-w-xl mt-4 leading-relaxed">
+        Беспроводная акустика студийного качества, умные часы и минималистичные аксессуары runotoks с официальной гарантией и быстрой доставкой.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-7">
+        <a href="#catalog" class="px-6 py-3 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition">
+          Перейти в каталог ↓
+        </a>
+        <button onclick="filterCategory('Аудио')" class="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition">
+          Новинки аудио
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Каталог -->
+  <main id="catalog" class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+      <div class="flex items-center justify-between sm:justify-end gap-3">
+        <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 8 товаров</span>
+        <select id="sortSelect" class="px-3.5 py-2 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 outline-none">
+          <option value="popular">По популярности</option>
+          <option value="price-asc">Сначала дешевле</option>
+          <option value="price-desc">Сначала дороже</option>
+          <option value="rating">По рейтингу</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+  </main>
+
+  <!-- Подвал -->
+  <footer class="bg-white border-t border-slate-200 mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <div class="flex items-center gap-2 font-bold text-slate-900">
+        <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xs">R</span>
+        runotoks
+      </div>
+      <div>Поддержка: support@runotoks.store • Доставка по всей стране</div>
+      <div>© 2026 runotoks. Все права защищены.</div>
+    </div>
+  </footer>
+
+  <!-- Модальное окно товара -->
+  <div id="productModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl animate-fadeIn">
+      <div class="relative bg-slate-100 h-64 flex items-center justify-center">
+        <img id="modalImg" src="" alt="" class="h-full w-full object-cover" />
+        <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-700 font-bold shadow">✕</button>
+      </div>
+      <div class="p-6">
+        <div class="flex items-center justify-between gap-2">
+          <span id="modalCat" class="text-xs font-semibold uppercase tracking-wider text-blue-600"></span>
+          <span id="modalRating" class="text-xs font-semibold text-amber-500"></span>
         </div>
-      </div>
-    </section>
-
-    <!-- ПРАВАЯ КОЛОНКА: МЕССЕНДЖЕР И ЗВОНКИ -->
-    <section class="rt-card" id="runotoksMessenger">
-      <div id="rmUsersScreen">
-        <div class="rm-header">
-          <div class="rm-header-left">
-            <div class="rm-title-wrap">
-              <div class="rm-title">Чаты</div>
-              <div class="rm-subtitle" id="rmCurrentUserLabel">Подключение...</div>
-            </div>
+        <h2 id="modalTitle" class="text-xl font-bold mt-1"></h2>
+        <p id="modalDesc" class="text-sm text-slate-600 mt-2 leading-relaxed"></p>
+        <div class="mt-4">
+          <div class="text-xs font-semibold text-slate-500 mb-2">Выберите цвет / версию:</div>
+          <div id="modalVariants" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
+          <div>
+            <div class="text-xs text-slate-400">Цена</div>
+            <div id="modalPrice" class="text-2xl font-extrabold text-slate-900"></div>
           </div>
+          <button id="modalAddBtn" class="px-6 py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition">
+            В корзину
+          </button>
         </div>
-
-        <div class="rm-error" id="rmErrorBox"></div>
-
-        <div class="rm-auth-panel" id="rmAuthPanel">
-          <p>Войдите через Google, чтобы открыть диалоги и звонки.</p>
-          <button type="button" class="rm-primary-btn" id="rmGoogleLoginBtn">Войти через Google</button>
-        </div>
-
-        <div class="rm-list" id="rmUsersList"></div>
       </div>
-
-      <div class="rm-dialog" id="rmDialogScreen">
-        <div class="rm-header">
-          <div class="rm-header-left">
-            <button type="button" class="rm-icon-btn" id="rmBackBtn" title="Назад к диалогам">←</button>
-            <div class="rm-title-wrap">
-              <div class="rm-title" id="rmPeerName">Собеседник</div>
-              <div class="rm-subtitle" id="rmPeerStatus">диалог</div>
-            </div>
-          </div>
-          <div class="rm-actions">
-            <button type="button" class="rm-icon-btn" id="rmCallBtn" title="Позвонить">📞</button>
-            <button type="button" class="rm-mini-btn" id="rmBlockPeerBtn">Блок</button>
-            <button type="button" class="rm-mini-btn danger" id="rmDeletePeerBtn">Удалить</button>
-          </div>
-        </div>
-
-        <div class="rm-call-banner" id="rmCallBanner">
-          <span id="rmCallText">Звонок...</span>
-          <button type="button" class="rm-mini-btn danger" id="rmHangupBtn">Завершить</button>
-        </div>
-
-        <div class="rm-messages" id="rmMessagesList"></div>
-
-        <form class="rm-form" id="rmMessageForm">
-          <input
-            type="text"
-            class="rm-input"
-            id="rmMessageInput"
-            placeholder="Написать сообщение..."
-            autocomplete="off"
-          />
-          <button type="submit" class="rm-send">➤</button>
-        </form>
-      </div>
-    </section>
+    </div>
   </div>
 
-  <audio id="rmRemoteAudio" autoplay playsinline></audio>
+  <!-- Боковая панель корзины и оформления заказа -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm justify-end">
+    <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+        <h3 id="drawerTitle" class="font-bold text-lg">Корзина</h3>
+        <button onclick="closeCart()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-600">✕</button>
+      </div>
 
-  <!-- ЛОГИКА МАГАЗИНА -->
+      <!-- Шаг 1: Список товаров -->
+      <div id="cartStepItems" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+
+      <!-- Шаг 2: Форма оформления заказа -->
+      <form id="checkoutForm" class="hidden flex-1 overflow-y-auto p-5 space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Имя *</label>
+            <input required name="firstName" type="text" placeholder="Иван" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Фамилия *</label>
+            <input required name="lastName" type="text" placeholder="Петров" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Электронная почта (Email) *</label>
+          <input required name="email" type="email" placeholder="ivan@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Номер телефона *</label>
+          <input required name="phone" type="tel" placeholder="+380 (99) 123-45-67" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Способ доставки *</label>
+          <select id="deliverySelect" name="delivery" onchange="updateTotals()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900 bg-white">
+            <option value="courier" data-cost="350">Курьером до двери (+350 ₽)</option>
+            <option value="pickup_point" data-cost="190">Пункт выдачи / Почта (+190 ₽)</option>
+            <option value="self" data-cost="0">Самовывоз из магазина runotoks (Бесплатно)</option>
+          </select>
+        </div>
+
+        <div id="addressBlock">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Город и адрес доставки *</label>
+          <input id="addressInput" required name="address" type="text" placeholder="г. Киев, ул. Крещатик, д. 10, кв. 5" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Способ оплаты *</label>
+          <select name="payment" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900 bg-white">
+            <option value="card">Банковской картой онлайн (Visa / MasterCard)</option>
+            <option value="apple_google">Apple Pay / Google Pay</option>
+            <option value="cod">Оплата при получении</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Комментарий к заказу</label>
+          <textarea name="comment" rows="2" placeholder="Код домофона, удобное время..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900"></textarea>
+        </div>
+      </form>
+
+      <!-- Шаг 3: Чек подтверждения -->
+      <div id="orderSuccessStep" class="hidden flex-1 overflow-y-auto p-6 text-center flex flex-col items-center justify-center">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-4">✓</div>
+        <h4 class="text-xl font-extrabold text-slate-900">Заказ успешно оформлен!</h4>
+        <p id="orderNumberText" class="text-sm font-semibold text-blue-600 mt-1"></p>
+        <div id="orderReceiptBox" class="w-full text-left bg-slate-50 rounded-2xl p-4 mt-5 text-xs space-y-2 border border-slate-200"></div>
+        <button onclick="resetAfterOrder()" class="mt-6 w-full py-3 rounded-full bg-slate-900 text-white font-semibold text-sm hover:bg-slate-800 transition">
+          Вернуться в магазин runotoks
+        </button>
+      </div>
+
+      <!-- Нижняя панель итогов -->
+      <div id="cartFooter" class="p-5 border-t border-slate-200 bg-slate-50">
+        <div class="space-y-1 text-sm mb-4">
+          <div class="flex justify-between text-slate-500">
+            <span>Товары:</span>
+            <span id="subtotalText">0 ₽</span>
+          </div>
+          <div id="deliveryCostRow" class="hidden flex justify-between text-slate-500">
+            <span>Доставка:</span>
+            <span id="deliveryCostText">0 ₽</span>
+          </div>
+          <div class="flex justify-between font-extrabold text-base text-slate-900 pt-1">
+            <span>Итого:</span>
+            <span id="totalText">0 ₽</span>
+          </div>
+        </div>
+        <div id="cartButtonsStep1">
+          <button id="goToCheckoutBtn" onclick="showCheckoutStep()" class="w-full py-3.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition">
+            Оформить заказ
+          </button>
+        </div>
+        <div id="cartButtonsStep2" class="hidden flex gap-2">
+          <button type="button" onclick="showItemsStep()" class="px-4 py-3.5 rounded-full border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-white transition">
+            ← Назад
+          </button>
+          <button type="submit" form="checkoutForm" class="flex-1 py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition">
+            Подтвердить заказ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно истории заказов -->
+  <div id="ordersModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="font-bold text-lg">История заказов runotoks</h3>
+        <button onclick="document.getElementById('ordersModal').classList.add('hidden');document.getElementById('ordersModal').classList.remove('flex')" class="w-8 h-8 rounded-full hover:bg-slate-100">✕</button>
+      </div>
+      <div id="ordersListContainer" class="p-5 overflow-y-auto space-y-3 text-sm"></div>
+    </div>
+  </div>
+
   <script>
-    const products = [
-      { id: 1, title: "Наушники P47 Wireless", cat: "audio", price: 450, desc: "Беспроводные накладные наушники с басами и слотом карты." },
-      { id: 2, title: "Аккумулятор 21700 Li-Ion", cat: "accessories", price: 320, desc: "Высокотоковый элемент питания повышенной ёмкости." },
-      { id: 3, title: "Кабель USB-C Fast Charge", cat: "accessories", price: 180, desc: "Усиленный кабель для зарядки и передачи данных." },
-      { id: 4, title: "Портативный усилитель Bass", cat: "audio", price: 890, desc: "Компактный модуль для чистого звучания и глубоких низких частот." }
+    const PRODUCTS = [
+      { id: 1, title: "runotoks Studio Pro ANC", category: "Аудио", price: 14990, rating: 4.9, popular: 10, variants: ["Графит", "Серебро", "Синий"], image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80", desc: "Полноразмерные беспроводные наушники с адаптивным шумоподавлением до 45 дБ и автономностью 50 часов." },
+      { id: 2, title: "runotoks Watch Ultra S2", category: "Гаджеты", price: 18500, rating: 4.8, popular: 9, variants: ["Титан / Черный", "Титан / Оранж"], image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80", desc: "Титановый корпус, сапфировое стекло, двухчастотный GPS и до 14 дней работы без подзарядки." },
+      { id: 3, title: "runotoks KeyMech 75% Wireless", category: "Периферия", price: 9490, rating: 4.9, popular: 8, variants: ["Dark Gray", "Retro White"], image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80", desc: "Компактная механическая клавиатура с горячей заменой свитчей, шумоизоляцией и алюминиевым корпусом." },
+      { id: 4, title: "runotoks Pods Air 3", category: "Аудио", price: 6990, rating: 4.7, popular: 7, variants: ["Белый", "Черный матовый"], image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=700&q=80", desc: "Компактные TWS-наушники с пространственным звуком, беспроводной зарядкой и защитой IPX5." },
+      { id: 5, title: "runotoks MagCharge 3-in-1", category: "Аксессуары", price: 5490, rating: 4.8, popular: 6, variants: ["Черный", "Серый космос"], image: "https://images.unsplash.com/photo-1615526675159-e248c3021d3f?auto=format&fit=crop&w=700&q=80", desc: "Магнитная док-станция быстрой зарядки 30 Вт одновременно для смартфона, часов и наушников." },
+      { id: 6, title: "runotoks SoundBar Mini", category: "Аудио", price: 8290, rating: 4.6, popular: 5, variants: ["Черный"], image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=700&q=80", desc: "Портативная стереоколонка мощностью 40 Вт с глубокими басами и защитой от воды IP67." },
+      { id: 7, title: "runotoks ErgoMouse Pro", category: "Периферия", price: 4890, rating: 4.8, popular: 4, variants: ["Графит", "Белый"], image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=700&q=80", desc: "Беспроводная эргономичная мышь с сенсором 8000 DPI, бесшумными кликами и подключением к 3 устройствам." },
+      { id: 8, title: "runotoks PowerBank 20000 PD", category: "Аксессуары", price: 4290, rating: 4.9, popular: 8, variants: ["Серебристый", "Черный"], image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=700&q=80", desc: "Внешний аккумулятор 20 000 мА·ч с мощностью 65 Вт — заряжает даже ноутбуки по USB-C." }
     ];
 
-    const productsGrid = document.getElementById("rtProductsGrid");
-    const cartItemsEl = document.getElementById("rtCartItems");
-    const cartCountEl = document.getElementById("rtCartCount");
-    const cartTotalEl = document.getElementById("rtCartTotal");
-    const checkoutBtn = document.getElementById("rtCheckoutBtn");
-    const tabs = document.querySelectorAll(".rt-tab");
+    let activeCategory = "Все";
+    let searchQuery = "";
+    let sortBy = "popular";
+    let cart = JSON.parse(localStorage.getItem("runotoks_cart") || "[]");
+    let orders = JSON.parse(localStorage.getItem("runotoks_orders") || "[]");
 
-    let activeCat = "all";
-    let cart = [];
+    const formatPrice = (n) => n.toLocaleString("ru-RU") + " ₽";
+
+    function renderCategories() {
+      const cats = ["Все", ...new Set(PRODUCTS.map(p => p.category))];
+      document.getElementById("categoryTabs").innerHTML = cats.map(c => `
+        <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition ${activeCategory === c ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">
+          ${c}
+        </button>
+      `).join("");
+    }
+
+    function filterCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
 
     function renderProducts() {
-      productsGrid.innerHTML = "";
-      const list = activeCat === "all" ? products : products.filter((p) => p.cat === activeCat);
-      list.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "rt-product";
-        card.innerHTML = `
-          <div>
-            <div class="rt-product-title">${item.title}</div>
-            <div class="rt-product-desc">${item.desc}</div>
-          </div>
-          <div class="rt-product-foot">
-            <span class="rt-price">${item.price} грн</span>
-            <button type="button" class="rm-mini-btn" data-add="${item.id}">В корзину</button>
-          </div>
-        `;
-        card.querySelector("[data-add]").addEventListener("click", () => {
-          cart.push(item);
-          renderCart();
-        });
-        productsGrid.append(card);
+      let list = PRODUCTS.filter(p => {
+        const matchCat = activeCategory === "Все" || p.category === activeCategory;
+        const matchSearch = p.title.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery);
+        return matchCat && matchSearch;
       });
+
+      if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
+      if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
+      if (sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
+      if (sortBy === "popular") list.sort((a, b) => b.popular - a.popular);
+
+      document.getElementById("productCountLabel").textContent = `Показано: ${list.length} товаров`;
+
+      document.getElementById("productsGrid").innerHTML = list.map(p => `
+        <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden flex flex-col hover:shadow-lg transition group">
+          <div onclick="openProductModal(${p.id})" class="relative h-48 bg-slate-100 overflow-hidden cursor-pointer">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 text-[11px] font-semibold text-slate-700">${p.category}</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col">
+            <div class="flex items-center justify-between text-xs text-amber-500 font-semibold mb-1">
+              <span>★ ${p.rating}</span>
+              <span class="text-slate-400 font-normal">${p.variants.length} цв.</span>
+            </div>
+            <h3 onclick="openProductModal(${p.id})" class="font-bold text-slate-900 text-base cursor-pointer hover:text-blue-600 transition">${p.title}</h3>
+            <p class="text-xs text-slate-500 mt-1 line-clamp-2 flex-1">${p.desc}</p>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+              <span class="font-extrabold text-base">${formatPrice(p.price)}</span>
+              <button onclick="addToCart(${p.id}, '${p.variants[0]}')" class="px-3.5 py-2 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold transition">
+                + В корзину
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
     }
 
-    function renderCart() {
-      cartCountEl.textContent = `Корзина: ${cart.length}`;
-      if (!cart.length) {
-        cartItemsEl.textContent = "Пока пусто";
-        cartTotalEl.textContent = "Итого: 0 грн";
-        return;
+    function openProductModal(id) {
+      const p = PRODUCTS.find(x => x.id === id);
+      let selectedVariant = p.variants[0];
+      document.getElementById("modalImg").src = p.image;
+      document.getElementById("modalCat").textContent = p.category;
+      document.getElementById("modalRating").textContent = `★ ${p.rating} • В наличии`;
+      document.getElementById("modalTitle").textContent = p.title;
+      document.getElementById("modalDesc").textContent = p.desc;
+      document.getElementById("modalPrice").textContent = formatPrice(p.price);
+
+      const renderVars = () => {
+        document.getElementById("modalVariants").innerHTML = p.variants.map(v => `
+          <button type="button" onclick="selectVar('${v}')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition ${selectedVariant === v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200'}">
+            ${v}
+          </button>
+        `).join("");
+      };
+      window.selectVar = (v) => { selectedVariant = v; renderVars(); };
+      renderVars();
+
+      document.getElementById("modalAddBtn").onclick = () => {
+        addToCart(p.id, selectedVariant);
+        closeProductModal();
+      };
+
+      const modal = document.getElementById("productModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeProductModal() {
+      const modal = document.getElementById("productModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function saveCart() {
+      localStorage.setItem("runotoks_cart", JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function addToCart(productId, variant) {
+      const p = PRODUCTS.find(x => x.id === productId);
+      const key = `${productId}_${variant}`;
+      const existing = cart.find(item => item.key === key);
+      if (existing) existing.qty += 1;
+      else cart.push({ key, id: p.id, title: p.title, price: p.price, image: p.image, variant, qty: 1 });
+      saveCart();
+      openCart();
+    }
+
+    function changeQty(key, delta) {
+      const idx = cart.findIndex(x => x.key === key);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      saveCart();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      document.getElementById("cartCount").textContent = count;
+
+      const container = document.getElementById("cartStepItems");
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="text-center text-slate-400 py-16 text-sm">Корзина пока пуста.<br/>Выберите товары в каталоге runotoks.</div>`;
+        document.getElementById("goToCheckoutBtn").disabled = true;
+        document.getElementById("goToCheckoutBtn").classList.add("opacity-40", "cursor-not-allowed");
+      } else {
+        document.getElementById("goToCheckoutBtn").disabled = false;
+        document.getElementById("goToCheckoutBtn").classList.remove("opacity-40", "cursor-not-allowed");
+        container.innerHTML = cart.map(item => `
+          <div class="flex gap-3 items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+            <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover bg-white" />
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-sm truncate">${item.title}</div>
+              <div class="text-xs text-slate-400">${item.variant}</div>
+              <div class="font-bold text-sm mt-1">${formatPrice(item.price * item.qty)}</div>
+            </div>
+            <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-full px-2 py-1">
+              <button onclick="changeQty('${item.key}', -1)" class="w-5 h-5 text-xs font-bold">−</button>
+              <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+              <button onclick="changeQty('${item.key}', 1)" class="w-5 h-5 text-xs font-bold">+</button>
+            </div>
+          </div>
+        `).join("");
       }
-      cartItemsEl.innerHTML = cart.map((i, idx) => `<div>${idx + 1}. ${i.title} — ${i.price} грн</div>`).join("");
-      const sum = cart.reduce((acc, i) => acc + i.price, 0);
-      cartTotalEl.textContent = `Итого: ${sum} грн`;
+      updateTotals();
     }
 
-    tabs.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        tabs.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        activeCat = btn.dataset.cat;
-        renderProducts();
-      });
-    });
+    function updateTotals() {
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const isCheckout = !document.getElementById("checkoutForm").classList.contains("hidden");
+      const sel = document.getElementById("deliverySelect");
+      const deliveryCost = isCheckout ? Number(sel.options[sel.selectedIndex].dataset.cost || 0) : 0;
 
-    checkoutBtn.addEventListener("click", () => {
-      if (!cart.length) return;
-      alert(`Заказ оформлен (${cart.length} поз.). Свяжитесь в чате при необходимости.`);
+      const addressBlock = document.getElementById("addressBlock");
+      const addressInput = document.getElementById("addressInput");
+      if (sel.value === "self") {
+        addressBlock.classList.add("hidden");
+        addressInput.required = false;
+      } else {
+        addressBlock.classList.remove("hidden");
+        addressInput.required = true;
+      }
+
+      document.getElementById("subtotalText").textContent = formatPrice(subtotal);
+      document.getElementById("deliveryCostText").textContent = deliveryCost === 0 ? "Бесплатно" : formatPrice(deliveryCost);
+      document.getElementById("totalText").textContent = formatPrice(subtotal + deliveryCost);
+    }
+
+    function openCart() {
+      showItemsStep();
+      const drawer = document.getElementById("cartDrawer");
+      drawer.classList.remove("hidden");
+      drawer.classList.add("flex");
+    }
+
+    function closeCart() {
+      const drawer = document.getElementById("cartDrawer");
+      drawer.classList.add("hidden");
+      drawer.classList.remove("flex");
+    }
+
+    function showItemsStep() {
+      document.getElementById("drawerTitle").textContent = "Корзина";
+      document.getElementById("cartStepItems").classList.remove("hidden");
+      document.getElementById("checkoutForm").classList.add("hidden");
+      document.getElementById("orderSuccessStep").classList.add("hidden");
+      document.getElementById("cartFooter").classList.remove("hidden");
+      document.getElementById("cartButtonsStep1").classList.remove("hidden");
+      document.getElementById("cartButtonsStep2").classList.add("hidden");
+      document.getElementById("deliveryCostRow").classList.add("hidden");
+      updateTotals();
+    }
+
+    function showCheckoutStep() {
+      if (cart.length === 0) return;
+      document.getElementById("drawerTitle").textContent = "Оформление заказа";
+      document.getElementById("cartStepItems").classList.add("hidden");
+      document.getElementById("checkoutForm").classList.remove("hidden");
+      document.getElementById("orderSuccessStep").classList.add("hidden");
+      document.getElementById("cartButtonsStep1").classList.add("hidden");
+      document.getElementById("cartButtonsStep2").classList.remove("hidden");
+      document.getElementById("deliveryCostRow").classList.remove("hidden");
+      updateTotals();
+    }
+
+    document.getElementById("checkoutForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const sel = document.getElementById("deliverySelect");
+      const deliveryLabel = sel.options[sel.selectedIndex].text;
+      const deliveryCost = Number(sel.options[sel.selectedIndex].dataset.cost || 0);
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const orderNum = "RNT-" + Math.floor(100000 + Math.random() * 900000);
+
+      const orderData = {
+        number: orderNum,
+        date: new Date().toLocaleString("ru-RU"),
+        customer: `${fd.get("firstName")} ${fd.get("lastName")}`,
+        email: fd.get("email"),
+        phone: fd.get("phone"),
+        delivery: deliveryLabel,
+        address: fd.get("delivery") === "self" ? "Самовывоз из магазина runotoks" : fd.get("address"),
+        payment: fd.get("payment"),
+        total: subtotal + deliveryCost,
+        items: [...cart]
+      };
+
+      orders.unshift(orderData);
+      localStorage.setItem("runotoks_orders", JSON.stringify(orders));
+
+      document.getElementById("drawerTitle").textContent = "Заказ принят";
+      document.getElementById("checkoutForm").classList.add("hidden");
+      document.getElementById("cartFooter").classList.add("hidden");
+      document.getElementById("orderSuccessStep").classList.remove("hidden");
+      document.getElementById("orderNumberText").textContent = `Номер заказа: ${orderNum}`;
+      document.getElementById("orderReceiptBox").innerHTML = `
+        <div><span class="text-slate-400">Получатель:</span> <b>${orderData.customer}</b></div>
+        <div><span class="text-slate-400">Телефон:</span> <b>${orderData.phone}</b></div>
+        <div><span class="text-slate-400">Email:</span> <b>${orderData.email}</b></div>
+        <div><span class="text-slate-400">Доставка:</span> <b>${orderData.delivery}</b></div>
+        <div><span class="text-slate-400">Адрес:</span> <b>${orderData.address}</b></div>
+        <div class="pt-2 border-t border-slate-200 flex justify-between text-sm">
+          <span>К оплате:</span> <b>${formatPrice(orderData.total)}</b>
+        </div>
+      `;
+
       cart = [];
-      renderCart();
+      saveCart();
+      e.target.reset();
     });
 
+    function resetAfterOrder() {
+      closeCart();
+      showItemsStep();
+    }
+
+    document.getElementById("openCartBtn").onclick = openCart;
+    document.getElementById("toggleSearchBtn").onclick = () => document.getElementById("mobileSearchBar").classList.toggle("hidden");
+    document.getElementById("searchInputDesktop").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
+    document.getElementById("searchInputMobile").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
+    document.getElementById("sortSelect").onchange = (e) => { sortBy = e.target.value; renderProducts(); };
+
+    document.getElementById("ordersHistoryBtn").onclick = () => {
+      const container = document.getElementById("ordersListContainer");
+      if (orders.length === 0) {
+        container.innerHTML = `<div class="text-center text-slate-400 py-8">У вас пока нет оформленных заказов.</div>`;
+      } else {
+        container.innerHTML = orders.map(o => `
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+            <div class="flex justify-between font-bold">
+              <span class="text-blue-600">${o.number}</span>
+              <span>${formatPrice(o.total)}</span>
+            </div>
+            <div class="text-xs text-slate-400">${o.date}</div>
+            <div class="text-xs text-slate-600 pt-1">${o.customer} • ${o.phone}</div>
+            <div class="text-xs text-slate-500">${o.items.map(i => `${i.title} ×${i.qty}`).join(", ")}</div>
+          </div>
+        `).join("");
+      }
+      const m = document.getElementById("ordersModal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    };
+
+    renderCategories();
     renderProducts();
-    renderCart();
+    updateCartUI();
   </script>
 
-  <!-- ЛОГИКА FIREBASE, ДИАЛОГОВ, БЛОКИРОВКИ, УДАЛЕНИЯ И ЗВОНКОВ -->
+  <!-- Кнопка мессенджера runotoks (опущена вниз, чтобы не перекрывать шапку) -->
+  <button id="rtkChatBtn" type="button"
+    style="position:fixed;top:84px;right:16px;z-index:9998;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;">
+    <span>💬</span>
+    <span>Чат</span>
+  </button>
+
+  <!-- Полноэкранный мессенджер runotoks -->
+  <div id="rtkMessenger" style="display:none;position:fixed;inset:0;z-index:10000;background:#0b1120;color:#f8fafc;font-family:Inter,system-ui,sans-serif;flex-direction:column;">
+    <!-- Экран входа через Google -->
+    <div id="rtkAuthScreen" style="flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#1d4ed8 0%,#0b1120 55%);">
+      <div style="width:100%;max-width:400px;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,0.45);text-align:center;">
+        <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
+        <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks Messenger</h2>
+        <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
+          Войдите через Google, чтобы создать профиль с @username, находить друзей и переписываться в реальном времени.
+        </p>
+        <button id="rtkGoogleLoginBtn" type="button"
+          style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 20px rgba(255,255,255,0.12);">
+          <span>G</span>
+          <span>Войти через Google</span>
+        </button>
+        <button id="rtkAuthBackToSite" type="button"
+          style="margin-top:14px;width:100%;padding:10px 14px;border-radius:12px;border:1px solid #334155;background:transparent;color:#cbd5e1;font-size:13px;font-weight:600;cursor:pointer;">
+          ← Вернуться в магазин runotoks
+        </button>
+      </div>
+    </div>
+
+    <!-- Основной интерфейс мессенджера после входа -->
+    <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
+      <!-- Верхняя панель мессенджера -->
+      <div style="height:60px;padding:0 16px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+          <button id="rtkExitToSiteBtn" type="button"
+            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ← В магазин
+          </button>
+          <span style="font-weight:800;font-size:16px;letter-spacing:-0.02em;white-space:nowrap;">runotoks Чат</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="rtkTabChats" type="button"
+            style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;">
+            Чаты
+          </button>
+          <button id="rtkTabProfile" type="button"
+            style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
+            Профиль
+          </button>
+          <button id="rtkLogoutBtn" type="button"
+            style="padding:8px 10px;border-radius:10px;border:1px solid #3f1d2e;background:#2a121c;color:#fda4af;font-size:12px;font-weight:600;cursor:pointer;">
+            Выйти
+          </button>
+        </div>
+      </div>
+
+      <!-- Вкладка 1: Чаты и поиск друзей по @username -->
+      <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;flex-wrap:wrap;">
+        <!-- Левая колонка: поиск и список чатов -->
+        <div id="rtkSidebar" style="width:100%;max-width:360px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;">
+          <div style="padding:12px;border-bottom:1px solid #1f2937;">
+            <div style="display:flex;gap:8px;">
+              <input id="rtkSearchUsernameInput" type="text" placeholder="Найти по @username..."
+                style="flex:1;padding:9px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:13px;outline:none;" />
+              <button id="rtkSearchUserBtn" type="button"
+                style="padding:9px 14px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
+                Найти
+              </button>
+            </div>
+            <div id="rtkSearchResults" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
+          </div>
+
+          <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">
+            Ваши диалоги
+          </div>
+          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:0 8px 12px;display:flex;flex-direction:column;gap:4px;"></div>
+        </div>
+
+        <!-- Правая область: окно переписки -->
+        <div id="rtkChatPane" style="flex:1;min-width:280px;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;">
+          <div id="rtkActiveChatHeader" style="height:56px;padding:0 16px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <span style="color:#94a3b8;font-size:14px;">Выберите чат слева или найдите друга по @username</span>
+          </div>
+
+          <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;"></div>
+
+          <form id="rtkSendMessageForm" style="display:none;padding:12px 16px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
+            <input id="rtkMessageInput" type="text" placeholder="Написать сообщение..." required
+              style="flex:1;padding:11px 14px;border-radius:14px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
+            <button type="submit"
+              style="padding:11px 18px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
+              Отправить
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Вкладка 2: Профиль пользователя (как в Telegram) -->
+      <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:24px 16px;">
+        <form id="rtkProfileForm" style="max-width:480px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <img id="rtkProfileAvatarPreview" src="" alt="Avatar"
+              style="width:72px;height:72px;border-radius:50%;object-fit:cover;background:#1e293b;border:2px solid #3b82f6;" />
+            <div>
+              <div id="rtkProfileGoogleEmail" style="font-size:12px;color:#94a3b8;"></div>
+              <div style="font-size:16px;font-weight:800;margin-top:2px;">Настройка профиля</div>
+            </div>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Имя</label>
+            <input id="rtkProfileName" type="text" required placeholder="Ваше имя"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Имя пользователя (@username для поиска)</label>
+            <input id="rtkProfileUsername" type="text" required placeholder="naprimer_alex"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;" />
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">О себе (описание)</label>
+            <textarea id="rtkProfileBio" rows="3" placeholder="Расскажите немного о себе..."
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:14px;resize:vertical;"></textarea>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Фотография профиля (выбрать файл или ссылка)</label>
+            <input id="rtkProfilePhotoFile" type="file" accept="image/*"
+              style="width:100%;font-size:12px;color:#94a3b8;margin-bottom:8px;" />
+            <input id="rtkProfilePhotoUrl" type="url" placeholder="https://... (ссылка на фото или загрузится автоматически)"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
+          </div>
+
+          <button type="submit"
+            style="padding:12px 16px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:14px;font-weight:700;cursor:pointer;">
+            Сохранить профиль
+          </button>
+          <div id="rtkProfileStatus" style="font-size:12px;color:#34d399;min-height:18px;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import {
       getAuth,
       GoogleAuthProvider,
       signInWithPopup,
       signInWithRedirect,
+      signOut,
       onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     import {
       getFirestore,
-      collection,
       doc,
+      getDoc,
       setDoc,
-      addDoc,
-      deleteDoc,
-      onSnapshot,
+      updateDoc,
+      collection,
       query,
       where,
+      getDocs,
+      addDoc,
+      orderBy,
+      onSnapshot,
       serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_API_KEY",
+      apiKey: "AIzaSyCP-HMyaFzNiDo4yXwYNmJk2QZineSPE5A",
       authDomain: "runotoks-c05c2.firebaseapp.com",
       projectId: "runotoks-c05c2",
       storageBucket: "runotoks-c05c2.firebasestorage.app",
-      messagingSenderId: "000000000000",
-      appId: "1:000000000000:web:0000000000000000"
+      messagingSenderId: "257596088504",
+      appId: "1:257596088504:web:a0bcea77ee0e3c8849944d",
+      measurementId: "G-56VTDVLB2H"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -621,454 +746,374 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    const usersScreen = document.getElementById("rmUsersScreen");
-    const dialogScreen = document.getElementById("rmDialogScreen");
-    const authPanel = document.getElementById("rmAuthPanel");
-    const googleLoginBtn = document.getElementById("rmGoogleLoginBtn");
-    const usersListEl = document.getElementById("rmUsersList");
-    const messagesListEl = document.getElementById("rmMessagesList");
-    const messageForm = document.getElementById("rmMessageForm");
-    const messageInput = document.getElementById("rmMessageInput");
-    const backBtn = document.getElementById("rmBackBtn");
-    const callBtn = document.getElementById("rmCallBtn");
-    const hangupBtn = document.getElementById("rmHangupBtn");
-    const callBanner = document.getElementById("rmCallBanner");
-    const callText = document.getElementById("rmCallText");
-    const blockPeerBtn = document.getElementById("rmBlockPeerBtn");
-    const deletePeerBtn = document.getElementById("rmDeletePeerBtn");
-    const peerNameEl = document.getElementById("rmPeerName");
-    const currentUserLabel = document.getElementById("rmCurrentUserLabel");
-    const errorBox = document.getElementById("rmErrorBox");
-    const remoteAudio = document.getElementById("rmRemoteAudio");
+    const openBtn = document.getElementById("rtkChatBtn");
+    const messengerEl = document.getElementById("rtkMessenger");
+    const authScreen = document.getElementById("rtkAuthScreen");
+    const mainApp = document.getElementById("rtkMainApp");
+    const googleLoginBtn = document.getElementById("rtkGoogleLoginBtn");
+    const authBackToSite = document.getElementById("rtkAuthBackToSite");
+    const exitToSiteBtn = document.getElementById("rtkExitToSiteBtn");
+    const logoutBtn = document.getElementById("rtkLogoutBtn");
 
-    let me = null;
-    let activePeer = null;
+    const tabChats = document.getElementById("rtkTabChats");
+    const tabProfile = document.getElementById("rtkTabProfile");
+    const chatsView = document.getElementById("rtkChatsView");
+    const profileView = document.getElementById("rtkProfileView");
+
+    const searchInput = document.getElementById("rtkSearchUsernameInput");
+    const searchBtn = document.getElementById("rtkSearchUserBtn");
+    const searchResultsEl = document.getElementById("rtkSearchResults");
+    const chatListEl = document.getElementById("rtkChatList");
+    const activeChatHeader = document.getElementById("rtkActiveChatHeader");
+    const messagesListEl = document.getElementById("rtkMessagesList");
+    const sendMsgForm = document.getElementById("rtkSendMessageForm");
+    const msgInput = document.getElementById("rtkMessageInput");
+
+    const profileForm = document.getElementById("rtkProfileForm");
+    const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
+    const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
+    const profileName = document.getElementById("rtkProfileName");
+    const profileUsername = document.getElementById("rtkProfileUsername");
+    const profileBio = document.getElementById("rtkProfileBio");
+    const profilePhotoFile = document.getElementById("rtkProfilePhotoFile");
+    const profilePhotoUrl = document.getElementById("rtkProfilePhotoUrl");
+    const profileStatus = document.getElementById("rtkProfileStatus");
+
+    const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128";
+
+    let currentUser = null;
+    let currentProfile = null;
     let activeChatId = null;
-    let blockedIds = new Set();
-    let hiddenIds = new Set();
-    let allUsers = [];
+    let unsubChats = null;
     let unsubMessages = null;
-    let unsubCall = null;
-    let unsubCandidates = null;
-    let localStream = null;
-    let peerConnection = null;
+    const usersCache = new Map();
 
-    const rtcConfig = {
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-    };
+    const cleanUsername = (u) => (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
 
-    function showError(msg) {
-      if (!msg) {
-        errorBox.textContent = "";
-        errorBox.classList.remove("active");
-        return;
-      }
-      errorBox.textContent = msg;
-      errorBox.classList.add("active");
+    function openMessenger() {
+      messengerEl.style.display = "flex";
+      document.body.style.overflow = "hidden";
     }
 
+    function closeMessenger() {
+      messengerEl.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    openBtn.addEventListener("click", openMessenger);
+    authBackToSite.addEventListener("click", closeMessenger);
+    exitToSiteBtn.addEventListener("click", closeMessenger);
+
+    googleLoginBtn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") {
+          await signInWithRedirect(auth, provider);
+        } else {
+          alert("Ошибка входа через Google: " + (err.message || err.code));
+        }
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      if (unsubChats) unsubChats();
+      if (unsubMessages) unsubMessages();
+      activeChatId = null;
+      await signOut(auth);
+    });
+
+    tabChats.addEventListener("click", () => {
+      chatsView.style.display = "flex";
+      profileView.style.display = "none";
+      tabChats.style.background = "#2563eb";
+      tabChats.style.border = "none";
+      tabProfile.style.background = "#1e293b";
+      tabProfile.style.border = "1px solid #334155";
+    });
+
+    tabProfile.addEventListener("click", () => {
+      chatsView.style.display = "none";
+      profileView.style.display = "block";
+      tabProfile.style.background = "#2563eb";
+      tabProfile.style.border = "none";
+      tabChats.style.background = "#1e293b";
+      tabChats.style.border = "1px solid #334155";
+    });
+
+    profilePhotoFile.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const size = 180;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          const compressed = canvas.toDataURL("image/jpeg", 0.8);
+          profilePhotoUrl.value = compressed;
+          profileAvatarPreview.src = compressed;
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    profilePhotoUrl.addEventListener("input", () => {
+      profileAvatarPreview.src = profilePhotoUrl.value.trim() || DEFAULT_AVATAR;
+    });
+
+    async function ensureUserProfile(user) {
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
+      const baseUsername = cleanUsername(user.email?.split("@")[0] || `user_${user.uid.slice(0, 6)}`) || `user_${user.uid.slice(0, 6)}`;
+
+      if (!snap.exists()) {
+        const profile = {
+          uid: user.uid,
+          email: user.email || "",
+          name: user.displayName || "Пользователь",
+          username: baseUsername,
+          bio: "",
+          photoURL: user.photoURL || DEFAULT_AVATAR,
+          updatedAt: serverTimestamp()
+        };
+        await setDoc(ref, profile);
+        return profile;
+      }
+      return { uid: user.uid, ...snap.data() };
+    }
+
+    function fillProfileForm(profile, user) {
+      profileGoogleEmail.textContent = user.email || "";
+      profileName.value = profile.name || "";
+      profileUsername.value = profile.username || "";
+      profileBio.value = profile.bio || "";
+      profilePhotoUrl.value = profile.photoURL || "";
+      profileAvatarPreview.src = profile.photoURL || user.photoURL || DEFAULT_AVATAR;
+    }
+
+    profileForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+      const uname = cleanUsername(profileUsername.value);
+      if (!uname) {
+        profileStatus.style.color = "#f87171";
+        profileStatus.textContent = "Введите корректный @username (латиница, цифры, _).";
+        return;
+      }
+
+      const qUsers = query(collection(db, "users"), where("username", "==", uname));
+      const snapUsers = await getDocs(qUsers);
+      const takenByOther = snapUsers.docs.some((d) => d.id !== currentUser.uid);
+      if (takenByOther) {
+        profileStatus.style.color = "#f87171";
+        profileStatus.textContent = `Имя @${uname} уже занято.`;
+        return;
+      }
+
+      const updated = {
+        name: profileName.value.trim() || "Пользователь",
+        username: uname,
+        bio: profileBio.value.trim().slice(0, 200),
+        photoURL: profilePhotoUrl.value.trim() || DEFAULT_AVATAR,
+        updatedAt: serverTimestamp()
+      };
+
+      await updateDoc(doc(db, "users", currentUser.uid), updated);
+      currentProfile = { ...currentProfile, ...updated };
+      usersCache.set(currentUser.uid, currentProfile);
+      profileAvatarPreview.src = currentProfile.photoURL;
+      profileStatus.style.color = "#34d399";
+      profileStatus.textContent = "Профиль сохранён!";
+      setTimeout(() => { profileStatus.textContent = ""; }, 2500);
+    });
+
+    async function getUserById(uid) {
+      if (usersCache.has(uid)) return usersCache.get(uid);
+      const snap = await getDoc(doc(db, "users", uid));
+      const data = snap.exists()
+        ? { uid, ...snap.data() }
+        : { uid, name: "Пользователь", username: "user", bio: "", photoURL: DEFAULT_AVATAR };
+      usersCache.set(uid, data);
+      return data;
+    }
+
+    searchBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+      const target = cleanUsername(searchInput.value);
+      searchResultsEl.innerHTML = "";
+      if (!target) return;
+
+      const qU = query(collection(db, "users"), where("username", "==", target));
+      const snap = await getDocs(qU);
+
+      if (snap.empty) {
+        searchResultsEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;padding:4px;">Пользователь @${target} не найден</div>`;
+        return;
+      }
+
+      snap.forEach((d) => {
+        const u = { uid: d.id, ...d.data() };
+        usersCache.set(u.uid, u);
+        if (u.uid === currentUser.uid) return;
+
+        const item = document.createElement("div");
+        item.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:12px;background:#0b1120;border:1px solid #1f2937;";
+        item.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+            <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" />
+            <div style="min-width:0;">
+              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name)}</div>
+              <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username)}</div>
+            </div>
+          </div>
+          <button type="button" data-uid="${u.uid}" style="padding:6px 10px;border-radius:9px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
+        `;
+        item.querySelector("button").addEventListener("click", () => startOrOpenChat(u));
+        searchResultsEl.appendChild(item);
+      });
+    });
+
+    async function startOrOpenChat(otherUser) {
+      if (!currentUser) return;
+      const pairKey = [currentUser.uid, otherUser.uid].sort().join("_");
+      const qC = query(collection(db, "chats"), where("pairKey", "==", pairKey));
+      const snap = await getDocs(qC);
+
+      let chatId;
+      if (!snap.empty) {
+        chatId = snap.docs[0].id;
+      } else {
+        const created = await addDoc(collection(db, "chats"), {
+          pairKey,
+          members: [currentUser.uid, otherUser.uid],
+          lastMessage: "",
+          updatedAt: serverTimestamp()
+        });
+        chatId = created.id;
+      }
+      selectChat(chatId, otherUser);
+    }
+
+    function subscribeChats(uid) {
+      if (unsubChats) unsubChats();
+      const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
+      unsubChats = onSnapshot(qC, async (snap) => {
+        const items = [];
+        for (const d of snap.docs) {
+          const chat = { id: d.id, ...d.data() };
+          const otherId = (chat.members || []).find((m) => m !== uid) || uid;
+          const otherProfile = await getUserById(otherId);
+          items.push({ chat, otherProfile });
+        }
+        items.sort((a, b) => (b.chat.updatedAt?.seconds || 0) - (a.chat.updatedAt?.seconds || 0));
+
+        chatListEl.innerHTML = "";
+        if (items.length === 0) {
+          chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет чатов. Найдите друга по @username выше.</div>`;
+          return;
+        }
+
+        for (const { chat, otherProfile } of items) {
+          const row = document.createElement("button");
+          row.type = "button";
+          const isSelected = activeChatId === chat.id;
+          row.style.cssText = `width:100%;text-align:left;padding:10px;border-radius:14px;border:none;background:${isSelected ? "#1e293b" : "transparent"};color:#f8fafc;cursor:pointer;display:flex;align-items:center;gap:10px;`;
+          row.innerHTML = `
+            <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <div style="min-width:0;flex:1;">
+              <div style="display:flex;justify-content:space-between;gap:6px;">
+                <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.name)}</span>
+                <span style="font-size:11px;color:#60a5fa;">@${escapeHtml(otherProfile.username)}</span>
+              </div>
+              <div style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
+                ${escapeHtml(chat.lastMessage || otherProfile.bio || "Нажмите, чтобы написать")}
+              </div>
+            </div>
+          `;
+          row.addEventListener("click", () => selectChat(chat.id, otherProfile));
+          chatListEl.appendChild(row);
+        }
+      });
+    }
+
+    function selectChat(chatId, otherProfile) {
+      activeChatId = chatId;
+      sendMsgForm.style.display = "flex";
+
+      activeChatHeader.innerHTML = `
+        <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
+        <div style="min-width:0;">
+          <div style="font-size:14px;font-weight:700;line-height:1.2;">${escapeHtml(otherProfile.name)} <span style="font-size:12px;color:#60a5fa;font-weight:500;">@${escapeHtml(otherProfile.username)}</span></div>
+          <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.bio || "Пользователь runotoks")}</div>
+        </div>
+      `;
+
+      if (unsubMessages) unsubMessages();
+      const qM = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
+      unsubMessages = onSnapshot(qM, (snap) => {
+        messagesListEl.innerHTML = "";
+        snap.forEach((d) => {
+          const m = d.data();
+          const mine = m.senderId === currentUser?.uid;
+          const bubble = document.createElement("div");
+          bubble.style.cssText = `max-width:78%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#ffffff;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.45;word-break:break-word;`;
+          bubble.textContent = m.text || "";
+          messagesListEl.appendChild(bubble);
+        });
+        messagesListEl.scrollTop = messagesListEl.scrollHeight;
+      });
+    }
+
+    sendMsgForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUser || !activeChatId) return;
+      const text = msgInput.value.trim();
+      if (!text) return;
+      msgInput.value = "";
+
+      await addDoc(collection(db, "chats", activeChatId, "messages"), {
+        senderId: currentUser.uid,
+        text,
+        createdAt: serverTimestamp()
+      });
+
+      await updateDoc(doc(db, "chats", activeChatId), {
+        lastMessage: text,
+        updatedAt: serverTimestamp()
+      });
+    });
+
     function escapeHtml(str) {
-      return String(str)
+      return String(str || "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
     }
 
-    function makePairKey(uidA, uidB) {
-      return [uidA, uidB].sort().join("_");
-    }
-
-    function renderUsersList() {
-      usersListEl.innerHTML = "";
-      if (!me) return;
-
-      const visibleUsers = allUsers.filter(
-        (u) => u.id !== me.uid && !blockedIds.has(u.id) && !hiddenIds.has(u.id)
-      );
-
-      if (!visibleUsers.length) {
-        usersListEl.innerHTML =
-          '<div class="rm-user-row"><div class="rm-user-sub">Пока нет других пользователей</div></div>';
-        return;
-      }
-
-      visibleUsers.forEach((user) => {
-        const title = user.displayName || user.name || user.username || user.email || user.id;
-        const row = document.createElement("div");
-        row.className = "rm-user-row";
-
-        const main = document.createElement("div");
-        main.className = "rm-user-main";
-        main.innerHTML = `
-          <div class="rm-user-name">${escapeHtml(title)}</div>
-          <div class="rm-user-sub">${escapeHtml(user.username ? "@" + user.username : "Открыть диалог")}</div>
-        `;
-        main.addEventListener("click", () => openDialog(user));
-
-        const actions = document.createElement("div");
-        actions.className = "rm-mini-actions";
-
-        const blockBtn = document.createElement("button");
-        blockBtn.type = "button";
-        blockBtn.className = "rm-mini-btn";
-        blockBtn.textContent = "Блок";
-        blockBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          blockUser(user.id);
-        });
-
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.className = "rm-mini-btn danger";
-        delBtn.textContent = "Удалить";
-        delBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          deleteUserFromList(user.id);
-        });
-
-        actions.append(blockBtn, delBtn);
-        row.append(main, actions);
-        usersListEl.append(row);
-      });
-    }
-
-    async function openDialog(peer) {
-      if (!me || !peer) return;
-      showError("");
-      activePeer = peer;
-      const pairKey = makePairKey(me.uid, peer.id);
-      activeChatId = pairKey;
-
-      peerNameEl.textContent = peer.displayName || peer.name || peer.username || peer.email || peer.id;
-      usersScreen.style.display = "none";
-      dialogScreen.classList.add("active");
-
-      try {
-        await setDoc(
-          doc(db, "chats", activeChatId),
-          {
-            members: [me.uid, peer.id],
-            pairKey,
-            updatedAt: serverTimestamp()
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        showError("Не удалось создать диалог: " + err.message);
-      }
-
-      subscribeMessages(activeChatId);
-      subscribeCall(activeChatId);
-    }
-
-    async function backToUsers() {
-      await hangupCall();
-      activePeer = null;
-      activeChatId = null;
-      if (unsubMessages) {
-        unsubMessages();
-        unsubMessages = null;
-      }
-      if (unsubCall) {
-        unsubCall();
-        unsubCall = null;
-      }
-      if (unsubCandidates) {
-        unsubCandidates();
-        unsubCandidates = null;
-      }
-      dialogScreen.classList.remove("active");
-      usersScreen.style.display = "block";
-      renderUsersList();
-    }
-
-    function subscribeMessages(chatId) {
-      if (unsubMessages) unsubMessages();
-      messagesListEl.innerHTML = "";
-
-      const q = query(collection(db, "messages"), where("chatId", "==", chatId));
-
-      unsubMessages = onSnapshot(
-        q,
-        (snap) => {
-          const items = [];
-          snap.forEach((docSnap) => {
-            items.push({ id: docSnap.id, ...docSnap.data() });
-          });
-
-          items.sort((a, b) => {
-            const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.now();
-            const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.now();
-            return ta - tb;
-          });
-
-          messagesListEl.innerHTML = "";
-          items.forEach((data) => {
-            const div = document.createElement("div");
-            div.className = "rm-msg" + (data.senderId === me.uid ? " mine" : "");
-            div.textContent = data.text || "";
-            messagesListEl.append(div);
-          });
-          messagesListEl.scrollTop = messagesListEl.scrollHeight;
-        },
-        (err) => {
-          showError("Ошибка чтения сообщений: " + err.message);
-        }
-      );
-    }
-
-    messageForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = messageInput.value.trim();
-      if (!text || !me || !activePeer || !activeChatId) return;
-      if (blockedIds.has(activePeer.id)) return;
-
-      messageInput.value = "";
-
-      try {
-        await addDoc(collection(db, "messages"), {
-          chatId: activeChatId,
-          pairKey: activeChatId,
-          senderId: me.uid,
-          receiverId: activePeer.id,
-          text,
-          createdAt: serverTimestamp()
-        });
-
-        await setDoc(
-          doc(db, "chats", activeChatId),
-          {
-            members: [me.uid, activePeer.id],
-            pairKey: activeChatId,
-            lastMessage: text,
-            updatedAt: serverTimestamp()
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        showError("Не удалось отправить сообщение: " + err.message);
-      }
-    });
-
-    async function blockUser(targetUid) {
-      if (!me || !targetUid) return;
-      blockedIds.add(targetUid);
-      await setDoc(doc(db, "users", me.uid, "blocked", targetUid), {
-        blockedAt: serverTimestamp()
-      });
-      if (activePeer?.id === targetUid) {
-        await backToUsers();
-      } else {
-        renderUsersList();
-      }
-    }
-
-    async function deleteUserFromList(targetUid) {
-      if (!me || !targetUid) return;
-      hiddenIds.add(targetUid);
-      await setDoc(doc(db, "users", me.uid, "hiddenUsers", targetUid), {
-        hiddenAt: serverTimestamp()
-      });
-      if (activePeer?.id === targetUid) {
-        await backToUsers();
-      } else {
-        renderUsersList();
-      }
-    }
-
-    async function setupLocalAudio() {
-      if (localStream) return localStream;
-      localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-      return localStream;
-    }
-
-    async function createPeerConnection(chatId) {
-      if (peerConnection) peerConnection.close();
-      peerConnection = new RTCPeerConnection(rtcConfig);
-
-      const stream = await setupLocalAudio();
-      stream.getTracks().forEach((track) => {
-        peerConnection.addTrack(track, stream);
-      });
-
-      peerConnection.ontrack = (event) => {
-        if (event.streams && event.streams[0]) {
-          remoteAudio.srcObject = event.streams[0];
-        }
-      };
-
-      peerConnection.onicecandidate = async (event) => {
-        if (event.candidate && me && chatId) {
-          await addDoc(collection(db, "chats", chatId, "call", "current", "candidates"), {
-            senderId: me.uid,
-            candidate: event.candidate.toJSON()
-          });
-        }
-      };
-
-      return peerConnection;
-    }
-
-    async function startCall() {
-      if (!me || !activePeer || !activeChatId) return;
-      try {
-        const pc = await createPeerConnection(activeChatId);
-        const offer = await pc.createOffer();
-        await pc.setLocalDescription(offer);
-
-        await setDoc(doc(db, "chats", activeChatId, "call", "current"), {
-          callerId: me.uid,
-          callerName: me.displayName || me.email || "Пользователь",
-          calleeId: activePeer.id,
-          offer: { type: offer.type, sdp: offer.sdp },
-          status: "calling",
-          updatedAt: serverTimestamp()
-        });
-
-        callText.textContent = `Звонок ${peerNameEl.textContent}...`;
-        callBanner.classList.add("active");
-      } catch (err) {
-        callText.textContent = "Нет доступа к микрофону";
-        callBanner.classList.add("active");
-      }
-    }
-
-    async function hangupCall() {
-      if (peerConnection) {
-        peerConnection.close();
-        peerConnection = null;
-      }
-      if (localStream) {
-        localStream.getTracks().forEach((t) => t.stop());
-        localStream = null;
-      }
-      if (activeChatId) {
-        await deleteDoc(doc(db, "chats", activeChatId, "call", "current")).catch(() => {});
-      }
-      callBanner.classList.remove("active");
-    }
-
-    function subscribeCall(chatId) {
-      if (unsubCall) unsubCall();
-      if (unsubCandidates) unsubCandidates();
-
-      unsubCandidates = onSnapshot(
-        collection(db, "chats", chatId, "call", "current", "candidates"),
-        async (snap) => {
-          if (!peerConnection || !me) return;
-          for (const change of snap.docChanges()) {
-            if (change.type === "added") {
-              const cData = change.doc.data();
-              if (cData.senderId !== me.uid && cData.candidate) {
-                try {
-                  await peerConnection.addIceCandidate(new RTCIceCandidate(cData.candidate));
-                } catch (_) {}
-              }
-            }
-          }
-        }
-      );
-
-      unsubCall = onSnapshot(doc(db, "chats", chatId, "call", "current"), async (snap) => {
-        if (!snap.exists()) {
-          callBanner.classList.remove("active");
-          return;
-        }
-        const data = snap.data();
-        callBanner.classList.add("active");
-
-        if (data.callerId === me.uid) {
-          callText.textContent = data.answer
-            ? "Соединение установлено"
-            : `Звонок ${peerNameEl.textContent}...`;
-          if (data.answer && peerConnection && !peerConnection.currentRemoteDescription) {
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-          }
-        } else {
-          callText.textContent = `Входящий звонок от ${data.callerName || peerNameEl.textContent}`;
-          if (data.offer && !peerConnection) {
-            try {
-              const pc = await createPeerConnection(chatId);
-              await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
-              const answer = await pc.createAnswer();
-              await pc.setLocalDescription(answer);
-              await setDoc(
-                doc(db, "chats", chatId, "call", "current"),
-                { answer: { type: answer.type, sdp: answer.sdp }, status: "connected" },
-                { merge: true }
-              );
-              callText.textContent = "Соединение установлено";
-            } catch (_) {}
-          }
-        }
-      });
-    }
-
-    googleLoginBtn.addEventListener("click", async () => {
-      showError("");
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        if (
-          err.code === "auth/popup-blocked" ||
-          err.code === "auth/operation-not-supported-in-this-environment"
-        ) {
-          await signInWithRedirect(auth, provider);
-        } else {
-          showError("Ошибка входа: " + err.message);
-        }
-      }
-    });
-
-    backBtn.addEventListener("click", backToUsers);
-    callBtn.addEventListener("click", startCall);
-    hangupBtn.addEventListener("click", hangupCall);
-    blockPeerBtn.addEventListener("click", () => activePeer && blockUser(activePeer.id));
-    deletePeerBtn.addEventListener("click", () => activePeer && deleteUserFromList(activePeer.id));
-
     onAuthStateChanged(auth, async (user) => {
-      me = user || null;
-
-      if (!me) {
-        currentUserLabel.textContent = "Требуется вход через Google";
-        authPanel.classList.add("active");
-        usersListEl.innerHTML = "";
+      currentUser = user;
+      if (!user) {
+        authScreen.style.display = "flex";
+        mainApp.style.display = "none";
         return;
       }
 
-      authPanel.classList.remove("active");
-      currentUserLabel.textContent = me.displayName || me.email || "Аккаунт активен";
-
-      try {
-        await setDoc(
-          doc(db, "users", me.uid),
-          {
-            uid: me.uid,
-            displayName: me.displayName || "",
-            email: me.email || "",
-            updatedAt: serverTimestamp()
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        showError("Не удалось сохранить профиль: " + err.message);
-      }
-
-      onSnapshot(collection(db, "users", me.uid, "blocked"), (snap) => {
-        blockedIds = new Set(snap.docs.map((d) => d.id));
-        renderUsersList();
-      });
-
-      onSnapshot(collection(db, "users", me.uid, "hiddenUsers"), (snap) => {
-        hiddenIds = new Set(snap.docs.map((d) => d.id));
-        renderUsersList();
-      });
-
-      onSnapshot(collection(db, "users"), (snap) => {
-        allUsers = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        renderUsersList();
-      });
+      authScreen.style.display = "none";
+      mainApp.style.display = "flex";
+      currentProfile = await ensureUserProfile(user);
+      usersCache.set(user.uid, currentProfile);
+      fillProfileForm(currentProfile, user);
+      subscribeChats(user.uid);
     });
   </script>
 </body>
