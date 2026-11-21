@@ -559,7 +559,7 @@
     updateCartUI();
   </script>
 
-  <!-- Кнопка мессенджера runotoks (опущена вниз, чтобы не перекрывать шапку) -->
+  <!-- Кнопка мессенджера runotoks -->
   <button id="rtkChatBtn" type="button"
     style="position:fixed;top:84px;right:16px;z-index:9998;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;">
     <span>💬</span>
@@ -574,7 +574,7 @@
         <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
         <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks Messenger</h2>
         <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы создать профиль с @username, находить друзей и переписываться в реальном времени.
+          Войдите через Google, чтобы открыть диалоги, звонки и найти друзей по @username.
         </p>
         <button id="rtkGoogleLoginBtn" type="button"
           style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 6px 20px rgba(255,255,255,0.12);">
@@ -603,23 +603,19 @@
         <div style="display:flex;align-items:center;gap:8px;">
           <button id="rtkTabChats" type="button"
             style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;">
-            Чаты
+            Диалоги
           </button>
           <button id="rtkTabProfile" type="button"
             style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;">
             Профиль
           </button>
-          <button id="rtkLogoutBtn" type="button"
-            style="padding:8px 10px;border-radius:10px;border:1px solid #3f1d2e;background:#2a121c;color:#fda4af;font-size:12px;font-weight:600;cursor:pointer;">
-            Выйти
-          </button>
         </div>
       </div>
 
-      <!-- Вкладка 1: Чаты и поиск друзей по @username -->
-      <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;flex-wrap:wrap;">
-        <!-- Левая колонка: поиск и список чатов -->
-        <div id="rtkSidebar" style="width:100%;max-width:360px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;">
+      <!-- Вкладка 1: Диалоги, люди и переписка -->
+      <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden;">
+        <!-- Левая колонка: поиск, люди и список диалогов -->
+        <div id="rtkSidebar" style="width:100%;max-width:380px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
           <div style="padding:12px;border-bottom:1px solid #1f2937;">
             <div style="display:flex;gap:8px;">
               <input id="rtkSearchUsernameInput" type="text" placeholder="Найти по @username..."
@@ -633,31 +629,63 @@
           </div>
 
           <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;">
-            Ваши диалоги
+            Люди и диалоги
           </div>
-          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:0 8px 12px;display:flex;flex-direction:column;gap:4px;"></div>
+          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:0 8px 12px;display:flex;flex-direction:column;gap:6px;"></div>
         </div>
 
-        <!-- Правая область: окно переписки -->
-        <div id="rtkChatPane" style="flex:1;min-width:280px;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;">
-          <div id="rtkActiveChatHeader" style="height:56px;padding:0 16px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;gap:10px;flex-shrink:0;">
-            <span style="color:#94a3b8;font-size:14px;">Выберите чат слева или найдите друга по @username</span>
+        <!-- Правая область: открытый диалог со стрелкой назад и кнопкой звонка в углу -->
+        <div id="rtkChatPane" style="flex:1;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;min-width:0;">
+          <div id="rtkActiveChatHeader" style="height:60px;padding:0 14px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+              <button id="rtkBackToDialogsBtn" type="button" title="Назад к диалогам"
+                style="display:none;padding:8px 11px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#ffffff;font-size:15px;font-weight:700;line-height:1;cursor:pointer;flex-shrink:0;">
+                ←
+              </button>
+              <div id="rtkPeerInfoBox" style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <span style="color:#94a3b8;font-size:13px;">Нажмите на человека слева, чтобы открыть диалог</span>
+              </div>
+            </div>
+
+            <div id="rtkDialogActions" style="display:none;align-items:center;gap:6px;flex-shrink:0;">
+              <button id="rtkCallPeerBtn" type="button" title="Позвонить"
+                style="padding:8px 12px;border-radius:10px;border:none;background:#16a34a;color:#ffffff;font-size:15px;line-height:1;cursor:pointer;">
+                📞
+              </button>
+              <button id="rtkBlockPeerBtn" type="button"
+                style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:700;cursor:pointer;">
+                Блок
+              </button>
+              <button id="rtkDeletePeerBtn" type="button"
+                style="padding:7px 10px;border-radius:10px;border:1px solid #7f1d1d;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;">
+                Удалить
+              </button>
+            </div>
+          </div>
+
+          <!-- Баннер статуса звонка -->
+          <div id="rtkCallBanner" style="display:none;padding:8px 14px;background:#14532d;color:#dcfce7;font-size:12px;font-weight:600;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
+            <span id="rtkCallStatusText">Звонок...</span>
+            <button id="rtkHangupCallBtn" type="button"
+              style="padding:5px 10px;border-radius:8px;border:none;background:#dc2626;color:#ffffff;font-size:11px;font-weight:700;cursor:pointer;">
+              Завершить
+            </button>
           </div>
 
           <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <form id="rtkSendMessageForm" style="display:none;padding:12px 16px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
+          <form id="rtkSendMessageForm" style="display:none;padding:12px 14px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
             <input id="rtkMessageInput" type="text" placeholder="Написать сообщение..." required
               style="flex:1;padding:11px 14px;border-radius:14px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
             <button type="submit"
               style="padding:11px 18px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
-              Отправить
+              ➤
             </button>
           </form>
         </div>
       </div>
 
-      <!-- Вкладка 2: Профиль пользователя (как в Telegram) -->
+      <!-- Вкладка 2: Профиль пользователя -->
       <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:24px 16px;">
         <form id="rtkProfileForm" style="max-width:480px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;">
           <div style="display:flex;align-items:center;gap:14px;">
@@ -705,6 +733,8 @@
     </div>
   </div>
 
+  <audio id="rtkRemoteAudio" autoplay playsinline></audio>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import {
@@ -712,7 +742,6 @@
       GoogleAuthProvider,
       signInWithPopup,
       signInWithRedirect,
-      signOut,
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     import {
@@ -721,6 +750,7 @@
       getDoc,
       setDoc,
       updateDoc,
+      deleteDoc,
       collection,
       query,
       where,
@@ -753,21 +783,31 @@
     const googleLoginBtn = document.getElementById("rtkGoogleLoginBtn");
     const authBackToSite = document.getElementById("rtkAuthBackToSite");
     const exitToSiteBtn = document.getElementById("rtkExitToSiteBtn");
-    const logoutBtn = document.getElementById("rtkLogoutBtn");
 
     const tabChats = document.getElementById("rtkTabChats");
     const tabProfile = document.getElementById("rtkTabProfile");
     const chatsView = document.getElementById("rtkChatsView");
     const profileView = document.getElementById("rtkProfileView");
 
+    const sidebarEl = document.getElementById("rtkSidebar");
+    const chatPaneEl = document.getElementById("rtkChatPane");
     const searchInput = document.getElementById("rtkSearchUsernameInput");
     const searchBtn = document.getElementById("rtkSearchUserBtn");
     const searchResultsEl = document.getElementById("rtkSearchResults");
     const chatListEl = document.getElementById("rtkChatList");
-    const activeChatHeader = document.getElementById("rtkActiveChatHeader");
+    const backToDialogsBtn = document.getElementById("rtkBackToDialogsBtn");
+    const peerInfoBox = document.getElementById("rtkPeerInfoBox");
+    const dialogActionsEl = document.getElementById("rtkDialogActions");
+    const callPeerBtn = document.getElementById("rtkCallPeerBtn");
+    const blockPeerBtn = document.getElementById("rtkBlockPeerBtn");
+    const deletePeerBtn = document.getElementById("rtkDeletePeerBtn");
+    const callBannerEl = document.getElementById("rtkCallBanner");
+    const callStatusTextEl = document.getElementById("rtkCallStatusText");
+    const hangupCallBtn = document.getElementById("rtkHangupCallBtn");
     const messagesListEl = document.getElementById("rtkMessagesList");
     const sendMsgForm = document.getElementById("rtkSendMessageForm");
     const msgInput = document.getElementById("rtkMessageInput");
+    const remoteAudio = document.getElementById("rtkRemoteAudio");
 
     const profileForm = document.getElementById("rtkProfileForm");
     const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
@@ -784,15 +824,55 @@
     let currentUser = null;
     let currentProfile = null;
     let activeChatId = null;
+    let activePeer = null;
+    let allUsers = [];
+    let chatsMap = new Map();
+    let blockedIds = new Set();
+    let hiddenIds = new Set();
     let unsubChats = null;
+    let unsubUsers = null;
     let unsubMessages = null;
-    const usersCache = new Map();
+    let unsubCall = null;
+    let unsubCandidates = null;
+    let localStream = null;
+    let peerConnection = null;
 
-    const cleanUsername = (u) => (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
+    const rtcConfig = {
+      iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+    };
+
+    const isMobileLayout = () => window.innerWidth < 768;
+
+    function syncResponsiveDialogLayout() {
+      if (!isMobileLayout()) {
+        sidebarEl.style.display = "flex";
+        sidebarEl.style.maxWidth = "380px";
+        chatPaneEl.style.display = "flex";
+        backToDialogsBtn.style.display = activeChatId ? "inline-flex" : "none";
+        return;
+      }
+
+      sidebarEl.style.maxWidth = "100%";
+      if (activeChatId) {
+        sidebarEl.style.display = "none";
+        chatPaneEl.style.display = "flex";
+        backToDialogsBtn.style.display = "inline-flex";
+      } else {
+        sidebarEl.style.display = "flex";
+        chatPaneEl.style.display = "none";
+        backToDialogsBtn.style.display = "none";
+      }
+    }
+
+    window.addEventListener("resize", syncResponsiveDialogLayout);
+
+    const cleanUsername = (u) =>
+      (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
 
     function openMessenger() {
       messengerEl.style.display = "flex";
       document.body.style.overflow = "hidden";
+      syncResponsiveDialogLayout();
     }
 
     function closeMessenger() {
@@ -816,13 +896,6 @@
       }
     });
 
-    logoutBtn.addEventListener("click", async () => {
-      if (unsubChats) unsubChats();
-      if (unsubMessages) unsubMessages();
-      activeChatId = null;
-      await signOut(auth);
-    });
-
     tabChats.addEventListener("click", () => {
       chatsView.style.display = "flex";
       profileView.style.display = "none";
@@ -830,6 +903,7 @@
       tabChats.style.border = "none";
       tabProfile.style.background = "#1e293b";
       tabProfile.style.border = "1px solid #334155";
+      syncResponsiveDialogLayout();
     });
 
     tabProfile.addEventListener("click", () => {
@@ -873,7 +947,9 @@
     async function ensureUserProfile(user) {
       const ref = doc(db, "users", user.uid);
       const snap = await getDoc(ref);
-      const baseUsername = cleanUsername(user.email?.split("@")[0] || `user_${user.uid.slice(0, 6)}`) || `user_${user.uid.slice(0, 6)}`;
+      const baseUsername =
+        cleanUsername(user.email?.split("@")[0] || `user_${user.uid.slice(0, 6)}`) ||
+        `user_${user.uid.slice(0, 6)}`;
 
       if (!snap.exists()) {
         const profile = {
@@ -929,21 +1005,83 @@
 
       await updateDoc(doc(db, "users", currentUser.uid), updated);
       currentProfile = { ...currentProfile, ...updated };
-      usersCache.set(currentUser.uid, currentProfile);
       profileAvatarPreview.src = currentProfile.photoURL;
       profileStatus.style.color = "#34d399";
       profileStatus.textContent = "Профиль сохранён!";
       setTimeout(() => { profileStatus.textContent = ""; }, 2500);
     });
 
-    async function getUserById(uid) {
-      if (usersCache.has(uid)) return usersCache.get(uid);
-      const snap = await getDoc(doc(db, "users", uid));
-      const data = snap.exists()
-        ? { uid, ...snap.data() }
-        : { uid, name: "Пользователь", username: "user", bio: "", photoURL: DEFAULT_AVATAR };
-      usersCache.set(uid, data);
-      return data;
+    function renderPeopleAndDialogs() {
+      if (!currentUser) return;
+      chatListEl.innerHTML = "";
+
+      const peers = allUsers.filter(
+        (u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid) && !hiddenIds.has(u.uid)
+      );
+
+      peers.sort((a, b) => {
+        const pairA = [currentUser.uid, a.uid].sort().join("_");
+        const pairB = [currentUser.uid, b.uid].sort().join("_");
+        const tA = chatsMap.get(pairA)?.updatedAt?.seconds || 0;
+        const tB = chatsMap.get(pairB)?.updatedAt?.seconds || 0;
+        return tB - tA;
+      });
+
+      if (!peers.length) {
+        chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет доступных пользователей.</div>`;
+        return;
+      }
+
+      for (const peer of peers) {
+        const pairKey = [currentUser.uid, peer.uid].sort().join("_");
+        const chatMeta = chatsMap.get(pairKey);
+        const isSelected = activeChatId === pairKey;
+
+        const row = document.createElement("div");
+        row.style.cssText = `width:100%;padding:10px;border-radius:14px;background:${isSelected ? "#1e293b" : "#0f172a"};border:1px solid #1f2937;color:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:8px;`;
+
+        const openArea = document.createElement("div");
+        openArea.style.cssText = "display:flex;align-items:center;gap:10px;min-width:0;flex:1;cursor:pointer;";
+        openArea.innerHTML = `
+          <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+          <div style="min-width:0;flex:1;">
+            <div style="display:flex;justify-content:space-between;gap:6px;align-items:baseline;">
+              <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(peer.name || "Пользователь")}</span>
+              <span style="font-size:11px;color:#60a5fa;flex-shrink:0;">@${escapeHtml(peer.username || "user")}</span>
+            </div>
+            <div style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
+              ${escapeHtml(chatMeta?.lastMessage || peer.bio || "Нажмите, чтобы войти в диалог")}
+            </div>
+          </div>
+        `;
+        openArea.addEventListener("click", () => startOrOpenChat(peer));
+
+        const miniBtns = document.createElement("div");
+        miniBtns.style.cssText = "display:flex;gap:4px;flex-shrink:0;";
+
+        const bBtn = document.createElement("button");
+        bBtn.type = "button";
+        bBtn.textContent = "Блок";
+        bBtn.style.cssText = "padding:5px 7px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:10px;font-weight:700;cursor:pointer;";
+        bBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          blockUser(peer.uid);
+        });
+
+        const dBtn = document.createElement("button");
+        dBtn.type = "button";
+        dBtn.textContent = "✕";
+        dBtn.title = "Удалить";
+        dBtn.style.cssText = "padding:5px 7px;border-radius:8px;border:1px solid #7f1d1d;background:#450a0a;color:#fca5a5;font-size:10px;font-weight:700;cursor:pointer;";
+        dBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteUserFromList(peer.uid);
+        });
+
+        miniBtns.append(bBtn, dBtn);
+        row.append(openArea, miniBtns);
+        chatListEl.appendChild(row);
+      }
     }
 
     searchBtn.addEventListener("click", async () => {
@@ -962,7 +1100,6 @@
 
       snap.forEach((d) => {
         const u = { uid: d.id, ...d.data() };
-        usersCache.set(u.uid, u);
         if (u.uid === currentUser.uid) return;
 
         const item = document.createElement("div");
@@ -975,7 +1112,7 @@
               <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username)}</div>
             </div>
           </div>
-          <button type="button" data-uid="${u.uid}" style="padding:6px 10px;border-radius:9px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
+          <button type="button" style="padding:6px 10px;border-radius:9px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
         `;
         item.querySelector("button").addEventListener("click", () => startOrOpenChat(u));
         searchResultsEl.appendChild(item);
@@ -983,76 +1120,60 @@
     });
 
     async function startOrOpenChat(otherUser) {
-      if (!currentUser) return;
+      if (!currentUser || !otherUser) return;
       const pairKey = [currentUser.uid, otherUser.uid].sort().join("_");
-      const qC = query(collection(db, "chats"), where("pairKey", "==", pairKey));
-      const snap = await getDocs(qC);
-
-      let chatId;
-      if (!snap.empty) {
-        chatId = snap.docs[0].id;
-      } else {
-        const created = await addDoc(collection(db, "chats"), {
+      await setDoc(
+        doc(db, "chats", pairKey),
+        {
           pairKey,
           members: [currentUser.uid, otherUser.uid],
-          lastMessage: "",
           updatedAt: serverTimestamp()
-        });
-        chatId = created.id;
+        },
+        { merge: true }
+      );
+      selectChat(pairKey, otherUser);
+    }
+
+    async function backToDialogsList() {
+      await hangupCall();
+      activeChatId = null;
+      activePeer = null;
+      if (unsubMessages) {
+        unsubMessages();
+        unsubMessages = null;
       }
-      selectChat(chatId, otherUser);
+      if (unsubCall) {
+        unsubCall();
+        unsubCall = null;
+      }
+      if (unsubCandidates) {
+        unsubCandidates();
+        unsubCandidates = null;
+      }
+      sendMsgForm.style.display = "none";
+      dialogActionsEl.style.display = "none";
+      backToDialogsBtn.style.display = "none";
+      messagesListEl.innerHTML = "";
+      peerInfoBox.innerHTML = `<span style="color:#94a3b8;font-size:13px;">Нажмите на человека слева, чтобы открыть диалог</span>`;
+      syncResponsiveDialogLayout();
+      renderPeopleAndDialogs();
     }
 
-    function subscribeChats(uid) {
-      if (unsubChats) unsubChats();
-      const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
-      unsubChats = onSnapshot(qC, async (snap) => {
-        const items = [];
-        for (const d of snap.docs) {
-          const chat = { id: d.id, ...d.data() };
-          const otherId = (chat.members || []).find((m) => m !== uid) || uid;
-          const otherProfile = await getUserById(otherId);
-          items.push({ chat, otherProfile });
-        }
-        items.sort((a, b) => (b.chat.updatedAt?.seconds || 0) - (a.chat.updatedAt?.seconds || 0));
-
-        chatListEl.innerHTML = "";
-        if (items.length === 0) {
-          chatListEl.innerHTML = `<div style="padding:16px;font-size:12px;color:#64748b;text-align:center;">Пока нет чатов. Найдите друга по @username выше.</div>`;
-          return;
-        }
-
-        for (const { chat, otherProfile } of items) {
-          const row = document.createElement("button");
-          row.type = "button";
-          const isSelected = activeChatId === chat.id;
-          row.style.cssText = `width:100%;text-align:left;padding:10px;border-radius:14px;border:none;background:${isSelected ? "#1e293b" : "transparent"};color:#f8fafc;cursor:pointer;display:flex;align-items:center;gap:10px;`;
-          row.innerHTML = `
-            <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
-            <div style="min-width:0;flex:1;">
-              <div style="display:flex;justify-content:space-between;gap:6px;">
-                <span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.name)}</span>
-                <span style="font-size:11px;color:#60a5fa;">@${escapeHtml(otherProfile.username)}</span>
-              </div>
-              <div style="font-size:12px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
-                ${escapeHtml(chat.lastMessage || otherProfile.bio || "Нажмите, чтобы написать")}
-              </div>
-            </div>
-          `;
-          row.addEventListener("click", () => selectChat(chat.id, otherProfile));
-          chatListEl.appendChild(row);
-        }
-      });
-    }
+    backToDialogsBtn.addEventListener("click", backToDialogsList);
 
     function selectChat(chatId, otherProfile) {
       activeChatId = chatId;
+      activePeer = otherProfile;
       sendMsgForm.style.display = "flex";
+      dialogActionsEl.style.display = "flex";
+      backToDialogsBtn.style.display = "inline-flex";
+      syncResponsiveDialogLayout();
+      renderPeopleAndDialogs();
 
-      activeChatHeader.innerHTML = `
-        <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
+      peerInfoBox.innerHTML = `
+        <img src="${otherProfile.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
         <div style="min-width:0;">
-          <div style="font-size:14px;font-weight:700;line-height:1.2;">${escapeHtml(otherProfile.name)} <span style="font-size:12px;color:#60a5fa;font-weight:500;">@${escapeHtml(otherProfile.username)}</span></div>
+          <div style="font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.name || "Собеседник")} <span style="font-size:12px;color:#60a5fa;font-weight:500;">@${escapeHtml(otherProfile.username || "user")}</span></div>
           <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(otherProfile.bio || "Пользователь runotoks")}</div>
         </div>
       `;
@@ -1071,11 +1192,14 @@
         });
         messagesListEl.scrollTop = messagesListEl.scrollHeight;
       });
+
+      subscribeCall(chatId);
     }
 
     sendMsgForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!currentUser || !activeChatId) return;
+      if (!currentUser || !activeChatId || !activePeer) return;
+      if (blockedIds.has(activePeer.uid)) return;
       const text = msgInput.value.trim();
       if (!text) return;
       msgInput.value = "";
@@ -1086,11 +1210,202 @@
         createdAt: serverTimestamp()
       });
 
-      await updateDoc(doc(db, "chats", activeChatId), {
-        lastMessage: text,
-        updatedAt: serverTimestamp()
-      });
+      await setDoc(
+        doc(db, "chats", activeChatId),
+        {
+          lastMessage: text,
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
     });
+
+    async function blockUser(targetUid) {
+      if (!currentUser || !targetUid) return;
+      blockedIds.add(targetUid);
+      await setDoc(doc(db, "users", currentUser.uid, "blocked", targetUid), {
+        blockedAt: serverTimestamp()
+      });
+      if (activePeer?.uid === targetUid) {
+        await backToDialogsList();
+      } else {
+        renderPeopleAndDialogs();
+      }
+    }
+
+    async function deleteUserFromList(targetUid) {
+      if (!currentUser || !targetUid) return;
+      hiddenIds.add(targetUid);
+      await setDoc(doc(db, "users", currentUser.uid, "hiddenUsers", targetUid), {
+        hiddenAt: serverTimestamp()
+      });
+      if (activePeer?.uid === targetUid) {
+        await backToDialogsList();
+      } else {
+        renderPeopleAndDialogs();
+      }
+    }
+
+    blockPeerBtn.addEventListener("click", () => activePeer && blockUser(activePeer.uid));
+    deletePeerBtn.addEventListener("click", () => activePeer && deleteUserFromList(activePeer.uid));
+
+    async function setupLocalAudio() {
+      if (localStream) return localStream;
+      localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      return localStream;
+    }
+
+    async function createPeerConnection(chatId) {
+      if (peerConnection) peerConnection.close();
+      peerConnection = new RTCPeerConnection(rtcConfig);
+
+      const stream = await setupLocalAudio();
+      stream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, stream);
+      });
+
+      peerConnection.ontrack = (event) => {
+        if (event.streams && event.streams[0]) {
+          remoteAudio.srcObject = event.streams[0];
+        }
+      };
+
+      peerConnection.onicecandidate = async (event) => {
+        if (event.candidate && currentUser && chatId) {
+          await addDoc(collection(db, "chats", chatId, "call", "current", "candidates"), {
+            senderId: currentUser.uid,
+            candidate: event.candidate.toJSON()
+          });
+        }
+      };
+
+      return peerConnection;
+    }
+
+    callPeerBtn.addEventListener("click", async () => {
+      if (!currentUser || !activePeer || !activeChatId) return;
+      try {
+        const pc = await createPeerConnection(activeChatId);
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+
+        await setDoc(doc(db, "chats", activeChatId, "call", "current"), {
+          callerId: currentUser.uid,
+          callerName: currentProfile?.name || currentUser.displayName || "Пользователь",
+          calleeId: activePeer.uid,
+          offer: { type: offer.type, sdp: offer.sdp },
+          status: "calling",
+          updatedAt: serverTimestamp()
+        });
+
+        callStatusTextEl.textContent = `Звонок ${activePeer.name || "собеседнику"}...`;
+        callBannerEl.style.display = "flex";
+      } catch (_) {
+        callStatusTextEl.textContent = "Нет доступа к микрофону";
+        callBannerEl.style.display = "flex";
+      }
+    });
+
+    async function hangupCall() {
+      if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+      }
+      if (localStream) {
+        localStream.getTracks().forEach((t) => t.stop());
+        localStream = null;
+      }
+      if (activeChatId) {
+        await deleteDoc(doc(db, "chats", activeChatId, "call", "current")).catch(() => {});
+      }
+      callBannerEl.style.display = "none";
+    }
+
+    hangupCallBtn.addEventListener("click", hangupCall);
+
+    function subscribeCall(chatId) {
+      if (unsubCall) unsubCall();
+      if (unsubCandidates) unsubCandidates();
+
+      unsubCandidates = onSnapshot(
+        collection(db, "chats", chatId, "call", "current", "candidates"),
+        async (snap) => {
+          if (!peerConnection || !currentUser) return;
+          for (const change of snap.docChanges()) {
+            if (change.type === "added") {
+              const cData = change.doc.data();
+              if (cData.senderId !== currentUser.uid && cData.candidate) {
+                try {
+                  await peerConnection.addIceCandidate(new RTCIceCandidate(cData.candidate));
+                } catch (_) {}
+              }
+            }
+          }
+        }
+      );
+
+      unsubCall = onSnapshot(doc(db, "chats", chatId, "call", "current"), async (snap) => {
+        if (!snap.exists()) {
+          callBannerEl.style.display = "none";
+          return;
+        }
+        const data = snap.data();
+        callBannerEl.style.display = "flex";
+
+        if (data.callerId === currentUser.uid) {
+          callStatusTextEl.textContent = data.answer
+            ? "Звонок активен"
+            : `Звонок ${activePeer?.name || "собеседнику"}...`;
+          if (data.answer && peerConnection && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+          }
+        } else {
+          callStatusTextEl.textContent = `Входящий звонок от ${data.callerName || activePeer?.name || "собеседника"}`;
+          if (data.offer && !peerConnection) {
+            try {
+              const pc = await createPeerConnection(chatId);
+              await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
+              const answer = await pc.createAnswer();
+              await pc.setLocalDescription(answer);
+              await setDoc(
+                doc(db, "chats", chatId, "call", "current"),
+                { answer: { type: answer.type, sdp: answer.sdp }, status: "connected" },
+                { merge: true }
+              );
+              callStatusTextEl.textContent = "Звонок активен";
+            } catch (_) {}
+          }
+        }
+      });
+    }
+
+    function subscribeUserLists(uid) {
+      if (unsubUsers) unsubUsers();
+      unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
+        allUsers = snap.docs.map((d) => ({ uid: d.id, ...d.data() }));
+        renderPeopleAndDialogs();
+      });
+
+      onSnapshot(collection(db, "users", uid, "blocked"), (snap) => {
+        blockedIds = new Set(snap.docs.map((d) => d.id));
+        renderPeopleAndDialogs();
+      });
+
+      onSnapshot(collection(db, "users", uid, "hiddenUsers"), (snap) => {
+        hiddenIds = new Set(snap.docs.map((d) => d.id));
+        renderPeopleAndDialogs();
+      });
+
+      if (unsubChats) unsubChats();
+      const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
+      unsubChats = onSnapshot(qC, (snap) => {
+        chatsMap = new Map();
+        snap.forEach((d) => {
+          chatsMap.set(d.id, d.data());
+        });
+        renderPeopleAndDialogs();
+      });
+    }
 
     function escapeHtml(str) {
       return String(str || "")
@@ -1111,9 +1426,9 @@
       authScreen.style.display = "none";
       mainApp.style.display = "flex";
       currentProfile = await ensureUserProfile(user);
-      usersCache.set(user.uid, currentProfile);
       fillProfileForm(currentProfile, user);
-      subscribeChats(user.uid);
+      subscribeUserLists(user.uid);
+      syncResponsiveDialogLayout();
     });
   </script>
 </body>
