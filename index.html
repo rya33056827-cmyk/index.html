@@ -145,7 +145,7 @@
     </main>
   </section>
 
-  <!-- Нижняя панель на главной странице: левее покупки/лента, кружок поиска + свой профиль рядом -->
+  <!-- Нижняя панель на главной странице -->
   <div id="rtkHomeBottomDock"
     style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 14px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
     <button id="rtkHomeShopBtn" type="button" title="Покупки"
@@ -330,7 +330,7 @@
 
           <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <!-- Панель перед клавиатурой: смена шрифтов + эффекты 🔥 ❤️ ⭐ + подсказка //светящийся подчёркнутый// -->
+          <!-- Панель перед клавиатурой -->
           <div id="rtkComposerDock" style="display:none;flex-direction:column;border-top:1px solid #1f2937;background:#111827;flex-shrink:0;">
             <div style="padding:6px 10px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;gap:6px;overflow-x:auto;" class="no-scrollbar">
               <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
@@ -463,7 +463,7 @@
         </div>
       </div>
 
-      <!-- Отдельная страница настроек (по кнопке ☰): смена языка + заблокированные + архив -->
+      <!-- Отдельная страница настроек -->
       <div id="rtkSettingsPage" style="display:none;flex:1;overflow-y:auto;padding:20px 16px;background:#0b1120;">
         <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:18px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -805,7 +805,7 @@
 
     const RUNOTOKS_AI_URL = "https://runotoks-1.onrender.com/chat";
     const RUNOTOKS_AI_BASE = "https://runotoks-1.onrender.com";
-    const STORY_LIFETIME_MS = 20 * 60 * 60 * 1000; // 20 часов
+    const STORY_LIFETIME_MS = 20 * 60 * 60 * 1000;
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -828,7 +828,6 @@
       uk: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профіль", searchPeople: "Пошук людей", numberBtn: "Номер", storyBtn: "Сторіс", postsLabel: "Дописи", followersLabel: "Підписники", followingLabel: "Підписки", settingsTitle: "Налаштування", languageLabel: "Мова інтерфейсу та чату", blockedTitle: "Заблоковані люди", archiveTitle: "Архів публікацій і сторіс" }
     };
 
-    // DOM ссылки
     const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
     const homeProfileCircleBtn = document.getElementById("rtkHomeProfileCircleBtn");
     const homeProfileAvatar = document.getElementById("rtkHomeProfileAvatar");
@@ -1002,7 +1001,6 @@
     const cleanPhone = (p) => String(p || "").replace(/[^\d+]/g, "");
     const isMobileViewport = () => window.innerWidth <= 768;
 
-    // Публиковать в ленту может только владелец
     function isSiteOwner() {
       if (!currentUser) return true;
       return !currentProfile?.ownerUid || currentUser.uid === currentProfile.ownerUid;
@@ -1215,7 +1213,6 @@
     authBackToSite.addEventListener("click", closeMessenger);
     exitToSiteBtn.addEventListener("click", closeMessenger);
 
-    // Звонок в чате
     function triggerVoiceCall() {
       const targetName = activePeer?.name || "Собеседник";
       voiceCallPeerName.textContent = `Звонок: ${targetName}`;
@@ -1241,7 +1238,6 @@
     composerCallBtn.addEventListener("click", triggerVoiceCall);
     endVoiceCallBtn.addEventListener("click", stopVoiceCall);
 
-    // Нижний поиск людей на главной
     homeSearchCircleBtn.addEventListener("click", () => {
       homePeopleQuery.value = "";
       renderHomePeopleModal("");
@@ -1842,35 +1838,56 @@
       try {
         const r = await fetch(RUNOTOKS_AI_BASE, { method: "GET", mode: "cors" });
         aiMessagesCache.push({ id: "chk_ok_" + Date.now(), senderId: AI_ASSISTANT_ID, text: `Сервер ответил (статус ${r.status}). Можно писать в чат.` });
-      } catch (_) {
-        aiMessagesCache.push({ id: "chk_err_" + Date.now(), senderId: AI_ASSISTANT_ID, text: "Failed to fetch: проверьте, что runotoks-1 на Render в статусе Live, включён CORS в app.py и задан GEMINI_API_KEY." });
+      } catch (err) {
+        aiMessagesCache.push({ id: "chk_err_" + Date.now(), senderId: AI_ASSISTANT_ID, text: `Не удалось достучаться до сервера (${err?.message || "сеть"}). Проверьте статус Live на Render и настройки CORS в app.py.` });
       }
       localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
       if (activePeer?.isAI) renderAIList();
     });
 
+    async function postChatRequest(payload) {
+      const res = await fetch(RUNOTOKS_AI_URL, {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const rawText = await res.text();
+      let data = {};
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch (_) {
+        data = { error: rawText };
+      }
+      if (!res.ok) {
+        throw new Error(data.error || data.message || `Ошибка сервера (${res.status})`);
+      }
+      return data.reply || data.response || data.answer || "Пустой ответ от модели.";
+    }
+
     async function askRunotoksServer(promptText, history = []) {
       const cleanPrompt = String(promptText || "").trim();
       if (!cleanPrompt) return "Чем могу помочь?";
+      const payload = {
+        message: cleanPrompt,
+        language: languageSelect.value || "ru",
+        history: history.slice(-8).map((m) => ({
+          role: m.senderId === AI_ASSISTANT_ID ? "model" : "user",
+          text: m.text || ""
+        }))
+      };
+
       try {
-        const res = await fetch(RUNOTOKS_AI_URL, {
-          method: "POST",
-          mode: "cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: cleanPrompt,
-            language: languageSelect.value || "ru",
-            history: history.slice(-8).map((m) => ({
-              role: m.senderId === AI_ASSISTANT_ID ? "model" : "user",
-              text: m.text || ""
-            }))
-          })
-        });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) return data.error || `Сервер ИИ вернул ошибку (${res.status}).`;
-        return data.reply || data.response || "Пустой ответ от модели.";
-      } catch (_) {
-        return "Ошибка соединения с сервером: Failed to fetch. Проверьте RUNOTOKS_AI_URL, статус Live на Render, CORS в app.py и GEMINI_API_KEY.";
+        return await postChatRequest(payload);
+      } catch (firstErr) {
+        // Повторная попытка на случай пробуждения инстанса Render
+        await new Promise((r) => setTimeout(r, 1500));
+        try {
+          return await postChatRequest(payload);
+        } catch (secondErr) {
+          const reason = secondErr?.message || firstErr?.message || "нет связи с сервером";
+          return `Не удалось получить ответ от ИИ (${reason}). Убедитесь, что runotoks-1 в статусе Live на Render, задан GEMINI_API_KEY и маршрут /chat настроен в app.py.`;
+        }
       }
     }
 
