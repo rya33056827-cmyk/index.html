@@ -55,30 +55,16 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased w-full">
 
-  <!-- Шапка: только Лента/Покупки (поменяны местами), Чат, Регистрация и Корзина -->
+  <!-- Шапка: логотип и ровно 3 кнопки справа (Чат, Регистрация, Корзина) -->
   <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200">
     <div class="w-full px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-        <button id="rtkLogoHomeBtn" type="button" class="flex items-center gap-2 text-left cursor-pointer shrink-0">
-          <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
-          <div class="hidden sm:block">
-            <div class="font-extrabold text-lg tracking-tight leading-none rtk-grad-orange-green">runotoks</div>
-            <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">FEED & STORE</div>
-          </div>
-        </button>
-
-        <!-- Покупки слева, Лента справа -->
-        <nav class="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
-          <button id="pageNavShopBtn" type="button"
-            class="px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap">
-            🛍 Покупки
-          </button>
-          <button id="pageNavFeedBtn" type="button"
-            class="px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap">
-            🏠 Лента
-          </button>
-        </nav>
-      </div>
+      <button id="rtkLogoHomeBtn" type="button" class="flex items-center gap-2 text-left cursor-pointer shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
+        <div class="hidden sm:block">
+          <div class="font-extrabold text-lg tracking-tight leading-none rtk-grad-orange-green">runotoks</div>
+          <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">FEED & STORE</div>
+        </div>
+      </button>
 
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <button id="rtkChatBtn" type="button"
@@ -103,7 +89,7 @@
     </div>
   </header>
 
-  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН (посты видны всем пользователям) -->
+  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН -->
   <section id="feedPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28">
     <div id="rtkOwnerFeedComposer" class="w-full mb-5 bg-slate-900 text-white rounded-3xl p-4 sm:p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
       <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
@@ -121,19 +107,19 @@
     <div id="rtkHomeFeedList" class="w-full flex flex-col gap-5"></div>
   </section>
 
-  <!-- СТРАНИЦА 2: ПОКУПКИ ВО ВЕСЬ ЭКРАН (все товары удалены по умолчанию) -->
+  <!-- СТРАНИЦА 2: ПОКУПКИ ВО ВЕСЬ ЭКРАН (валюта: грн, без ограничений по товарам) -->
   <section id="shopPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28" style="display:none;">
     <div id="rtkOwnerProductCreator" class="w-full mb-6 p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <input id="newProdTitle" type="text" placeholder="Название товара" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
         <input id="newProdCategory" type="text" placeholder="Категория (например, Аудио)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
-        <input id="newProdPrice" type="number" placeholder="Цена, ₽" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
+        <input id="newProdPrice" type="number" placeholder="Цена, грн" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
       </div>
       <input id="newProdColors" type="text" placeholder="Цвета через запятую (например: Черный, Серебро, Красный)" class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
       <textarea id="newProdDesc" rows="2" placeholder="Описание товара..." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none"></textarea>
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="space-y-1">
-          <label class="block text-xs font-semibold text-slate-600">Фотографии товара (до 10 штук):</label>
+          <label class="block text-xs font-semibold text-slate-600">Фотографии товара (любое количество):</label>
           <input id="newProdImagesInput" type="file" accept="image/*" multiple class="text-xs text-slate-600" />
         </div>
         <button id="createProductBtn" type="button" class="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition cursor-pointer">
@@ -155,7 +141,7 @@
     </main>
   </section>
 
-  <!-- Нижняя панель: Покупки и Лента поменяны местами -->
+  <!-- Нижняя панель навигации -->
   <div id="rtkHomeBottomDock"
     style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
     <button id="rtkHomeShopBtn" type="button" title="Покупки"
@@ -177,7 +163,7 @@
     </button>
   </div>
 
-  <!-- Входящий звонок и пропущенные звонки (работают в фоне даже когда телефон не на сайте) -->
+  <!-- Входящий звонок и пропущенные звонки -->
   <div id="rtkIncomingCallModal"
     style="display:none;position:fixed;inset:0;z-index:10060;background:rgba(2,6,23,0.88);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;">
     <div style="width:100%;max-width:380px;background:#111827;border:1px solid #334155;border-radius:28px;padding:24px;text-align:center;color:#fff;box-shadow:0 24px 60px rgba(0,0,0,0.65);">
@@ -665,7 +651,7 @@
       <div class="p-5 border-t border-slate-200 bg-slate-50">
         <div class="flex justify-between font-extrabold text-base mb-3">
           <span>Итого:</span>
-          <span id="totalText">0 ₽</span>
+          <span id="totalText">0 грн</span>
         </div>
         <button onclick="checkoutSimple()" class="w-full py-3 rounded-full bg-slate-900 text-white text-sm font-semibold">Оформить заказ</button>
       </div>
@@ -673,8 +659,12 @@
   </div>
 
   <script>
-    // Все товары удалены по умолчанию; добавляются только владельцем
     let PRODUCTS = [];
+    try {
+      const savedProds = JSON.parse(localStorage.getItem("runotoks_products_v1") || "[]");
+      if (Array.isArray(savedProds)) PRODUCTS = savedProds;
+    } catch (_) {}
+
     const cardState = {};
     function getCardState(id) {
       if (!cardState[id]) cardState[id] = { photoIdx: 0, colorIdx: 0 };
@@ -687,7 +677,7 @@
     let activeCategory = "Все";
     let cart = JSON.parse(localStorage.getItem("runotoks_cart") || "[]");
     let orders = JSON.parse(localStorage.getItem("runotoks_orders") || "[]");
-    const formatPrice = (n) => Number(n || 0).toLocaleString("ru-RU") + " ₽";
+    const formatPrice = (n) => Number(n || 0).toLocaleString("ru-RU") + " грн";
 
     function renderCategories() {
       const cats = ["Все", ...new Set(PRODUCTS.map((p) => p.category).filter(Boolean))];
@@ -738,7 +728,7 @@
 
       document.getElementById("productsGrid").innerHTML = list.map((p) => {
         const st = getCardState(p.id);
-        const photos = (p.images && p.images.length ? p.images : [p.image]).slice(0, 10);
+        const photos = (p.images && p.images.length ? p.images : [p.image]).filter(Boolean);
         const activePhoto = photos[st.photoIdx] || photos[0] || "";
         const activeColor = p.variants[st.colorIdx] || p.variants[0] || "Стандарт";
 
@@ -765,7 +755,7 @@
             <div onclick="openProductModal(${p.id})" class="relative h-72 sm:h-80 bg-slate-100 overflow-hidden cursor-pointer">
               <img src="${activePhoto}" alt="${p.title}" class="w-full h-full object-cover" />
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/75 text-white text-[11px] font-bold">
-                📷 ${st.photoIdx + 1}/${photos.length}
+                📷 ${st.photoIdx + 1}/${Math.max(1, photos.length)}
               </span>
               <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 text-slate-900 text-[11px] font-bold">
                 Цвет: ${activeColor}
@@ -794,7 +784,7 @@
       const p = PRODUCTS.find((x) => x.id === id);
       if (!p) return;
       const st = getCardState(id);
-      const photos = (p.images && p.images.length ? p.images : [p.image]).slice(0, 10);
+      const photos = (p.images && p.images.length ? p.images : [p.image]).filter(Boolean);
       let photoIdx = st.photoIdx || 0;
       let sel = p.variants[st.colorIdx] || p.variants[0];
 
@@ -938,8 +928,6 @@
 
     const feedPageSection = document.getElementById("feedPageSection");
     const shopPageSection = document.getElementById("shopPageSection");
-    const pageNavFeedBtn = document.getElementById("pageNavFeedBtn");
-    const pageNavShopBtn = document.getElementById("pageNavShopBtn");
     const headerAuthBtn = document.getElementById("rtkHeaderAuthBtn");
     const homeFeedJumpBtn = document.getElementById("rtkHomeFeedJumpBtn");
     const homeShopBtn = document.getElementById("rtkHomeShopBtn");
@@ -951,23 +939,21 @@
       shopPageSection.style.display = isShop ? "block" : "none";
 
       if (isShop) {
-        pageNavShopBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap";
-        pageNavFeedBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap";
         homeShopBtn.style.background = "#2563eb";
         homeFeedJumpBtn.style.background = "#1e293b";
       } else {
-        pageNavFeedBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap";
-        pageNavShopBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap";
         homeFeedJumpBtn.style.background = "#2563eb";
         homeShopBtn.style.background = "#1e293b";
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    pageNavFeedBtn.addEventListener("click", () => setActiveSitePage("feed"));
-    pageNavShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
     homeFeedJumpBtn.addEventListener("click", () => setActiveSitePage("feed"));
-    homeShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
+    homeShopBtn.addEventListener("click", () => {
+      setActiveSitePage("shop");
+      renderCategories();
+      renderProducts();
+    });
     logoHomeBtn.addEventListener("click", () => setActiveSitePage("feed"));
 
     const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
@@ -1171,16 +1157,15 @@
     const cleanPhone = (p) => String(p || "").replace(/[^\d+]/g, "");
     const isMobileViewport = () => window.innerWidth <= 768;
 
-    function isSiteOwner() {
-      if (!currentUser) return false;
-      if (OWNER_EMAIL_OVERRIDE && (currentUser.email || "").toLowerCase() === OWNER_EMAIL_OVERRIDE.toLowerCase()) {
-        return true;
-      }
-      return Boolean(siteOwnerUid && currentUser.uid === siteOwnerUid);
+    // Без ограничений публикации для автора: любой авторизованный пользователь (или владелец) может публиковать посты и товары без лимитов
+    function canPublishContent() {
+      if (currentUser) return true;
+      if (OWNER_EMAIL_OVERRIDE && (currentUser?.email || "").toLowerCase() === OWNER_EMAIL_OVERRIDE.toLowerCase()) return true;
+      return Boolean(siteOwnerUid && currentUser?.uid === siteOwnerUid);
     }
 
     function applyOwnerFeedAccess() {
-      const canPublish = isSiteOwner();
+      const canPublish = canPublishContent();
       ownerFeedComposer.style.display = canPublish ? "block" : "none";
       ownerProductCreator.style.display = canPublish ? "block" : "none";
       headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Регистрация";
@@ -1189,14 +1174,14 @@
 
     function saveFeedPostsLocal() {
       try {
-        localStorage.setItem("rtk_feed_posts_v1", JSON.stringify(feedPostsCache.slice(0, 50)));
-        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
+        localStorage.setItem("rtk_feed_posts_v1", JSON.stringify(feedPostsCache));
+        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache));
       } catch (_) {}
     }
 
     function saveCallHistoryLocal() {
       try {
-        localStorage.setItem("rtk_call_history_v1", JSON.stringify(callHistoryCache.slice(0, 40)));
+        localStorage.setItem("rtk_call_history_v1", JSON.stringify(callHistoryCache));
       } catch (_) {}
       renderCallHistory();
     }
@@ -1226,7 +1211,6 @@
         : `<div style="font-size:11px;color:#94a3b8;">Звонков пока нет</div>`;
     }
 
-    // Звуковой сигнал звонка + браузерное / системное уведомление (работает даже когда телефон не на сайте)
     function startRingtone() {
       stopRingtone();
       try {
@@ -1287,7 +1271,6 @@
       Notification.requestPermission().catch(() => {});
     }
 
-    // Реальный голосовой WebRTC звонок с передачей звука (чтобы собеседники могли говорить)
     async function setupLocalAudioStream() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error("Микрофон недоступен в браузере");
@@ -1468,7 +1451,6 @@
     composerCallBtn.addEventListener("click", startOutgoingVoiceCall);
     endVoiceCallBtn.addEventListener("click", () => stopVoiceCall(true));
 
-    // Лента: посты видны всем пользователям
     window.togglePostLike = async (postId) => {
       if (!currentUser) {
         openMessenger("chats");
@@ -1527,7 +1509,7 @@
     };
 
     function renderHomeFeed() {
-      const canPublish = isSiteOwner();
+      const canPublish = canPublishContent();
       if (!feedPostsCache.length) {
         homeFeedList.innerHTML = `<div class="w-full text-sm text-slate-400 text-center py-14 rounded-3xl bg-slate-950/60 border border-slate-800">Лента пуста.</div>`;
         return;
@@ -1603,7 +1585,7 @@
 
       homeFeedList.querySelectorAll("button[data-archive-post]").forEach((btn) => {
         btn.addEventListener("click", async () => {
-          if (!isSiteOwner()) return;
+          if (!canPublishContent()) return;
           const idx = feedPostsCache.findIndex((p) => p.id === btn.dataset.archivePost);
           if (idx === -1) return;
           const [moved] = feedPostsCache.splice(idx, 1);
@@ -1627,8 +1609,12 @@
           id: d.data().id || d.id,
           ...d.data()
         }));
-        if (cloudPosts.length || !feedPostsCache.length) {
-          feedPostsCache = cloudPosts;
+        if (cloudPosts.length) {
+          const byId = new Map();
+          [...cloudPosts, ...feedPostsCache].forEach((item) => {
+            if (item && item.id && !byId.has(item.id)) byId.set(item.id, item);
+          });
+          feedPostsCache = Array.from(byId.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
           saveFeedPostsLocal();
           renderHomeFeed();
         }
@@ -1638,8 +1624,8 @@
     }
 
     publishFeedPostBtn.addEventListener("click", async () => {
-      if (!isSiteOwner()) {
-        alert("Публиковать посты может только владелец.");
+      if (!canPublishContent()) {
+        openMessenger("chats");
         return;
       }
       const caption = feedCaptionInput.value.trim();
@@ -1648,17 +1634,13 @@
         feedPublishStatus.textContent = "Введите текст поста или выберите фото/видео.";
         return;
       }
-      if (file && file.size > 900 * 1024) {
-        feedPublishStatus.textContent = "Для публикации всем пользователям выберите файл до 900 КБ.";
-        return;
-      }
 
       const saveNewPost = async (mediaType = "", mediaData = "") => {
-        const postId = "post_" + Date.now();
+        const postId = "post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
         const newPost = {
           id: postId,
           authorUid: currentUser?.uid || "",
-          author: currentProfile?.name || currentUser?.displayName || "Владелец",
+          author: currentProfile?.name || currentUser?.displayName || "Автор",
           caption,
           mediaType,
           mediaData,
@@ -1670,7 +1652,7 @@
         feedPostsCache.unshift(newPost);
         feedCaptionInput.value = "";
         feedMediaInput.value = "";
-        feedPublishStatus.textContent = "Пост опубликован в ленте для всех пользователей.";
+        feedPublishStatus.textContent = `Пост опубликован (всего постов: ${feedPostsCache.length}).`;
         saveFeedPostsLocal();
         renderHomeFeed();
         await addDoc(collection(db, "posts"), newPost).catch(() => {});
@@ -1686,8 +1668,8 @@
     });
 
     createProductBtn.addEventListener("click", async () => {
-      if (!isSiteOwner()) {
-        alert("Добавлять товары может только владелец.");
+      if (!canPublishContent()) {
+        openMessenger("chats");
         return;
       }
       const title = newProdTitle.value.trim();
@@ -1699,13 +1681,9 @@
         .map((c) => c.trim())
         .filter(Boolean);
 
-      const files = Array.from(newProdImagesInput.files || []).slice(0, 10);
+      const files = Array.from(newProdImagesInput.files || []);
       if (!title || price <= 0) {
-        newProdStatus.textContent = "Укажите название и цену товара.";
-        return;
-      }
-      if (!files.length) {
-        newProdStatus.textContent = "Выберите хотя бы 1 фото (до 10 штук).";
+        newProdStatus.textContent = "Укажите название и цену в грн.";
         return;
       }
 
@@ -1716,9 +1694,12 @@
         reader.readAsDataURL(file);
       });
 
-      const images = await Promise.all(files.map(readFileAsDataUrl));
+      const images = files.length
+        ? await Promise.all(files.map(readFileAsDataUrl))
+        : ["https://ui-avatars.com/api/?name=" + encodeURIComponent(title) + "&background=0f172a&color=ffffff&size=512"];
+
       PRODUCTS.unshift({
-        id: Date.now(),
+        id: Date.now() + Math.floor(Math.random() * 1000),
         title,
         category,
         price,
@@ -1738,7 +1719,7 @@
       newProdColors.value = "";
       newProdDesc.value = "";
       newProdImagesInput.value = "";
-      newProdStatus.textContent = `Товар добавлен (${images.length} фото).`;
+      newProdStatus.textContent = `Товар добавлен (всего товаров: ${PRODUCTS.length}).`;
     });
 
     function formatRemaining20h(createdAt) {
@@ -1764,7 +1745,6 @@
       }
       if (moved) {
         storiesCache = stillActive;
-        archivedStoriesCache = archivedStoriesCache.slice(0, 50);
         try {
           localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache));
           localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache));
@@ -2266,8 +2246,8 @@
 
     function saveStoriesState() {
       try {
-        localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache.slice(0, 25)));
-        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
+        localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache));
+        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache));
       } catch (_) {}
     }
 
@@ -2405,10 +2385,6 @@
     storyMusicFileInput.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      if (file.size > 3.5 * 1024 * 1024) {
-        storyMusicHint.textContent = "Аудиофайл слишком большой (нужно до 3.5 МБ).";
-        return;
-      }
       const reader = new FileReader();
       reader.onload = () => {
         draftStoryAudioData = reader.result;
@@ -2429,7 +2405,6 @@
     storyMediaInput.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      if (file.size > 1.5 * 1024 * 1024) { alert("Файл должен быть до 1.5 МБ."); return; }
       const reader = new FileReader();
       reader.onload = () => {
         draftStoryMedia = { mediaType: file.type.startsWith("video/") ? "video" : "image", mediaData: reader.result };
@@ -2442,7 +2417,7 @@
     publishStoryBtn.addEventListener("click", async () => {
       if (!draftStoryMedia) { alert("Выберите фото или видео из галереи."); return; }
       const newStory = {
-        id: "story_" + Date.now(),
+        id: "story_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
         authorId: currentUser?.uid || "guest",
         authorName: currentProfile?.name || currentUser?.displayName || "Пользователь",
         authorAvatar: currentProfile?.photoURL || DEFAULT_AVATAR,
