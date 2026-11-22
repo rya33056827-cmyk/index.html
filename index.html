@@ -3,1840 +3,1052 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>runotoks — Магазин и мессенджер</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>RUNOTOKS</title>
   <style>
-    body { font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; }
-    input, textarea, select { user-select: text; -webkit-user-select: text; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .rtk-font-normal { font-style: normal; font-weight: 400; font-family: 'Inter', sans-serif; }
-    .rtk-font-bold { font-style: normal; font-weight: 800; font-family: 'Inter', sans-serif; }
-    .rtk-font-italic { font-style: italic; font-weight: 500; font-family: 'Inter', sans-serif; }
-    .rtk-font-mono { font-style: normal; font-weight: 500; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-    .rtk-font-underline { text-decoration: underline; text-underline-offset: 3px; }
-    .rtk-slash-glow {
-      text-decoration: underline !important;
-      text-underline-offset: 3px;
-      color: #f8fafc;
-      text-shadow: 0 0 8px rgba(96, 165, 250, 0.95), 0 0 18px rgba(168, 85, 247, 0.8), 0 0 28px rgba(56, 189, 248, 0.65);
+    :root {
+      --bg: #0b0b0e;
+      --card: #15151c;
+      --card-2: #1e1e28;
+      --text: #f5f5f7;
+      --muted: #9a9aa8;
+      --accent: #ff7a00;
+      --green: #22c55e;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding-bottom: 84px;
+    }
+
+    /* Оранжево-зелёный градиент текста */
+    .grad-orange-green {
+      background: linear-gradient(90deg, #ff7a00, #84cc16, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Наборы шрифтов */
+    .font-default { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .font-serif { font-family: Georgia, "Times New Roman", serif; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .font-impact { font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing: 0.04em; }
+    .font-cursive { font-family: "Brush Script MT", "Segoe Script", cursive; }
+    .font-rounded { font-family: "Trebuchet MS", "Arial Rounded MT Bold", sans-serif; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(11, 11, 14, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button, select, input {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #ff7a00, #22c55e);
+      color: #09090b;
+      font-weight: 700;
+      border: none;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* Сторис и кольцо-огоньки как в Instagram */
+    .stories-bar {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 6px 2px 14px;
+      scrollbar-width: none;
+    }
+
+    .stories-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 74px;
+      cursor: pointer;
+    }
+
+    .story-ring {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      padding: 3px;
+      background: conic-gradient(
+        from 0deg,
+        #ff7a00,
+        #ffae00,
+        #22c55e,
+        #16a34a,
+        #ff7a00
+      );
+      animation: spinRing 5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    .story-ring-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .story-ring-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .story-label {
+      font-size: 12px;
+      max-width: 76px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Просмотрщик сторис */
+    .story-viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.95);
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .story-viewer.open {
+      display: flex;
+    }
+
+    .story-media-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .story-media-box img,
+    .story-media-box video {
+      max-width: 100%;
+      max-height: 62vh;
+      border-radius: 14px;
+      object-fit: contain;
+    }
+
+    /* Карточки ленты */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .post-media {
+      width: 100%;
+      max-height: 460px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 8px 0;
+      background: #000;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Чат */
+    .chat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-messages {
+      min-height: 240px;
+      max-height: 48vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    .msg {
+      padding: 10px 12px;
+      border-radius: 12px;
+      max-width: 85%;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: rgba(255, 122, 0, 0.22);
+      border: 1px solid rgba(255, 122, 0, 0.45);
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+    }
+
+    .call-banner {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .call-banner.active {
+      display: flex;
+    }
+
+    /* Нижняя панель навигации: левее покупки, по центру поиск и профиль */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(14, 14, 19, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-left {
+      display: flex;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+
+    .nav-center {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .nav-right {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .nav-btn.active {
+      background: var(--card-2);
+      border-color: var(--border);
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
-
-  <!-- Шапка магазина -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-      <a href="#" class="flex items-center gap-2.5 shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
-        <div>
-          <div class="font-extrabold text-lg tracking-tight leading-none">runotoks</div>
-          <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">TECH STORE</div>
-        </div>
-      </a>
-
-      <div class="hidden md:flex flex-1 max-w-md mx-4">
-        <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу runotoks..."
-          class="w-full px-4 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 text-sm outline-none transition" />
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button id="toggleSearchBtn" class="md:hidden p-2.5 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">🔍</button>
-        <button id="ordersHistoryBtn" class="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 text-sm font-semibold" title="Мои заказы">📦</button>
-        <button id="openCartBtn" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
-          <span>🛒</span>
-          <span id="cartCount" class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
-        </button>
-      </div>
-    </div>
-    <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-3">
-      <input id="searchInputMobile" type="text" placeholder="Найти наушники, часы, клавиатуру..."
-        class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none" />
+<body class="font-default">
+  <header>
+    <div class="brand grad-orange-green">RUNOTOKS</div>
+    <div class="top-actions">
+      <button type="button" onclick="openTab('chat')">💬 Чат</button>
+      <button type="button" onclick="openTab('settings')">⚙️ Настройки</button>
     </div>
   </header>
 
-  <!-- Главная страница -->
-  <section class="max-w-6xl mx-auto px-4 pt-6 pb-28">
-    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-7 md:p-12 shadow-xl">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200 mb-4">
-        ✨ runotoks • Магазин и соцсеть
-      </span>
-      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight max-w-2xl leading-tight">
-        Технологии, общение и ИИ Рунотокс в одном месте
-      </h1>
-      <p class="text-slate-300 text-sm md:text-base max-w-xl mt-4 leading-relaxed">
-        Выбирайте гаджеты, находите людей через нижний поиск, открывайте профиль рядом с ним или переходите в чат.
-      </p>
-      <div class="flex flex-wrap gap-3 mt-7">
-        <a href="#catalog" class="px-6 py-3 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition">
-          Перейти в каталог ↓
-        </a>
-        <button id="rtkOpenFromHeroBtn" type="button" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition">
-          Открыть чат и ИИ Рунотокс
-        </button>
-      </div>
-    </div>
+  <main class="container">
+    <!-- ГЛАВНАЯ ЛЕНТА + СТОРИС -->
+    <section id="tab-feed" class="section active">
+      <div class="stories-bar" id="storiesBar"></div>
 
-    <main id="catalog" class="pt-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
-        <div class="flex items-center justify-between sm:justify-end gap-3">
-          <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 4 товаров</span>
-          <select id="sortSelect" class="px-3.5 py-2 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 outline-none">
-            <option value="popular">По популярности</option>
-            <option value="price-asc">Сначала дешевле</option>
-            <option value="price-desc">Сначала дороже</option>
-            <option value="rating">По рейтингу</option>
-          </select>
-        </div>
-      </div>
-      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
-    </main>
-  </section>
-
-  <!-- Нижняя панель на главной странице: кружок поиска внизу + свой профиль правее поиска -->
-  <div id="rtkHomeBottomDock"
-    style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:14px;background:rgba(15,23,42,0.9);backdrop-filter:blur(12px);padding:8px 14px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
-    <button id="rtkHomeSearchCircleBtn" type="button" title="Найти людей"
-      style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:linear-gradient(135deg,#2563eb,#4f46e5);color:#ffffff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(37,99,235,0.45);">
-      🔍
-    </button>
-    <button id="rtkHomeProfileCircleBtn" type="button" title="Мой профиль"
-      style="width:44px;height:44px;border-radius:50%;padding:0;border:2px solid #60a5fa;background:#1e293b;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-      <img id="rtkHomeProfileAvatar" src="https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128" alt="Профиль"
-        style="width:100%;height:100%;object-fit:cover;" />
-    </button>
-  </div>
-
-  <!-- Модалка поиска людей с главной страницы -->
-  <div id="rtkHomePeopleModal" style="display:none;position:fixed;inset:0;z-index:10030;background:rgba(2,6,23,0.72);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
-    <div style="width:100%;max-width:420px;max-height:80vh;background:#111827;color:#f8fafc;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span data-i18n="searchPeople" style="font-size:16px;font-weight:800;">Поиск людей</span>
-        <button id="rtkCloseHomePeopleModal" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
-      </div>
-      <input id="rtkHomePeopleQuery" type="text" placeholder="Имя или @username..."
-        style="width:100%;box-sizing:border-box;padding:10px 14px;border-radius:14px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;outline:none;" />
-      <div id="rtkHomePeopleList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
-    </div>
-  </div>
-
-  <!-- Кнопка входа в чат / мессенджер -->
-  <button id="rtkChatBtn" type="button"
-    style="position:fixed;top:84px;right:16px;z-index:9989;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;">
-    <span>💬</span>
-    <span data-i18n="chatTab">Чат</span>
-    <span id="rtkUnreadBadge"
-      style="display:none;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#ef4444;color:#ffffff;font-size:11px;font-weight:800;align-items:center;justify-content:center;line-height:1;">
-      0
-    </span>
-  </button>
-
-  <!-- Полноэкранный мессенджер / соцсеть runotoks -->
-  <div id="rtkMessenger" style="display:none;position:fixed;inset:0;z-index:10000;background:#0b1120;color:#f8fafc;font-family:Inter,system-ui,sans-serif;flex-direction:column;">
-    <div id="rtkAuthScreen" style="flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#1d4ed8 0%,#0b1120 55%);">
-      <div style="width:100%;max-width:400px;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,0.45);text-align:center;">
-        <div style="width:56px;height:56px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;">R</div>
-        <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;">runotoks</h2>
-        <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы общаться в чате, публиковать сторис, заходить в рулетку и общаться с ИИ Рунотокс.
-        </p>
-        <button id="rtkGoogleLoginBtn" type="button"
-          style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
-          <span>G</span>
-          <span>Войти через Google</span>
-        </button>
-        <button id="rtkAuthBackToSite" type="button"
-          style="margin-top:14px;width:100%;padding:10px 14px;border-radius:12px;border:1px solid #334155;background:transparent;color:#cbd5e1;font-size:13px;font-weight:600;cursor:pointer;">
-          ← Главная страница
-        </button>
-      </div>
-    </div>
-
-    <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
-      <!-- Верхняя панель -->
-      <div style="height:60px;padding:0 12px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-shrink:0;">
-        <div style="display:flex;align-items:center;gap:6px;min-width:0;">
-          <button id="rtkExitToSiteBtn" type="button"
-            style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            ← Главная
-          </button>
-          <span style="font-weight:800;font-size:14px;white-space:nowrap;">runotoks</span>
+      <!-- Публикация в ленту: доступ только у владельца -->
+      <div class="card" id="ownerPublishCard">
+        <div class="card-header">
+          <strong class="grad-orange-green">Публикация в ленту</strong>
+          <span class="badge" id="ownerBadge">Только владелец</span>
         </div>
 
-        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-          <button id="rtkTabChats" type="button" data-i18n="chatTab"
-            style="padding:7px 9px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            Чат
-          </button>
-          <button id="rtkTabRoulette" type="button" data-i18n="rouletteTab"
-            style="padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            🎲 Рулетка
-          </button>
-          <button id="rtkTabProfile" type="button" data-i18n="profileTab"
-            style="padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            Профиль
-          </button>
+        <div id="ownerPublishControls" class="stack">
+          <input type="text" id="postCaption" placeholder="Подпись к фото или видео..." />
+          <input type="file" id="postFileInput" accept="image/*,video/*" />
+          <div class="row">
+            <button type="button" class="btn-primary" onclick="publishPost()">Опубликовать в ленту</button>
+            <button type="button" onclick="publishStory()">Добавить в сторис</button>
+          </div>
+          <div class="muted" id="publishStatus"></div>
+        </div>
+
+        <div id="guestLockedMsg" class="muted" style="display:none;">
+          Публиковать фото и видео в ленту может только владелец аккаунта.
         </div>
       </div>
 
-      <!-- Вкладка 1: Чат (только компактная лупа поиска, кнопка номера, кнопка сторис; без длинного поля поиска) -->
-      <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden;">
-        <div id="rtkSidebar" style="width:100%;max-width:390px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
-          <div style="padding:10px 12px;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <button id="rtkCompactSearchBtn" type="button" title="Найти друзей"
-                style="width:36px;height:36px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-                🔍
-              </button>
-              <button id="rtkPhoneLookupBtn" type="button" title="Найти по номеру"
-                style="padding:0 10px;height:36px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#93c5fd;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;white-space:nowrap;">
-                <span>📞</span>
-                <span data-i18n="numberBtn">Номер</span>
-              </button>
+      <!-- Добавление музыки к сторис -->
+      <div class="card">
+        <div class="card-header">
+          <strong>Музыка для сторис</strong>
+          <span class="badge">Аудио</span>
+        </div>
+        <div class="stack">
+          <input type="file" id="storyMusicFile" accept="audio/*" />
+          <input type="text" id="storyMusicUrl" placeholder="Или прямая ссылка на .mp3 / .ogg..." />
+          <div class="row">
+            <button type="button" class="btn-primary" onclick="setAndPlayStoryMusic()">Сохранить и включить музыку</button>
+            <button type="button" onclick="stopStoryMusic()">Стоп</button>
+          </div>
+          <div class="muted" id="musicStatus">Музыка не выбрана. Нажмите «Сохранить и включить музыку».</div>
+        </div>
+      </div>
+
+      <div id="feedList"></div>
+    </section>
+
+    <!-- ПОКУПКИ -->
+    <section id="tab-shop" class="section">
+      <div class="card">
+        <h2 class="grad-orange-green" style="margin-bottom: 8px;">Покупки</h2>
+        <p class="muted" style="margin-bottom: 12px;">Каталог товаров магазина RUNOTOKS.</p>
+        <div class="stack">
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <strong>Товар #1 — Базовый набор</strong>
+              <span>500 грн</span>
             </div>
-
-            <button id="rtkCreateStoryBtn" type="button" title="Опубликовать сторис"
-              style="padding:0 12px;height:36px;border-radius:10px;border:none;background:linear-gradient(135deg,#2563eb,#9333ea);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
-              <span>+</span>
-              <span data-i18n="storyBtn">Сторис</span>
-            </button>
+            <button type="button" class="btn-primary" onclick="addToCart('Товар #1 — Базовый набор')">В корзину</button>
           </div>
-
-          <!-- Выпадающий поиск по лупе -->
-          <div id="rtkFriendSearchBox" style="display:none;padding:8px 12px;border-bottom:1px solid #1f2937;background:#0f172a;">
-            <input id="rtkSearchUsernameInput" type="text" placeholder="Имя или @username..."
-              style="width:100%;box-sizing:border-box;padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:12px;outline:none;" />
-            <div id="rtkSearchResults" style="margin-top:6px;display:flex;flex-direction:column;gap:6px;"></div>
-          </div>
-
-          <!-- Поиск по номеру -->
-          <div id="rtkPhoneLookupBox" style="display:none;padding:8px 12px;border-bottom:1px solid #1f2937;background:#0f172a;">
-            <div style="display:flex;gap:6px;">
-              <input id="rtkPhoneLookupInput" type="tel" placeholder="Номер телефона..."
-                style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:12px;outline:none;" />
-              <button id="rtkPhoneLookupSubmitBtn" type="button"
-                style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-                OK
-              </button>
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <strong>Товар #2 — Премиум комплект</strong>
+              <span>1 200 грн</span>
             </div>
-            <div id="rtkPhoneLookupResult" style="margin-top:6px;font-size:12px;color:#cbd5e1;"></div>
+            <button type="button" class="btn-primary" onclick="addToCart('Товар #2 — Премиум комплект')">В корзину</button>
           </div>
-
-          <!-- Лента активных сторис (до 20 часов + счётчик оставшегося времени) -->
-          <div id="rtkStoriesStrip" style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid #1f2937;overflow-x:auto;" class="no-scrollbar"></div>
-
-          <!-- Список диалогов -->
-          <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;"></div>
         </div>
+        <div class="muted" id="cartInfo" style="margin-top: 12px;">Корзина пуста.</div>
+      </div>
+    </section>
 
-        <!-- Правая область диалога -->
-        <div id="rtkChatPane" style="flex:1;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;min-width:0;position:relative;">
-          <div id="rtkActiveChatHeader" style="height:60px;padding:0 12px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
-            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-              <button id="rtkBackToDialogsBtn" type="button"
-                style="display:none;padding:8px 11px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#ffffff;font-size:15px;font-weight:700;cursor:pointer;">
-                ←
-              </button>
-              <div id="rtkPeerInfoBox" style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <span style="color:#94a3b8;font-size:13px;">Выберите диалог или откройте ИИ Рунотокс</span>
+    <!-- ПОИСК -->
+    <section id="tab-search" class="section">
+      <div class="card">
+        <h2 class="grad-orange-green" style="margin-bottom: 10px;">Поиск</h2>
+        <input
+          type="text"
+          id="searchInput"
+          style="width:100%; margin-bottom:10px;"
+          placeholder="Поиск по публикациям и пользователям..."
+          oninput="renderSearch()"
+        />
+        <div id="searchResults" class="stack"></div>
+      </div>
+    </section>
+
+    <!-- ПРОФИЛЬ -->
+    <section id="tab-profile" class="section">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="story-ring" style="width:74px; height:74px; margin-bottom:8px;">
+              <div class="story-ring-inner">
+                <img id="profileAvatarImg" src="https://via.placeholder.com/120?text=R" alt="Avatar" />
               </div>
             </div>
+            <h2 id="profileTitle" class="grad-orange-green">Владелец RUNOTOKS</h2>
+            <div class="muted" id="profileRoleText">Режим владельца: публикация в ленту разрешена</div>
           </div>
+        </div>
 
-          <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
-
-          <!-- Панель перед клавиатурой: смена шрифтов + эффекты 🔥 ❤️ ⭐ + подсказка //светящийся подчёркнутый// -->
-          <div id="rtkComposerDock" style="display:none;flex-direction:column;border-top:1px solid #1f2937;background:#111827;flex-shrink:0;">
-            <div style="padding:6px 10px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;gap:6px;overflow-x:auto;" class="no-scrollbar">
-              <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-                <button id="rtkFontCycleBtn" type="button" title="Сменить шрифт"
-                  style="padding:5px 9px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#93c5fd;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">
-                  Aa <span id="rtkFontBadge">Обычный</span>
-                </button>
-                <button data-insert-fx="🔥" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">🔥</button>
-                <button data-insert-fx="❤️" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">❤️</button>
-                <button data-insert-fx="⭐" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">⭐</button>
-                <button data-insert-fx="//текст//" type="button" title="Подчёркнутый светящийся текст"
-                  style="padding:4px 8px;border-radius:8px;border:1px solid #3b82f6;background:#172554;color:#93c5fd;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">
-                  //✨//
-                </button>
-              </div>
-              <span style="font-size:10px;color:#64748b;white-space:nowrap;">//текст// = свечение</span>
-            </div>
-
-            <form id="rtkSendMessageForm" style="display:flex;padding:8px 10px;gap:8px;align-items:center;">
-              <input id="rtkMessageInput" type="text" placeholder="Сообщение..."
-                style="flex:1;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
-              <button type="submit" style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
-            </form>
-          </div>
+        <div class="row" style="margin-top:10px;">
+          <button type="button" onclick="toggleOwnerMode()">Переключить роль (Владелец / Гость)</button>
+          <button type="button" onclick="openTab('settings')">Открыть настройки</button>
         </div>
       </div>
+    </section>
 
-      <!-- Вкладка 2: Рулетка -->
-      <div id="rtkRouletteView" style="display:none;flex:1;overflow-y:auto;padding:18px 14px;">
-        <div style="max-width:540px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-            <div>
-              <div style="font-size:18px;font-weight:800;">🎲 Рулетка</div>
-              <div id="rtkRouletteJoinedCount" style="font-size:13px;color:#34d399;font-weight:800;">Зашло в рулетку: 0</div>
-            </div>
-            <button id="rtkRouletteNextBtn" type="button"
-              style="padding:10px 16px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">
-              Найти случайного
-            </button>
-          </div>
+    <!-- НАСТРОЙКИ (ЗАБЛОКИРОВАННЫЕ И АРХИВ + ШРИФТЫ) -->
+    <section id="tab-settings" class="section">
+      <div class="card">
+        <h2 class="grad-orange-green" style="margin-bottom: 12px;">Настройки</h2>
 
-          <div id="rtkRouletteCard" style="padding:14px;border-radius:18px;background:#0b1120;border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <span style="font-size:13px;color:#94a3b8;">Нажмите «Найти случайного», чтобы начать общение</span>
-          </div>
-
-          <div id="rtkRouletteMessages" style="height:210px;overflow-y:auto;padding:12px;border-radius:16px;background:#0b1120;border:1px solid #1f2937;display:flex;flex-direction:column;gap:8px;"></div>
-
-          <form id="rtkRouletteForm" style="display:flex;gap:8px;">
-            <input id="rtkRouletteInput" type="text" placeholder="Написать в рулетке..."
-              style="flex:1;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;outline:none;" />
-            <button type="submit" style="padding:10px 16px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-weight:700;font-size:13px;cursor:pointer;">➤</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Вкладка 3: Профиль -->
-      <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:20px 16px;">
-        <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-              <img id="rtkProfileAvatarPreview" src="" alt="Avatar"
-                style="width:68px;height:68px;border-radius:50%;object-fit:cover;background:#1e293b;border:2px solid #3b82f6;flex-shrink:0;" />
-              <div style="min-width:0;">
-                <div id="rtkProfileDisplayName" style="font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Пользователь</div>
-                <div id="rtkProfileDisplayHandle" style="font-size:12px;color:#60a5fa;font-weight:600;">@username</div>
-                <div id="rtkProfileGoogleEmail" style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
-              </div>
-            </div>
-
-            <button id="rtkOpenSettingsPageBtn" type="button" title="Настройки"
-              style="width:42px;height:42px;border-radius:12px;border:1px solid #334155;background:#1e293b;color:#ffffff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
-              ☰
-            </button>
-          </div>
-
-          <!-- Счётчики: Посты, Подписчики (кликабельно), Подписки (кликабельно) -->
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#0b1120;border:1px solid #1f2937;border-radius:18px;padding:12px;text-align:center;">
-            <div>
-              <div id="rtkPostsCountVal" style="font-size:18px;font-weight:800;color:#fff;">0</div>
-              <div data-i18n="postsLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Посты</div>
-            </div>
-            <button id="rtkOpenFollowersBtn" type="button" style="background:transparent;border:none;cursor:pointer;padding:0;">
-              <div id="rtkFollowersCountVal" style="font-size:18px;font-weight:800;color:#93c5fd;">0</div>
-              <div data-i18n="followersLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Подписчики</div>
-            </button>
-            <button id="rtkOpenFollowingBtn" type="button" style="background:transparent;border:none;cursor:pointer;padding:0;">
-              <div id="rtkFollowingCountVal" style="font-size:18px;font-weight:800;color:#93c5fd;">0</div>
-              <div data-i18n="followingLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Подписки</div>
-            </button>
-          </div>
-
-          <div id="rtkProfileBioText" style="font-size:13px;color:#cbd5e1;background:#0b1120;padding:12px;border-radius:14px;border:1px solid #1f2937;"></div>
-
-          <form id="rtkProfileForm" style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #1f2937;padding-top:14px;">
-            <div style="font-size:13px;font-weight:800;color:#e2e8f0;">Редактировать профиль</div>
-            <div>
-              <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:4px;">Имя</label>
-              <input id="rtkProfileName" type="text" required
-                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:4px;">@username</label>
-              <input id="rtkProfileUsername" type="text" required
-                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:4px;">Номер телефона (для поиска)</label>
-              <input id="rtkProfilePhone" type="tel" placeholder="+380..."
-                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:4px;">О себе</label>
-              <textarea id="rtkProfileBio" rows="2"
-                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;"></textarea>
-            </div>
-            <div>
-              <label style="display:block;font-size:12px;color:#94a3b8;margin-bottom:4px;">Фото профиля</label>
-              <input id="rtkProfilePhotoFile" type="file" accept="image/*" style="width:100%;font-size:12px;color:#94a3b8;margin-bottom:6px;" />
-              <input id="rtkProfilePhotoUrl" type="url" placeholder="https://..."
-                style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;" />
-            </div>
-            <button type="submit" style="padding:12px 16px;border-radius:14px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">
-              Сохранить профиль
-            </button>
-            <div id="rtkProfileStatus" style="font-size:12px;color:#34d399;min-height:16px;"></div>
-          </form>
-        </div>
-      </div>
-
-      <!-- Отдельная страница настроек (по кнопке ☰): смена языка + заблокированные + архив сторис -->
-      <div id="rtkSettingsPage" style="display:none;flex:1;overflow-y:auto;padding:20px 16px;background:#0b1120;">
-        <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:18px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <button id="rtkBackFromSettingsBtn" type="button"
-              style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-              ← Назад
-            </button>
-            <span data-i18n="settingsTitle" style="font-size:16px;font-weight:800;">Настройки</span>
-            <span style="width:60px;"></span>
-          </div>
-
-          <!-- Выбор любого языка -->
-          <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;">
-            <label for="rtkLanguageSelect" data-i18n="languageLabel" style="font-size:13px;font-weight:800;color:#e2e8f0;">Язык интерфейса и чата</label>
-            <select id="rtkLanguageSelect"
-              style="width:100%;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#111827;color:#fff;font-size:13px;">
-              <option value="ru">Русский</option>
-              <option value="en">English</option>
-              <option value="uk">Українська</option>
-              <option value="es">Español</option>
-              <option value="de">Deutsch</option>
-              <option value="fr">Français</option>
-              <option value="it">Italiano</option>
-              <option value="pl">Polski</option>
-              <option value="tr">Türkçe</option>
-              <option value="ar">العربية</option>
-              <option value="zh-CN">中文</option>
-              <option value="ja">日本語</option>
-              <option value="ko">한국어</option>
-              <option value="pt">Português</option>
-            </select>
-            <div id="rtkLanguageSavedHint" style="font-size:11px;color:#34d399;"></div>
-          </div>
-
-          <!-- Заблокированные люди -->
-          <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;">
-            <div data-i18n="blockedTitle" style="font-size:13px;font-weight:800;color:#fca5a5;">Заблокированные люди</div>
-            <div id="rtkBlockedUsersList" style="display:flex;flex-direction:column;gap:8px;"></div>
-          </div>
-
-          <!-- Архив сторис (после 20 часов) -->
-          <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;">
-            <div data-i18n="archiveTitle" style="font-size:13px;font-weight:800;color:#93c5fd;">Архив сторис (старше 20 ч)</div>
-            <div id="rtkArchivedStoriesList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Модалка списка подписчиков / подписок -->
-    <div id="rtkFollowListModal" style="display:none;position:fixed;inset:0;z-index:10035;background:rgba(2,6,23,0.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
-      <div style="width:100%;max-width:420px;max-height:78vh;background:#111827;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span id="rtkFollowListTitle" style="font-size:15px;font-weight:800;">Подписчики</span>
-          <button id="rtkCloseFollowListBtn" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
-        </div>
-        <div id="rtkFollowListItems" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
-      </div>
-    </div>
-
-    <!-- Модалка создания сторис -->
-    <div id="rtkStoryComposerModal" style="display:none;position:fixed;inset:0;z-index:10025;background:rgba(2,6,23,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
-      <div style="width:100%;max-width:440px;max-height:90vh;overflow-y:auto;background:#111827;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:16px;font-weight:800;">Новая сторис (20 ч)</span>
-          <button id="rtkCloseStoryComposerBtn" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
-        </div>
-
-        <div>
-          <label style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">1. Фото или видео из галереи</label>
-          <input id="rtkStoryMediaInput" type="file" accept="image/*,video/*" style="width:100%;font-size:12px;color:#94a3b8;" />
-        </div>
-
-        <div id="rtkStoryPreviewWrap" style="width:100%;height:240px;border-radius:18px;background:#0b1120;border:1px solid #1f2937;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;">
-          <span style="font-size:12px;color:#64748b;">Выберите фото или видео из галереи</span>
-        </div>
-
-        <div>
-          <label for="rtkStoryFilterSelect" style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">2. Фильтр</label>
-          <select id="rtkStoryFilterSelect"
-            style="width:100%;padding:9px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;">
-            <option value="none">Без фильтра</option>
-            <option value="brightness(1.22)">Яркость +</option>
-            <option value="contrast(1.35) saturate(1.2)">Контраст и сочность</option>
-            <option value="grayscale(100%) contrast(1.15)">Чёрно-белый (B&W)</option>
-            <option value="sepia(0.55) saturate(1.3)">Тёплый закат</option>
-            <option value="hue-rotate(190deg) saturate(1.4)">Неон</option>
+        <div class="stack" style="margin-bottom: 16px;">
+          <label class="muted">Шрифт интерфейса и публикаций</label>
+          <select id="fontSelect" onchange="changeFont(this.value)">
+            <option value="font-default">Стандартный (Sans)</option>
+            <option value="font-serif">Классический (Serif)</option>
+            <option value="font-mono">Моноширинный (Mono)</option>
+            <option value="font-impact">Жирный акцент (Impact)</option>
+            <option value="font-cursive">Рукописный (Cursive)</option>
+            <option value="font-rounded">Округлый (Rounded)</option>
           </select>
         </div>
 
-        <div>
-          <label for="rtkStoryMusicSelect" style="display:block;font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">3. Музыка</label>
-          <select id="rtkStoryMusicSelect"
-            style="width:100%;padding:9px 12px;border-radius:12px;border:1px solid #334155;background:#0b1120;color:#fff;font-size:13px;">
-            <option value="">Без музыки</option>
-            <option value="🎵 Phonk Drift — Night Bass">🎵 Phonk Drift — Night Bass</option>
-            <option value="🎵 Deep Chill — Midnight Walk">🎵 Deep Chill — Midnight Walk</option>
-            <option value="🎵 Hardtekk Pulse — Club Edit">🎵 Hardtekk Pulse — Club Edit</option>
-            <option value="🎵 Lo-Fi Beats — Rainy Window">🎵 Lo-Fi Beats — Rainy Window</option>
-          </select>
-        </div>
-
-        <button id="rtkPublishStoryBtn" type="button"
-          style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:linear-gradient(135deg,#2563eb,#9333ea);color:#fff;font-size:14px;font-weight:800;cursor:pointer;">
-          Опубликовать
-        </button>
-      </div>
-    </div>
-
-    <!-- Полноэкранный просмотр сторис: лайки, ответы, счётчики просмотров/лайков/ответов -->
-    <div id="rtkStoryViewerModal" style="display:none;position:fixed;inset:0;z-index:10040;width:100vw;height:100vh;background:#020617;flex-direction:column;justify-content:space-between;padding:16px;box-sizing:border-box;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2;">
-        <div style="min-width:0;">
-          <div id="rtkStoryViewerAuthor" style="font-size:15px;font-weight:800;color:#fff;"></div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:#93c5fd;flex-wrap:wrap;">
-            <span id="rtkStoryViewerMusic"></span>
-            <span id="rtkStoryViewerCountdown" style="color:#34d399;font-weight:700;"></span>
+        <div class="card" style="margin-bottom: 14px;">
+          <h3 style="margin-bottom: 8px;">🚫 Заблокированные</h3>
+          <div class="row" style="margin-bottom: 10px;">
+            <input type="text" id="blockUserInput" placeholder="Имя или @username..." />
+            <button type="button" class="btn-primary" onclick="blockUser()">Заблокировать</button>
           </div>
+          <div id="blockedList" class="stack"></div>
         </div>
-        <button id="rtkCloseStoryViewerBtn" type="button" style="border:none;background:rgba(30,41,59,0.9);color:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;">✕</button>
+
+        <div class="card" style="margin: 0;">
+          <h3 style="margin-bottom: 8px;">🗄 Архив публикаций</h3>
+          <div id="archiveList" class="stack"></div>
+        </div>
       </div>
+    </section>
 
-      <div id="rtkStoryViewerMedia" style="flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:10px 0;"></div>
-
-      <div style="display:flex;flex-direction:column;gap:10px;z-index:2;max-width:560px;width:100%;margin:0 auto;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:#e2e8f0;background:rgba(15,23,42,0.85);padding:8px 12px;border-radius:14px;border:1px solid #334155;">
-          <span id="rtkStoryStatsText">👁 0 • ❤️ 0 • 💬 0</span>
-          <button id="rtkStoryLikeBtn" type="button" style="padding:5px 12px;border-radius:999px;border:none;background:#e11d48;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">
-            ❤️ Лайк
-          </button>
+    <!-- ЧАТ С ИИ + ЗВОНОК -->
+    <section id="tab-chat" class="section">
+      <div class="chat-box">
+        <div class="chat-topbar">
+          <div>
+            <strong class="grad-orange-green">Чат RUNOTOKS</strong>
+            <div class="muted" id="aiEndpointLabel">Сервер: https://runotoks-1.onrender.com/chat</div>
+          </div>
+          <button type="button" class="btn-primary" onclick="startVoiceCall()" title="Позвонить">📞 Звонок</button>
         </div>
 
-        <form id="rtkStoryReplyForm" style="display:flex;gap:8px;">
-          <input id="rtkStoryReplyInput" type="text" placeholder="Ответить или написать в сторис..."
-            style="flex:1;padding:10px 14px;border-radius:999px;border:1px solid #334155;background:rgba(15,23,42,0.92);color:#fff;font-size:13px;outline:none;" />
-          <button type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#2563eb;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
+        <div class="call-banner" id="callBanner">
+          <div>
+            <strong>📞 Идёт звонок...</strong>
+            <div class="muted" id="callTimer">00:00</div>
+          </div>
+          <button type="button" onclick="endVoiceCall()">Завершить</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg bot">Привет! Чат подключён к серверу и готов к работе.</div>
+        </div>
+
+        <form class="row" onsubmit="sendChatMessage(event)">
+          <input type="text" id="chatInput" style="flex:1;" placeholder="Напишите сообщение..." required />
+          <button type="button" onclick="startVoiceCall()" title="Позвонить">📞</button>
+          <button type="submit" class="btn-primary">Отправить</button>
         </form>
       </div>
+    </section>
+  </main>
+
+  <!-- ПРОСМОТРЩИК СТОРИС -->
+  <div class="story-viewer" id="storyViewer">
+    <div class="row" style="justify-content: space-between;">
+      <strong id="storyViewerTitle" class="grad-orange-green">Сторис</strong>
+      <div class="row">
+        <button type="button" onclick="setAndPlayStoryMusic()">🎵 Звук</button>
+        <button type="button" onclick="closeStoryViewer()">✕ Закрыть</button>
+      </div>
     </div>
+    <div class="story-media-box" id="storyViewerContent"></div>
+    <div class="muted" id="storyViewerMusicNote" style="text-align:center;"></div>
   </div>
 
-  <!-- Модалки магазина -->
-  <div id="productModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl">
-      <div class="relative bg-slate-100 h-64">
-        <img id="modalImg" src="" alt="" class="h-full w-full object-cover" />
-        <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 text-slate-700 font-bold shadow">✕</button>
-      </div>
-      <div class="p-6">
-        <div class="flex items-center justify-between">
-          <span id="modalCat" class="text-xs font-semibold uppercase text-blue-600"></span>
-          <span id="modalRating" class="text-xs font-semibold text-amber-500"></span>
-        </div>
-        <h2 id="modalTitle" class="text-xl font-bold mt-1"></h2>
-        <p id="modalDesc" class="text-sm text-slate-600 mt-2"></p>
-        <div id="modalVariants" class="flex flex-wrap gap-2 mt-4"></div>
-        <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
-          <div id="modalPrice" class="text-2xl font-extrabold text-slate-900"></div>
-          <button id="modalAddBtn" class="px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold">В корзину</button>
-        </div>
-      </div>
+  <!-- НИЖНЯЯ НАВИГАЦИЯ: левее покупки, по центру поиск и профиль -->
+  <nav class="bottom-nav">
+    <div class="nav-left">
+      <button type="button" class="nav-btn" id="nav-shop" onclick="openTab('shop')">🛍 Покупки</button>
+      <button type="button" class="nav-btn active" id="nav-feed" onclick="openTab('feed')">🏠 Лента</button>
     </div>
-  </div>
-
-  <div id="cartDrawer" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm justify-end">
-    <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
-      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Корзина</h3>
-        <button onclick="closeCart()" class="w-8 h-8 rounded-full hover:bg-slate-100">✕</button>
-      </div>
-      <div id="cartStepItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
-      <div class="p-5 border-t border-slate-200 bg-slate-50">
-        <div class="flex justify-between font-extrabold text-base mb-3">
-          <span>Итого:</span>
-          <span id="totalText">0 ₽</span>
-        </div>
-        <button onclick="checkoutSimple()" class="w-full py-3 rounded-full bg-slate-900 text-white text-sm font-semibold">Оформить заказ</button>
-      </div>
+    <div class="nav-center">
+      <button type="button" class="nav-btn" id="nav-search" onclick="openTab('search')">🔍 Поиск</button>
+      <button type="button" class="nav-btn" id="nav-profile" onclick="openTab('profile')">👤 Профиль</button>
     </div>
-  </div>
-
-  <div id="ordersModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl">
-      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Мои заказы</h3>
-        <button onclick="closeOrdersModal()" class="w-8 h-8 rounded-full hover:bg-slate-100">✕</button>
-      </div>
-      <div id="ordersListContainer" class="p-5 overflow-y-auto space-y-3 text-sm"></div>
-    </div>
-  </div>
+    <div class="nav-right"></div>
+  </nav>
 
   <script>
-    const PRODUCTS = [
-      { id: 1, title: "runotoks Studio Pro ANC", category: "Аудио", price: 14990, rating: 4.9, popular: 10, variants: ["Графит", "Серебро"], image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80", desc: "Беспроводные наушники с шумоподавлением и автономностью до 50 часов." },
-      { id: 2, title: "runotoks Watch Ultra S2", category: "Гаджеты", price: 18500, rating: 4.8, popular: 9, variants: ["Титан"], image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80", desc: "Умные часы в титановом корпусе с GPS и длительной автономностью." },
-      { id: 3, title: "runotoks KeyMech 75% Wireless", category: "Периферия", price: 9490, rating: 4.9, popular: 8, variants: ["Dark Gray", "Retro White"], image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80", desc: "Механическая беспроводная клавиатура с плавным ходом клавиш." },
-      { id: 4, title: "runotoks Pods Air 3", category: "Аудио", price: 6990, rating: 4.7, popular: 7, variants: ["Белый", "Черный"], image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=700&q=80", desc: "Компактные наушники с быстрым подключением и чистым звуком." }
+    const RUNOTOKS_AI_URL = "https://runotoks-1.onrender.com/chat";
+
+    const STORAGE_KEYS = {
+      posts: "runotoks_posts_v1",
+      archive: "runotoks_archive_v1",
+      blocked: "runotoks_blocked_v1",
+      stories: "runotoks_stories_v1",
+      font: "runotoks_font_v1",
+      isOwner: "runotoks_is_owner_v1"
+    };
+
+    let isOwner = JSON.parse(localStorage.getItem(STORAGE_KEYS.isOwner) ?? "true");
+    let posts = JSON.parse(localStorage.getItem(STORAGE_KEYS.posts) || "[]");
+    let archivePosts = JSON.parse(localStorage.getItem(STORAGE_KEYS.archive) || "[]");
+    let blockedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.blocked) || "[]");
+    let stories = JSON.parse(localStorage.getItem(STORAGE_KEYS.stories) || "null") || [
+      {
+        id: "s1",
+        author: "RUNOTOKS",
+        caption: "Новая коллекция уже в ленте!",
+        mediaUrl: "https://via.placeholder.com/500x700?text=Story+1",
+        mediaType: "image",
+        musicUrl: ""
+      }
     ];
 
-    let activeCategory = "Все";
-    let searchQuery = "";
-    let sortBy = "popular";
-    let cart = JSON.parse(localStorage.getItem("runotoks_cart") || "[]");
-    let orders = JSON.parse(localStorage.getItem("runotoks_orders") || "[]");
-    const formatPrice = (n) => Number(n || 0).toLocaleString("ru-RU") + " ₽";
+    const storyAudio = new Audio();
+    storyAudio.loop = true;
 
-    function renderCategories() {
-      const cats = ["Все", ...new Set(PRODUCTS.map((p) => p.category))];
-      document.getElementById("categoryTabs").innerHTML = cats.map((c) => `
-        <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition ${activeCategory === c ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">${c}</button>
-      `).join("");
-    }
-    function filterCategory(cat) { activeCategory = cat; renderCategories(); renderProducts(); }
-    function renderProducts() {
-      let list = PRODUCTS.filter((p) => {
-        const matchCat = activeCategory === "Все" || p.category === activeCategory;
-        const matchSearch = p.title.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery);
-        return matchCat && matchSearch;
-      });
-      if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
-      if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
-      if (sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
-      if (sortBy === "popular") list.sort((a, b) => b.popular - a.popular);
-      document.getElementById("productCountLabel").textContent = `Показано: ${list.length} товаров`;
-      document.getElementById("productsGrid").innerHTML = list.map((p) => `
-        <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden flex flex-col hover:shadow-lg transition">
-          <div onclick="openProductModal(${p.id})" class="h-44 bg-slate-100 overflow-hidden cursor-pointer"><img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" /></div>
-          <div class="p-4 flex-1 flex flex-col">
-            <div class="text-xs text-amber-500 font-semibold mb-1">★ ${p.rating}</div>
-            <h3 onclick="openProductModal(${p.id})" class="font-bold text-slate-900 text-base cursor-pointer">${p.title}</h3>
-            <p class="text-xs text-slate-500 mt-1 flex-1">${p.desc}</p>
-            <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
-              <span class="font-extrabold text-base">${formatPrice(p.price)}</span>
-              <button onclick="addToCart(${p.id}, '${p.variants[0]}')" class="px-3.5 py-2 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold transition">+ В корзину</button>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
-    function openProductModal(id) {
-      const p = PRODUCTS.find((x) => x.id === id);
-      let sel = p.variants[0];
-      document.getElementById("modalImg").src = p.image;
-      document.getElementById("modalCat").textContent = p.category;
-      document.getElementById("modalRating").textContent = `★ ${p.rating}`;
-      document.getElementById("modalTitle").textContent = p.title;
-      document.getElementById("modalDesc").textContent = p.desc;
-      document.getElementById("modalPrice").textContent = formatPrice(p.price);
-      const drawVars = () => {
-        document.getElementById("modalVariants").innerHTML = p.variants.map((v) => `
-          <button type="button" onclick="setModalVar('${v}')" class="px-3 py-1.5 rounded-full text-xs font-semibold border ${sel === v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200'}">${v}</button>
-        `).join("");
-      };
-      window.setModalVar = (v) => { sel = v; drawVars(); };
-      drawVars();
-      document.getElementById("modalAddBtn").onclick = () => { addToCart(p.id, sel); closeProductModal(); };
-      const m = document.getElementById("productModal"); m.classList.remove("hidden"); m.classList.add("flex");
-    }
-    function closeProductModal() { const m = document.getElementById("productModal"); m.classList.add("hidden"); m.classList.remove("flex"); }
-    function saveCart() { localStorage.setItem("runotoks_cart", JSON.stringify(cart)); updateCartUI(); }
-    function addToCart(id, variant) {
-      const p = PRODUCTS.find((x) => x.id === id);
-      const key = `${id}_${variant}`;
-      const ex = cart.find((i) => i.key === key);
-      if (ex) ex.qty += 1;
-      else cart.push({ key, id: p.id, title: p.title, price: p.price, image: p.image, variant, qty: 1 });
-      saveCart(); openCart();
-    }
-    function updateCartUI() {
-      document.getElementById("cartCount").textContent = cart.reduce((s, i) => s + i.qty, 0);
-      const box = document.getElementById("cartStepItems");
-      if (!cart.length) box.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm">Корзина пуста</div>`;
-      else box.innerHTML = cart.map((i) => `<div class="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-200"><div><div class="font-bold text-sm">${i.title}</div><div class="text-xs text-slate-500">${i.variant} × ${i.qty}</div></div><div class="font-extrabold text-sm">${formatPrice(i.price * i.qty)}</div></div>`).join("");
-      document.getElementById("totalText").textContent = formatPrice(cart.reduce((s, i) => s + i.price * i.qty, 0));
-    }
-    function openCart() { updateCartUI(); const d = document.getElementById("cartDrawer"); d.classList.remove("hidden"); d.classList.add("flex"); }
-    function closeCart() { const d = document.getElementById("cartDrawer"); d.classList.add("hidden"); d.classList.remove("flex"); }
-    function checkoutSimple() {
-      if (!cart.length) return;
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      orders.unshift({ number: "RNT-" + Math.floor(100000 + Math.random() * 900000), date: new Date().toLocaleString("ru-RU"), total, items: [...cart] });
-      localStorage.setItem("runotoks_orders", JSON.stringify(orders));
-      cart = []; saveCart(); closeCart(); alert("Заказ оформлен!");
-    }
-    function closeOrdersModal() { const m = document.getElementById("ordersModal"); m.classList.add("hidden"); m.classList.remove("flex"); }
-    document.getElementById("openCartBtn").onclick = openCart;
-    document.getElementById("toggleSearchBtn").onclick = () => document.getElementById("mobileSearchBar").classList.toggle("hidden");
-    document.getElementById("searchInputDesktop").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
-    document.getElementById("searchInputMobile").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
-    document.getElementById("sortSelect").onchange = (e) => { sortBy = e.target.value; renderProducts(); };
-    document.getElementById("ordersHistoryBtn").onclick = () => {
-      document.getElementById("ordersListContainer").innerHTML = orders.length
-        ? orders.map((o) => `<div class="p-3 rounded-2xl bg-slate-50 border border-slate-200"><div class="flex justify-between font-bold"><span>${o.number}</span><span>${formatPrice(o.total)}</span></div><div class="text-xs text-slate-400">${o.date}</div></div>`).join("")
-        : `<div class="text-center text-slate-400 py-8">Заказов пока нет.</div>`;
-      const m = document.getElementById("ordersModal"); m.classList.remove("hidden"); m.classList.add("flex");
-    };
-    renderCategories(); renderProducts(); updateCartUI();
-  </script>
+    let callInterval = null;
+    let callSeconds = 0;
+    const cart = [];
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      signInWithRedirect,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      setDoc,
-      updateDoc,
-      deleteDoc,
-      collection,
-      query,
-      where,
-      getDocs,
-      addDoc,
-      orderBy,
-      onSnapshot,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCP-HMyaFzNiDo4yXwYNmJk2QZineSPE5A",
-      authDomain: "runotoks-c05c2.firebaseapp.com",
-      projectId: "runotoks-c05c2",
-      storageBucket: "runotoks-c05c2.firebasestorage.app",
-      messagingSenderId: "257596088504",
-      appId: "1:257596088504:web:a0bcea77ee0e3c8849944d",
-      measurementId: "G-56VTDVLB2H"
-    };
-
-    const RUNOTOKS_AI_URL = "https://ВАШ-СЕРВЕР/chat";
-    const STORY_LIFETIME_MS = 20 * 60 * 60 * 1000; // 20 часов
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-
-    const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128";
-    const AI_ASSISTANT_ID = "runotoks_ai_assistant";
-    const AI_ASSISTANT_USER = {
-      uid: AI_ASSISTANT_ID,
-      name: "Рунотокс",
-      username: "runotoks_ai",
-      photoURL: "https://ui-avatars.com/api/?name=R&background=2563eb&color=ffffff&size=128",
-      isAI: true
-    };
-
-    const I18N = {
-      ru: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профиль", searchPeople: "Поиск людей", numberBtn: "Номер", storyBtn: "Сторис", postsLabel: "Посты", followersLabel: "Подписчики", followingLabel: "Подписки", settingsTitle: "Настройки", languageLabel: "Язык интерфейса и чата", blockedTitle: "Заблокированные люди", archiveTitle: "Архив сторис (старше 20 ч)" },
-      en: { chatTab: "Chat", rouletteTab: "🎲 Roulette", profileTab: "Profile", searchPeople: "Find people", numberBtn: "Number", storyBtn: "Story", postsLabel: "Posts", followersLabel: "Followers", followingLabel: "Following", settingsTitle: "Settings", languageLabel: "Interface & chat language", blockedTitle: "Blocked users", archiveTitle: "Story archive (20h+)" },
-      uk: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профіль", searchPeople: "Пошук людей", numberBtn: "Номер", storyBtn: "Сторіс", postsLabel: "Дописи", followersLabel: "Підписники", followingLabel: "Підписки", settingsTitle: "Налаштування", languageLabel: "Мова інтерфейсу та чату", blockedTitle: "Заблоковані люди", archiveTitle: "Архів сторіс (понад 20 год)" }
-    };
-
-    // DOM ссылки
-    const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
-    const homeProfileCircleBtn = document.getElementById("rtkHomeProfileCircleBtn");
-    const homeProfileAvatar = document.getElementById("rtkHomeProfileAvatar");
-    const openFromHeroBtn = document.getElementById("rtkOpenFromHeroBtn");
-    const homePeopleModal = document.getElementById("rtkHomePeopleModal");
-    const closeHomePeopleModal = document.getElementById("rtkCloseHomePeopleModal");
-    const homePeopleQuery = document.getElementById("rtkHomePeopleQuery");
-    const homePeopleList = document.getElementById("rtkHomePeopleList");
-
-    const openBtn = document.getElementById("rtkChatBtn");
-    const unreadBadge = document.getElementById("rtkUnreadBadge");
-    const messengerEl = document.getElementById("rtkMessenger");
-    const authScreen = document.getElementById("rtkAuthScreen");
-    const mainApp = document.getElementById("rtkMainApp");
-    const googleLoginBtn = document.getElementById("rtkGoogleLoginBtn");
-    const authBackToSite = document.getElementById("rtkAuthBackToSite");
-    const exitToSiteBtn = document.getElementById("rtkExitToSiteBtn");
-
-    const tabChats = document.getElementById("rtkTabChats");
-    const tabRoulette = document.getElementById("rtkTabRoulette");
-    const tabProfile = document.getElementById("rtkTabProfile");
-    const chatsView = document.getElementById("rtkChatsView");
-    const rouletteView = document.getElementById("rtkRouletteView");
-    const profileView = document.getElementById("rtkProfileView");
-    const settingsPage = document.getElementById("rtkSettingsPage");
-
-    const sidebarEl = document.getElementById("rtkSidebar");
-    const chatPaneEl = document.getElementById("rtkChatPane");
-    const compactSearchBtn = document.getElementById("rtkCompactSearchBtn");
-    const friendSearchBox = document.getElementById("rtkFriendSearchBox");
-    const searchInput = document.getElementById("rtkSearchUsernameInput");
-    const searchResultsEl = document.getElementById("rtkSearchResults");
-
-    const phoneLookupBtn = document.getElementById("rtkPhoneLookupBtn");
-    const phoneLookupBox = document.getElementById("rtkPhoneLookupBox");
-    const phoneLookupInput = document.getElementById("rtkPhoneLookupInput");
-    const phoneLookupSubmitBtn = document.getElementById("rtkPhoneLookupSubmitBtn");
-    const phoneLookupResult = document.getElementById("rtkPhoneLookupResult");
-
-    const createStoryBtn = document.getElementById("rtkCreateStoryBtn");
-    const storiesStrip = document.getElementById("rtkStoriesStrip");
-    const storyComposerModal = document.getElementById("rtkStoryComposerModal");
-    const closeStoryComposerBtn = document.getElementById("rtkCloseStoryComposerBtn");
-    const storyMediaInput = document.getElementById("rtkStoryMediaInput");
-    const storyPreviewWrap = document.getElementById("rtkStoryPreviewWrap");
-    const storyFilterSelect = document.getElementById("rtkStoryFilterSelect");
-    const storyMusicSelect = document.getElementById("rtkStoryMusicSelect");
-    const publishStoryBtn = document.getElementById("rtkPublishStoryBtn");
-
-    const storyViewerModal = document.getElementById("rtkStoryViewerModal");
-    const closeStoryViewerBtn = document.getElementById("rtkCloseStoryViewerBtn");
-    const storyViewerAuthor = document.getElementById("rtkStoryViewerAuthor");
-    const storyViewerMusic = document.getElementById("rtkStoryViewerMusic");
-    const storyViewerCountdown = document.getElementById("rtkStoryViewerCountdown");
-    const storyViewerMedia = document.getElementById("rtkStoryViewerMedia");
-    const storyStatsText = document.getElementById("rtkStoryStatsText");
-    const storyLikeBtn = document.getElementById("rtkStoryLikeBtn");
-    const storyReplyForm = document.getElementById("rtkStoryReplyForm");
-    const storyReplyInput = document.getElementById("rtkStoryReplyInput");
-
-    const chatListEl = document.getElementById("rtkChatList");
-    const backToDialogsBtn = document.getElementById("rtkBackToDialogsBtn");
-    const peerInfoBox = document.getElementById("rtkPeerInfoBox");
-    const messagesListEl = document.getElementById("rtkMessagesList");
-    const composerDock = document.getElementById("rtkComposerDock");
-    const fontCycleBtn = document.getElementById("rtkFontCycleBtn");
-    const fontBadge = document.getElementById("rtkFontBadge");
-    const sendMsgForm = document.getElementById("rtkSendMessageForm");
-    const msgInput = document.getElementById("rtkMessageInput");
-
-    const rouletteJoinedCountEl = document.getElementById("rtkRouletteJoinedCount");
-    const rouletteNextBtn = document.getElementById("rtkRouletteNextBtn");
-    const rouletteCardEl = document.getElementById("rtkRouletteCard");
-    const rouletteMessagesEl = document.getElementById("rtkRouletteMessages");
-    const rouletteForm = document.getElementById("rtkRouletteForm");
-    const rouletteInput = document.getElementById("rtkRouletteInput");
-
-    const profileDisplayName = document.getElementById("rtkProfileDisplayName");
-    const profileDisplayHandle = document.getElementById("rtkProfileDisplayHandle");
-    const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
-    const profileAvatarPreview = document.getElementById("rtkProfileAvatarPreview");
-    const postsCountVal = document.getElementById("rtkPostsCountVal");
-    const followersCountVal = document.getElementById("rtkFollowersCountVal");
-    const followingCountVal = document.getElementById("rtkFollowingCountVal");
-    const openFollowersBtn = document.getElementById("rtkOpenFollowersBtn");
-    const openFollowingBtn = document.getElementById("rtkOpenFollowingBtn");
-    const profileBioText = document.getElementById("rtkProfileBioText");
-    const openSettingsPageBtn = document.getElementById("rtkOpenSettingsPageBtn");
-    const backFromSettingsBtn = document.getElementById("rtkBackFromSettingsBtn");
-    const languageSelect = document.getElementById("rtkLanguageSelect");
-    const languageSavedHint = document.getElementById("rtkLanguageSavedHint");
-    const blockedUsersListEl = document.getElementById("rtkBlockedUsersList");
-    const archivedStoriesListEl = document.getElementById("rtkArchivedStoriesList");
-
-    const followListModal = document.getElementById("rtkFollowListModal");
-    const followListTitle = document.getElementById("rtkFollowListTitle");
-    const closeFollowListBtn = document.getElementById("rtkCloseFollowListBtn");
-    const followListItems = document.getElementById("rtkFollowListItems");
-
-    const profileForm = document.getElementById("rtkProfileForm");
-    const profileName = document.getElementById("rtkProfileName");
-    const profileUsername = document.getElementById("rtkProfileUsername");
-    const profilePhone = document.getElementById("rtkProfilePhone");
-    const profileBio = document.getElementById("rtkProfileBio");
-    const profilePhotoFile = document.getElementById("rtkProfilePhotoFile");
-    const profilePhotoUrl = document.getElementById("rtkProfilePhotoUrl");
-    const profileStatus = document.getElementById("rtkProfileStatus");
-
-    const FONTS = [
-      { id: "normal", label: "Обычный", cls: "rtk-font-normal" },
-      { id: "bold", label: "Жирный", cls: "rtk-font-bold" },
-      { id: "italic", label: "Курсив", cls: "rtk-font-italic" },
-      { id: "mono", label: "Моно", cls: "rtk-font-mono" },
-      { id: "underline", label: "Подчёрк.", cls: "rtk-font-underline" }
-    ];
-    let fontIdx = 0;
-
-    let currentUser = null;
-    let currentProfile = null;
-    let activeChatId = null;
-    let activePeer = null;
-    let aiMessagesCache = JSON.parse(localStorage.getItem("rtk_ai_messages") || "[]");
-    let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_active_v1") || "[]");
-    let archivedStoriesCache = JSON.parse(localStorage.getItem("rtk_stories_archive_v1") || "[]");
-    let draftStoryMedia = null;
-    let activeStoryId = null;
-    let roulettePeer = null;
-    let rouletteChatId = null;
-    let allUsers = [];
-    let chatsMap = new Map();
-    let blockedIds = new Set();
-    let followingIds = new Set();
-    let followerIds = new Set();
-    let unsubUsers = null;
-    let unsubChats = null;
-    let unsubMessages = null;
-    let unsubRouletteMsgs = null;
-    let translatedCache = new Map();
-
-    const escapeHtml = (s) => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    const cleanUsername = (u) => (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
-    const cleanPhone = (p) => String(p || "").replace(/[^\d+]/g, "");
-    const isMobileViewport = () => window.innerWidth <= 768;
-
-    function formatRemaining20h(createdAt) {
-      const left = Math.max(0, (createdAt + STORY_LIFETIME_MS) - Date.now());
-      const totalSec = Math.floor(left / 1000);
-      const h = Math.floor(totalSec / 3600);
-      const m = Math.floor((totalSec % 3600) / 60);
-      const s = totalSec % 60;
-      return `${String(h).padStart(2, "0")}ч ${String(m).padStart(2, "0")}м ${String(s).padStart(2, "0")}с`;
+    function saveAll() {
+      localStorage.setItem(STORAGE_KEYS.posts, JSON.stringify(posts));
+      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archivePosts));
+      localStorage.setItem(STORAGE_KEYS.blocked, JSON.stringify(blockedUsers));
+      localStorage.setItem(STORAGE_KEYS.stories, JSON.stringify(stories));
+      localStorage.setItem(STORAGE_KEYS.isOwner, JSON.stringify(isOwner));
     }
 
-    function rotateExpiredStories() {
-      const now = Date.now();
-      const stillActive = [];
-      let moved = false;
-      for (const st of storiesCache) {
-        if ((st.createdAt + STORY_LIFETIME_MS) <= now) {
-          archivedStoriesCache.unshift(st);
-          moved = true;
-        } else {
-          stillActive.push(st);
-        }
-      }
-      if (moved) {
-        storiesCache = stillActive;
-        archivedStoriesCache = archivedStoriesCache.slice(0, 50);
-        try {
-          localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache));
-          localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache));
-        } catch (_) {}
+    function openTab(tabName) {
+      document.querySelectorAll(".section").forEach((el) => el.classList.remove("active"));
+      document.getElementById(`tab-${tabName}`)?.classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach((el) => el.classList.remove("active"));
+      document.getElementById(`nav-${tabName}`)?.classList.add("active");
+
+      if (tabName === "settings") {
+        renderBlocked();
+        renderArchive();
+      } else if (tabName === "search") {
+        renderSearch();
       }
     }
 
-    function applyStaticTranslations(lang) {
-      const dict = I18N[lang] || I18N.ru;
-      document.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) el.textContent = dict[key];
-      });
-    }
+    function applyOwnerPermissions() {
+      const controls = document.getElementById("ownerPublishControls");
+      const lockedMsg = document.getElementById("guestLockedMsg");
+      const badge = document.getElementById("ownerBadge");
+      const roleText = document.getElementById("profileRoleText");
 
-    async function translateTextForUser(text, targetLang) {
-      const raw = String(text || "").trim();
-      if (!raw || !targetLang || targetLang === "ru") return raw;
-      const cacheKey = `${targetLang}::${raw}`;
-      if (translatedCache.has(cacheKey)) return translatedCache.get(cacheKey);
-      try {
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(targetLang)}&dt=t&q=${encodeURIComponent(raw)}`;
-        const r = await fetch(url);
-        const data = await r.json();
-        const out = (data?.[0] || []).map((part) => part?.[0] || "").join("").trim() || raw;
-        translatedCache.set(cacheKey, out);
-        return out;
-      } catch (_) {
-        return raw;
+      if (isOwner) {
+        controls.style.display = "flex";
+        lockedMsg.style.display = "none";
+        badge.textContent = "Доступ открыт: Владелец";
+        roleText.textContent = "Режим владельца: публикация в ленту разрешена";
+      } else {
+        controls.style.display = "none";
+        lockedMsg.style.display = "block";
+        badge.textContent = "Только просмотр";
+        roleText.textContent = "Режим гостя: публикация в ленту закрыта";
       }
     }
 
-    // Форматирование //светящийся подчёркнутый// текста + шрифта
-    function renderFormattedMessageHtml(rawText, fontClass = "rtk-font-normal") {
-      const safeFont = FONTS.some((f) => f.cls === fontClass) ? fontClass : "rtk-font-normal";
-      const parts = String(rawText || "").split(/(\/\/[^/]+\/\/)/g);
-      const htmlParts = parts.map((chunk) => {
-        if (/^\/\/[^/]+\/\/$/.test(chunk)) {
-          const inner = chunk.slice(2, -2);
-          return `<span class="rtk-slash-glow">${escapeHtml(inner)}</span>`;
-        }
-        return `<span class="${safeFont}">${escapeHtml(chunk)}</span>`;
-      });
-      return htmlParts.join("");
+    function toggleOwnerMode() {
+      isOwner = !isOwner;
+      saveAll();
+      applyOwnerPermissions();
     }
 
-    function applyMobileChatLayout() {
-      if (!isMobileViewport()) {
-        sidebarEl.style.display = "flex";
-        sidebarEl.style.maxWidth = "390px";
-        sidebarEl.style.width = "100%";
-        chatPaneEl.style.display = "flex";
-        backToDialogsBtn.style.display = "none";
+    function changeFont(fontClass) {
+      document.body.className = fontClass;
+      localStorage.setItem(STORAGE_KEYS.font, fontClass);
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function publishPost() {
+      if (!isOwner) {
+        alert("Публиковать в ленту может только владелец.");
         return;
       }
-      if (activeChatId) {
-        sidebarEl.style.display = "none";
-        chatPaneEl.style.display = "flex";
-        backToDialogsBtn.style.display = "inline-flex";
-      } else {
-        sidebarEl.style.display = "flex";
-        sidebarEl.style.maxWidth = "100%";
-        sidebarEl.style.width = "100%";
-        chatPaneEl.style.display = "none";
-        backToDialogsBtn.style.display = "none";
+      const fileInput = document.getElementById("postFileInput");
+      const caption = document.getElementById("postCaption").value.trim();
+      const statusEl = document.getElementById("publishStatus");
+      const file = fileInput.files?.[0];
+
+      if (!file) {
+        statusEl.textContent = "Выберите фото или видео перед публикацией.";
+        return;
       }
-    }
 
-    backToDialogsBtn.addEventListener("click", () => {
-      activeChatId = null;
-      activePeer = null;
-      composerDock.style.display = "none";
-      applyMobileChatLayout();
-    });
+      const mediaUrl = await readFileAsDataUrl(file);
+      const mediaType = file.type.startsWith("video/") ? "video" : "image";
 
-    window.addEventListener("resize", applyMobileChatLayout);
-
-    function openMessenger(targetTab = "chats") {
-      messengerEl.style.display = "flex";
-      document.body.style.overflow = "hidden";
-      if (currentUser) setActiveTab(targetTab);
-    }
-    function closeMessenger() {
-      messengerEl.style.display = "none";
-      document.body.style.overflow = "";
-    }
-
-    openBtn.addEventListener("click", () => openMessenger("chats"));
-    openFromHeroBtn.addEventListener("click", () => openMessenger("chats"));
-    authBackToSite.addEventListener("click", closeMessenger);
-    exitToSiteBtn.addEventListener("click", closeMessenger);
-
-    // Нижний поиск людей на главной
-    homeSearchCircleBtn.addEventListener("click", () => {
-      homePeopleQuery.value = "";
-      renderHomePeopleModal("");
-      homePeopleModal.style.display = "flex";
-    });
-    closeHomePeopleModal.addEventListener("click", () => { homePeopleModal.style.display = "none"; });
-    homePeopleQuery.addEventListener("input", (e) => renderHomePeopleModal(e.target.value));
-
-    function renderHomePeopleModal(qText) {
-      const needle = (qText || "").trim().toLowerCase().replace(/^@+/, "");
-      const list = allUsers.filter((u) => {
-        if (!u.uid || u.uid === currentUser?.uid || blockedIds.has(u.uid)) return false;
-        if (!needle) return true;
-        return (u.name || "").toLowerCase().includes(needle) || (u.username || "").toLowerCase().includes(needle);
+      posts.unshift({
+        id: Date.now().toString(),
+        author: "Владелец RUNOTOKS",
+        caption,
+        mediaUrl,
+        mediaType,
+        createdAt: new Date().toLocaleString("ru-RU")
       });
-      homePeopleList.innerHTML = list.length
-        ? list.map((u) => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:14px;background:#0b1120;border:1px solid #1f2937;">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" />
-                <div style="min-width:0;">
-                  <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || "Пользователь")}</div>
-                  <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username || "user")}</div>
-                </div>
+
+      fileInput.value = "";
+      document.getElementById("postCaption").value = "";
+      statusEl.textContent = "Опубликовано в ленте.";
+      saveAll();
+      renderFeed();
+    }
+
+    async function publishStory() {
+      if (!isOwner) {
+        alert("Добавлять сторис может только владелец.");
+        return;
+      }
+      const fileInput = document.getElementById("postFileInput");
+      const caption = document.getElementById("postCaption").value.trim() || "Сторис";
+      const file = fileInput.files?.[0];
+      const statusEl = document.getElementById("publishStatus");
+
+      if (!file) {
+        statusEl.textContent = "Выберите фото или видео для сторис.";
+        return;
+      }
+
+      const mediaUrl = await readFileAsDataUrl(file);
+      const mediaType = file.type.startsWith("video/") ? "video" : "image";
+
+      stories.unshift({
+        id: Date.now().toString(),
+        author: "Владелец",
+        caption,
+        mediaUrl,
+        mediaType,
+        musicUrl: storyAudio.src || ""
+      });
+
+      fileInput.value = "";
+      document.getElementById("postCaption").value = "";
+      statusEl.textContent = "Добавлено в сторис.";
+      saveAll();
+      renderStories();
+    }
+
+    function movePostToArchive(postId) {
+      if (!isOwner) return;
+      const idx = posts.findIndex((p) => p.id === postId);
+      if (idx === -1) return;
+      const [moved] = posts.splice(idx, 1);
+      archivePosts.unshift(moved);
+      saveAll();
+      renderFeed();
+      renderArchive();
+    }
+
+    function restorePostFromArchive(postId) {
+      if (!isOwner) return;
+      const idx = archivePosts.findIndex((p) => p.id === postId);
+      if (idx === -1) return;
+      const [restored] = archivePosts.splice(idx, 1);
+      posts.unshift(restored);
+      saveAll();
+      renderFeed();
+      renderArchive();
+    }
+
+    function renderFeed() {
+      const container = document.getElementById("feedList");
+      if (!posts.length) {
+        container.innerHTML = `<div class="card muted">Пока нет опубликованных фото или видео.</div>`;
+        return;
+      }
+
+      container.innerHTML = posts.map((post) => {
+        const mediaHtml = post.mediaType === "video"
+          ? `<video class="post-media" src="${post.mediaUrl}" controls playsinline></video>`
+          : `<img class="post-media" src="${post.mediaUrl}" alt="Публикация" />`;
+
+        const archiveBtn = isOwner
+          ? `<button type="button" onclick="movePostToArchive('${post.id}')">В архив</button>`
+          : "";
+
+        return `
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <strong class="grad-orange-green">${escapeHtml(post.author)}</strong>
+                <div class="muted">${escapeHtml(post.createdAt)}</div>
               </div>
-              <button data-uid="${u.uid}" type="button" style="padding:7px 12px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">Чат</button>
+              ${archiveBtn}
             </div>
-          `).join("")
-        : `<div style="text-align:center;color:#94a3b8;font-size:12px;padding:16px;">Люди не найдены</div>`;
-
-      homePeopleList.querySelectorAll("button[data-uid]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const peer = allUsers.find((x) => x.uid === btn.dataset.uid);
-          homePeopleModal.style.display = "none";
-          openMessenger("chats");
-          if (peer) startOrOpenChat(peer);
-        });
-      });
+            ${post.caption ? `<p style="margin-bottom:8px;">${escapeHtml(post.caption)}</p>` : ""}
+            ${mediaHtml}
+          </article>
+        `;
+      }).join("");
     }
 
-    homeProfileCircleBtn.addEventListener("click", () => openMessenger("profile"));
-
-    function setActiveTab(tab) {
-      settingsPage.style.display = "none";
-      chatsView.style.display = tab === "chats" ? "flex" : "none";
-      rouletteView.style.display = tab === "roulette" ? "block" : "none";
-      profileView.style.display = tab === "profile" ? "block" : "none";
-
-      [
-        [tabChats, tab === "chats"],
-        [tabRoulette, tab === "roulette"],
-        [tabProfile, tab === "profile"]
-      ].forEach(([btn, active]) => {
-        btn.style.background = active ? "#2563eb" : "#1e293b";
-        btn.style.border = active ? "none" : "1px solid #334155";
-      });
-
-      if (tab === "chats") applyMobileChatLayout();
-      if (tab === "roulette" && currentUser) markRouletteEntered();
-      if (tab === "profile") renderProfileStatsAndBlocked();
-    }
-
-    tabChats.addEventListener("click", () => setActiveTab("chats"));
-    tabRoulette.addEventListener("click", () => setActiveTab("roulette"));
-    tabProfile.addEventListener("click", () => setActiveTab("profile"));
-
-    // Настройки (☰)
-    openSettingsPageBtn.addEventListener("click", () => {
-      chatsView.style.display = "none";
-      rouletteView.style.display = "none";
-      profileView.style.display = "none";
-      settingsPage.style.display = "block";
-      rotateExpiredStories();
-      renderStoriesStrip();
-      renderBlockedUsersList();
-      renderArchivedStories();
-    });
-
-    backFromSettingsBtn.addEventListener("click", () => {
-      settingsPage.style.display = "none";
-      setActiveTab("profile");
-    });
-
-    const savedLang = localStorage.getItem("rtk_language") || "ru";
-    languageSelect.value = savedLang;
-    applyStaticTranslations(savedLang);
-
-    languageSelect.addEventListener("change", async () => {
-      const lang = languageSelect.value;
-      localStorage.setItem("rtk_language", lang);
-      applyStaticTranslations(lang);
-      languageSavedHint.textContent = `Язык: ${languageSelect.options[languageSelect.selectedIndex].text}`;
-      if (activePeer?.isAI) renderAIList();
-      else if (activeChatId) startOrOpenChat(activePeer);
-    });
-
-    function renderBlockedUsersList() {
-      const blockedList = allUsers.filter((u) => blockedIds.has(u.uid));
-      blockedUsersListEl.innerHTML = blockedList.length
-        ? blockedList.map((u) => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:#111827;border:1px solid #1f2937;">
-              <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-                <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />
-                <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username || u.uid)}</span>
-              </div>
-              <button data-unblock="${u.uid}" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Разблокировать</button>
-            </div>
-          `).join("")
-        : `<div style="font-size:12px;color:#94a3b8;">Заблокированных пользователей нет</div>`;
-
-      blockedUsersListEl.querySelectorAll("button[data-unblock]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          if (!currentUser) return;
-          const uidToUnblock = btn.dataset.unblock;
-          blockedIds.delete(uidToUnblock);
-          await deleteDoc(doc(db, "users", currentUser.uid, "blocked", uidToUnblock)).catch(() => {});
-          renderBlockedUsersList();
-          renderPeopleAndDialogs();
-        });
-      });
-    }
-
-    function renderArchivedStories() {
-      archivedStoriesListEl.innerHTML = archivedStoriesCache.length
-        ? archivedStoriesCache.map((st) => `
-            <div style="border-radius:12px;overflow:hidden;border:1px solid #1f2937;background:#111827;aspect-ratio:9/14;">
+    function renderStories() {
+      const bar = document.getElementById("storiesBar");
+      bar.innerHTML = stories.map((st, index) => `
+        <div class="story-item" onclick="openStory(${index})">
+          <div class="story-ring">
+            <div class="story-ring-inner">
               ${st.mediaType === "video"
-                ? `<video src="${st.mediaData}" style="width:100%;height:100%;object-fit:cover;filter:${st.filter || "none"};"></video>`
-                : `<img src="${st.mediaData}" style="width:100%;height:100%;object-fit:cover;filter:${st.filter || "none"};" />`}
+                ? `<div class="muted" style="font-size:11px;">▶ Видео</div>`
+                : `<img src="${st.mediaUrl}" alt="Story" />`}
             </div>
-          `).join("")
-        : `<div style="grid-column:1/-1;font-size:12px;color:#94a3b8;">Архив пуст</div>`;
-    }
-
-    // Подписчики и подписки (просмотр профиля, подписка, написание сообщения)
-    async function toggleFollowUser(targetUid) {
-      if (!currentUser || !targetUid || targetUid === currentUser.uid) return;
-      if (followingIds.has(targetUid)) {
-        followingIds.delete(targetUid);
-        await deleteDoc(doc(db, "users", currentUser.uid, "following", targetUid)).catch(() => {});
-        await deleteDoc(doc(db, "users", targetUid, "followers", currentUser.uid)).catch(() => {});
-      } else {
-        followingIds.add(targetUid);
-        await setDoc(doc(db, "users", currentUser.uid, "following", targetUid), { followedAt: serverTimestamp() }).catch(() => {});
-        await setDoc(doc(db, "users", targetUid, "followers", currentUser.uid), { followedAt: serverTimestamp() }).catch(() => {});
-      }
-      renderProfileStatsAndBlocked();
-    }
-
-    function openFollowModal(mode) {
-      const isFollowers = mode === "followers";
-      followListTitle.textContent = isFollowers ? "Подписчики" : "Подписки";
-      const ids = Array.from(isFollowers ? followerIds : followingIds);
-      const users = ids.map((id) => allUsers.find((u) => u.uid === id) || { uid: id, name: "Пользователь", username: id.slice(0, 6), photoURL: DEFAULT_AVATAR });
-
-      followListItems.innerHTML = users.length
-        ? users.map((u) => {
-            const sub = followingIds.has(u.uid);
-            return `
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border-radius:14px;background:#0b1120;border:1px solid #1f2937;">
-                <div data-view-profile="${u.uid}" style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;cursor:pointer;">
-                  <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" />
-                  <div style="min-width:0;">
-                    <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name)}</div>
-                    <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username || "user")}</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:6px;">
-                  <button data-follow-btn="${u.uid}" type="button" style="padding:6px 10px;border-radius:9px;border:1px solid #334155;background:${sub ? "#1e293b" : "#2563eb"};color:#fff;font-size:11px;font-weight:700;cursor:pointer;">${sub ? "Отписаться" : "Подписаться"}</button>
-                  <button data-msg-btn="${u.uid}" type="button" style="padding:6px 10px;border-radius:9px;border:none;background:#059669;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Написать</button>
-                </div>
-              </div>
-            `;
-          }).join("")
-        : `<div style="text-align:center;color:#94a3b8;font-size:12px;padding:16px;">Список пуст</div>`;
-
-      followListItems.querySelectorAll("[data-view-profile]").forEach((el) => {
-        el.addEventListener("click", () => {
-          const u = users.find((x) => x.uid === el.dataset.viewProfile);
-          if (!u) return;
-          alert(`${u.name} (@${u.username || "user"})\n${u.bio || "Профиль пользователя runotoks"}`);
-        });
-      });
-
-      followListItems.querySelectorAll("[data-follow-btn]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          await toggleFollowUser(btn.dataset.followBtn);
-          openFollowModal(mode);
-        });
-      });
-
-      followListItems.querySelectorAll("[data-msg-btn]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const peer = allUsers.find((x) => x.uid === btn.dataset.msgBtn) || { uid: btn.dataset.msgBtn, name: "Пользователь", username: "user", photoURL: DEFAULT_AVATAR };
-          followListModal.style.display = "none";
-          setActiveTab("chats");
-          startOrOpenChat(peer);
-        });
-      });
-
-      followListModal.style.display = "flex";
-    }
-
-    openFollowersBtn.addEventListener("click", () => openFollowModal("followers"));
-    openFollowingBtn.addEventListener("click", () => openFollowModal("following"));
-    closeFollowListBtn.addEventListener("click", () => { followListModal.style.display = "none"; });
-
-    function renderProfileStatsAndBlocked() {
-      const myStoriesCount = storiesCache.filter((s) => s.authorId === currentUser?.uid).length;
-      postsCountVal.textContent = String(currentProfile?.postsCount ?? myStoriesCount);
-      followersCountVal.textContent = String(followerIds.size);
-      followingCountVal.textContent = String(followingIds.size);
-      profileBioText.textContent = currentProfile?.bio || "Описание профиля не добавлено.";
-      renderBlockedUsersList();
-    }
-
-    // Вход Google
-    googleLoginBtn.addEventListener("click", async () => {
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") {
-          await signInWithRedirect(auth, provider);
-        } else {
-          alert("Ошибка входа: " + (err.message || err.code));
-        }
-      }
-    });
-
-    profilePhotoFile.addEventListener("change", (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        profilePhotoUrl.value = reader.result;
-        profileAvatarPreview.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-
-    async function ensureUserProfile(user) {
-      const ref = doc(db, "users", user.uid);
-      const snap = await getDoc(ref);
-      const baseUsername = cleanUsername(user.email?.split("@")[0] || `user_${user.uid.slice(0, 6)}`) || `user_${user.uid.slice(0, 6)}`;
-      if (!snap.exists()) {
-        const profile = {
-          uid: user.uid,
-          email: user.email || "",
-          name: user.displayName || "Пользователь",
-          username: baseUsername,
-          phone: "",
-          bio: "",
-          photoURL: user.photoURL || DEFAULT_AVATAR,
-          postsCount: 0,
-          rouletteEntered: false,
-          lastSeen: Date.now()
-        };
-        await setDoc(ref, profile);
-        return profile;
-      }
-      await updateDoc(ref, { lastSeen: Date.now() }).catch(() => {});
-      return { uid: user.uid, ...snap.data() };
-    }
-
-    function fillProfileUI(profile, user) {
-      const av = profile.photoURL || user?.photoURL || DEFAULT_AVATAR;
-      homeProfileAvatar.src = av;
-      profileAvatarPreview.src = av;
-      profileDisplayName.textContent = profile.name || "Пользователь";
-      profileDisplayHandle.textContent = `@${profile.username || "user"}`;
-      profileGoogleEmail.textContent = user?.email || "";
-      profileBioText.textContent = profile.bio || "Описание профиля не добавлено.";
-
-      profileName.value = profile.name || "";
-      profileUsername.value = profile.username || "";
-      profilePhone.value = profile.phone || "";
-      profileBio.value = profile.bio || "";
-      profilePhotoUrl.value = profile.photoURL || "";
-      renderProfileStatsAndBlocked();
-    }
-
-    profileForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!currentUser) return;
-      const uname = cleanUsername(profileUsername.value);
-      if (!uname) { profileStatus.textContent = "Введите корректный @username"; return; }
-      const updated = {
-        name: profileName.value.trim() || "Пользователь",
-        username: uname,
-        phone: cleanPhone(profilePhone.value),
-        bio: profileBio.value.trim().slice(0, 220),
-        photoURL: profilePhotoUrl.value.trim() || DEFAULT_AVATAR,
-        lastSeen: Date.now()
-      };
-      await updateDoc(doc(db, "users", currentUser.uid), updated);
-      currentProfile = { ...currentProfile, ...updated };
-      fillProfileUI(currentProfile, currentUser);
-      profileStatus.textContent = "Профиль сохранён!";
-      setTimeout(() => { profileStatus.textContent = ""; }, 2000);
-    });
-
-    // Лупа поиска друзей в чате
-    compactSearchBtn.addEventListener("click", () => {
-      const open = friendSearchBox.style.display === "none";
-      friendSearchBox.style.display = open ? "block" : "none";
-      if (open) { phoneLookupBox.style.display = "none"; searchInput.focus(); }
-    });
-
-    searchInput.addEventListener("input", () => {
-      const needle = searchInput.value.trim().toLowerCase().replace(/^@+/, "");
-      searchResultsEl.innerHTML = "";
-      if (!needle) return;
-      const matches = allUsers.filter(
-        (u) => u.uid !== currentUser?.uid && !blockedIds.has(u.uid) &&
-        ((u.username || "").toLowerCase().includes(needle) || (u.name || "").toLowerCase().includes(needle))
-      );
-      searchResultsEl.innerHTML = matches.length
-        ? matches.map((u) => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:#0b1120;border:1px solid #1f2937;">
-              <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username)} <span style="color:#60a5fa;">@${escapeHtml(u.username || "")}</span></span>
-              <button data-open-uid="${u.uid}" type="button" style="padding:4px 8px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
-            </div>
-          `).join("")
-        : `<div style="font-size:11px;color:#94a3b8;">Ничего не найдено</div>`;
-
-      searchResultsEl.querySelectorAll("button[data-open-uid]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const peer = allUsers.find((x) => x.uid === btn.dataset.openUid);
-          if (peer) startOrOpenChat(peer);
-        });
-      });
-    });
-
-    // Поиск по номеру телефона
-    phoneLookupBtn.addEventListener("click", () => {
-      const open = phoneLookupBox.style.display === "none";
-      phoneLookupBox.style.display = open ? "block" : "none";
-      if (open) { friendSearchBox.style.display = "none"; phoneLookupInput.focus(); }
-    });
-
-    phoneLookupSubmitBtn.addEventListener("click", async () => {
-      const targetPhone = cleanPhone(phoneLookupInput.value);
-      phoneLookupResult.textContent = "";
-      if (!targetPhone) { phoneLookupResult.textContent = "Введите номер."; return; }
-      const snap = await getDocs(query(collection(db, "users"), where("phone", "==", targetPhone)));
-      if (snap.empty) { phoneLookupResult.textContent = "Не найдено."; return; }
-      const found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
-      phoneLookupResult.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:#0b1120;border:1px solid #1f2937;">
-          <span style="font-size:12px;font-weight:700;">${escapeHtml(found.name || "Пользователь")}</span>
-          <button id="rtkOpenFoundByPhoneBtn" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
-        </div>
-      `;
-      document.getElementById("rtkOpenFoundByPhoneBtn").addEventListener("click", () => startOrOpenChat(found));
-    });
-
-    // Сторис: 20 часов + счётчик + просмотры/лайки/ответы на весь экран
-    function saveStoriesState() {
-      try {
-        localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache.slice(0, 25)));
-        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
-      } catch (_) {}
-    }
-
-    function renderStoriesStrip() {
-      rotateExpiredStories();
-      storiesStrip.innerHTML = storiesCache.map((st) => `
-        <button data-story-id="${st.id}" type="button" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:none;color:#f8fafc;cursor:pointer;flex-shrink:0;">
-          <div style="width:48px;height:48px;border-radius:50%;padding:2px;background:linear-gradient(135deg,#3b82f6,#ec4899);display:flex;align-items:center;justify-content:center;">
-            <img src="${st.authorAvatar || DEFAULT_AVATAR}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
           </div>
-          <span style="font-size:10px;max-width:62px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(st.authorName || "Сторис")}</span>
-          <span data-story-timer="${st.id}" style="font-size:9px;color:#34d399;font-weight:700;">${formatRemaining20h(st.createdAt)}</span>
-        </button>
+          <span class="story-label grad-orange-green">${escapeHtml(st.caption || st.author)}</span>
+        </div>
       `).join("");
-
-      storiesStrip.querySelectorAll("button[data-story-id]").forEach((btn) => {
-        btn.addEventListener("click", () => openStoryViewer(btn.dataset.storyId));
-      });
     }
 
-    function refreshStoryViewerDetails(st) {
+    function openStory(index) {
+      const st = stories[index];
       if (!st) return;
-      const viewsCount = (st.viewers || []).length;
-      const likesCount = (st.likes || []).length;
-      const repliesCount = (st.replies || []).length;
-      storyStatsText.textContent = `👁 ${viewsCount} • ❤️ ${likesCount} • 💬 ${repliesCount}`;
-      storyViewerCountdown.textContent = `⏳ ${formatRemaining20h(st.createdAt)}`;
+      document.getElementById("storyViewerTitle").textContent = `${st.author} — ${st.caption}`;
+      const content = document.getElementById("storyViewerContent");
+      content.innerHTML = st.mediaType === "video"
+        ? `<video src="${st.mediaUrl}" controls autoplay playsinline></video>`
+        : `<img src="${st.mediaUrl}" alt="Story" />`;
+
+      document.getElementById("storyViewer").classList.add("open");
+      if (storyAudio.src) {
+        storyAudio.play().catch(() => {
+          document.getElementById("storyViewerMusicNote").textContent =
+            "Нажмите «🎵 Звук», чтобы разрешить воспроизведение музыки в браузере.";
+        });
+      }
     }
 
-    function openStoryViewer(storyId) {
-      rotateExpiredStories();
-      const st = storiesCache.find((x) => x.id === storyId);
-      if (!st) { renderStoriesStrip(); return; }
-      activeStoryId = st.id;
-      const myId = currentUser?.uid || "guest";
-      st.viewers = st.viewers || [];
-      if (!st.viewers.includes(myId)) st.viewers.push(myId);
-      saveStoriesState();
-
-      storyViewerAuthor.textContent = st.authorName || "Сторис";
-      storyViewerMusic.textContent = st.music || "Без музыки";
-      storyViewerMedia.innerHTML = st.mediaType === "video"
-        ? `<video src="${st.mediaData}" controls autoplay playsinline style="max-width:100%;max-height:100%;object-fit:contain;filter:${st.filter || "none"};"></video>`
-        : `<img src="${st.mediaData}" style="max-width:100%;max-height:100%;object-fit:contain;filter:${st.filter || "none"};" />`;
-      refreshStoryViewerDetails(st);
-      storyViewerModal.style.display = "flex";
+    function closeStoryViewer() {
+      document.getElementById("storyViewer").classList.remove("open");
+      document.getElementById("storyViewerContent").innerHTML = "";
     }
 
-    storyLikeBtn.addEventListener("click", () => {
-      if (!activeStoryId) return;
-      const st = storiesCache.find((x) => x.id === activeStoryId);
-      if (!st) return;
-      const myId = currentUser?.uid || "guest";
-      st.likes = st.likes || [];
-      if (!st.likes.includes(myId)) st.likes.push(myId);
-      else st.likes = st.likes.filter((id) => id !== myId);
-      saveStoriesState();
-      refreshStoryViewerDetails(st);
-    });
+    async function setAndPlayStoryMusic() {
+      const fileInput = document.getElementById("storyMusicFile");
+      const urlInput = document.getElementById("storyMusicUrl").value.trim();
+      const statusEl = document.getElementById("musicStatus");
+      const viewerNote = document.getElementById("storyViewerMusicNote");
 
-    storyReplyForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!activeStoryId) return;
-      const txt = storyReplyInput.value.trim();
-      if (!txt) return;
-      const st = storiesCache.find((x) => x.id === activeStoryId);
-      if (!st) return;
-      st.replies = st.replies || [];
-      st.replies.push({ from: currentUser?.uid || "guest", text: txt, at: Date.now() });
-      storyReplyInput.value = "";
-      saveStoriesState();
-      refreshStoryViewerDetails(st);
-
-      if (currentUser && st.authorId && st.authorId !== currentUser.uid) {
-        const pairKey = [currentUser.uid, st.authorId].sort().join("_");
-        await setDoc(doc(db, "chats", pairKey), { pairKey, members: [currentUser.uid, st.authorId], updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
-        await addDoc(collection(db, "chats", pairKey, "messages"), { senderId: currentUser.uid, text: `Ответ на сторис: ${txt}`, createdAt: serverTimestamp() }).catch(() => {});
+      if (fileInput.files?.[0]) {
+        storyAudio.src = await readFileAsDataUrl(fileInput.files[0]);
+      } else if (urlInput) {
+        storyAudio.src = urlInput;
       }
-    });
 
-    closeStoryViewerBtn.addEventListener("click", () => {
-      activeStoryId = null;
-      storyViewerModal.style.display = "none";
-      storyViewerMedia.innerHTML = "";
-    });
+      if (!storyAudio.src) {
+        statusEl.textContent = "Выберите аудиофайл или вставьте ссылку на трек.";
+        return;
+      }
 
-    createStoryBtn.addEventListener("click", () => {
-      draftStoryMedia = null;
-      storyMediaInput.value = "";
-      storyFilterSelect.value = "none";
-      storyMusicSelect.value = "";
-      storyPreviewWrap.innerHTML = `<span style="font-size:12px;color:#64748b;">Выберите фото или видео из галереи</span>`;
-      storyComposerModal.style.display = "flex";
-    });
-    closeStoryComposerBtn.addEventListener("click", () => { storyComposerModal.style.display = "none"; });
-
-    function refreshStoryPreview() {
-      if (!draftStoryMedia) return;
-      const flt = storyFilterSelect.value || "none";
-      storyPreviewWrap.innerHTML = draftStoryMedia.mediaType === "video"
-        ? `<video src="${draftStoryMedia.mediaData}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;filter:${flt};"></video>`
-        : `<img src="${draftStoryMedia.mediaData}" style="width:100%;height:100%;object-fit:cover;filter:${flt};" />`;
+      try {
+        await storyAudio.play();
+        statusEl.textContent = "Музыка играет.";
+        if (viewerNote) viewerNote.textContent = "🎵 Музыка сторис включена";
+      } catch (err) {
+        statusEl.textContent = "Не удалось запустить аудио: проверьте файл/ссылку или нажмите ещё раз.";
+        if (viewerNote) viewerNote.textContent = "Ошибка запуска аудио: " + (err?.message || "");
+      }
     }
 
-    storyMediaInput.addEventListener("change", (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      if (file.size > 1.5 * 1024 * 1024) { alert("Файл должен быть до 1.5 МБ."); return; }
-      const reader = new FileReader();
-      reader.onload = () => {
-        draftStoryMedia = { mediaType: file.type.startsWith("video/") ? "video" : "image", mediaData: reader.result };
-        refreshStoryPreview();
-      };
-      reader.readAsDataURL(file);
-    });
-    storyFilterSelect.addEventListener("change", refreshStoryPreview);
+    function stopStoryMusic() {
+      storyAudio.pause();
+      storyAudio.currentTime = 0;
+      document.getElementById("musicStatus").textContent = "Музыка остановлена.";
+    }
 
-    publishStoryBtn.addEventListener("click", async () => {
-      if (!draftStoryMedia) { alert("Выберите фото или видео из галереи."); return; }
-      const newStory = {
-        id: "story_" + Date.now(),
-        authorId: currentUser?.uid || "guest",
-        authorName: currentProfile?.name || currentUser?.displayName || "Пользователь",
-        authorAvatar: currentProfile?.photoURL || DEFAULT_AVATAR,
-        mediaType: draftStoryMedia.mediaType,
-        mediaData: draftStoryMedia.mediaData,
-        filter: storyFilterSelect.value || "none",
-        music: storyMusicSelect.value || "",
-        createdAt: Date.now(),
-        viewers: [],
-        likes: [],
-        replies: []
-      };
-      storiesCache.unshift(newStory);
-      saveStoriesState();
-      if (currentUser) {
-        const nextPosts = (currentProfile?.postsCount || 0) + 1;
-        currentProfile = { ...currentProfile, postsCount: nextPosts };
-        await updateDoc(doc(db, "users", currentUser.uid), { postsCount: nextPosts }).catch(() => {});
-        renderProfileStatsAndBlocked();
+    function blockUser() {
+      const input = document.getElementById("blockUserInput");
+      const name = input.value.trim();
+      if (!name) return;
+      if (!blockedUsers.includes(name)) {
+        blockedUsers.push(name);
+        saveAll();
       }
-      renderStoriesStrip();
-      storyComposerModal.style.display = "none";
-    });
+      input.value = "";
+      renderBlocked();
+    }
 
-    // Обновление таймеров сторис каждую секунду
-    setInterval(() => {
-      rotateExpiredStories();
-      storiesCache.forEach((st) => {
-        const el = storiesStrip.querySelector(`[data-story-timer="${st.id}"]`);
-        if (el) el.textContent = formatRemaining20h(st.createdAt);
-      });
-      if (activeStoryId) {
-        const cur = storiesCache.find((x) => x.id === activeStoryId);
-        if (cur) refreshStoryViewerDetails(cur);
-        else {
-          activeStoryId = null;
-          storyViewerModal.style.display = "none";
-          renderStoriesStrip();
-        }
+    function unblockUser(name) {
+      blockedUsers = blockedUsers.filter((u) => u !== name);
+      saveAll();
+      renderBlocked();
+    }
+
+    function renderBlocked() {
+      const el = document.getElementById("blockedList");
+      if (!blockedUsers.length) {
+        el.innerHTML = `<div class="muted">Список заблокированных пуст.</div>`;
+        return;
       }
-    }, 1000);
+      el.innerHTML = blockedUsers.map((u) => `
+        <div class="row" style="justify-content:space-between;">
+          <span>${escapeHtml(u)}</span>
+          <button type="button" onclick="unblockUser('${escapeJs(u)}')">Разблокировать</button>
+        </div>
+      `).join("");
+    }
 
-    // Шрифты и эффекты перед клавиатурой
-    fontCycleBtn.addEventListener("click", () => {
-      fontIdx = (fontIdx + 1) % FONTS.length;
-      fontBadge.textContent = FONTS[fontIdx].label;
-      msgInput.className = FONTS[fontIdx].cls;
-    });
+    function renderArchive() {
+      const el = document.getElementById("archiveList");
+      if (!archivePosts.length) {
+        el.innerHTML = `<div class="muted">В архиве пока нет публикаций.</div>`;
+        return;
+      }
+      el.innerHTML = archivePosts.map((p) => `
+        <div class="card" style="margin:0;">
+          <div class="card-header">
+            <div>
+              <strong>${escapeHtml(p.caption || "Публикация")}</strong>
+              <div class="muted">${escapeHtml(p.createdAt || "")}</div>
+            </div>
+            ${isOwner ? `<button type="button" onclick="restorePostFromArchive('${p.id}')">Вернуть в ленту</button>` : ""}
+          </div>
+          ${p.mediaType === "video"
+            ? `<video class="post-media" src="${p.mediaUrl}" controls></video>`
+            : `<img class="post-media" src="${p.mediaUrl}" alt="Архив" />`}
+        </div>
+      `).join("");
+    }
 
-    composerDock.querySelectorAll("[data-insert-fx]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const fx = btn.dataset.insertFx;
-        const start = msgInput.selectionStart ?? msgInput.value.length;
-        const end = msgInput.selectionEnd ?? msgInput.value.length;
-        msgInput.value = msgInput.value.slice(0, start) + fx + msgInput.value.slice(end);
-        msgInput.focus();
-      });
-    });
+    function renderSearch() {
+      const q = (document.getElementById("searchInput")?.value || "").trim().toLowerCase();
+      const box = document.getElementById("searchResults");
+      const filtered = posts.filter((p) =>
+        (p.caption || "").toLowerCase().includes(q) ||
+        (p.author || "").toLowerCase().includes(q)
+      );
 
-    // ИИ Рунотокс через сервер + fetch
-    async function askRunotoksServer(promptText, history = []) {
-      const cleanPrompt = String(promptText || "").trim();
-      if (!cleanPrompt) return "Чем могу помочь?";
+      if (!filtered.length) {
+        box.innerHTML = `<div class="muted">Ничего не найдено.</div>`;
+        return;
+      }
+      box.innerHTML = filtered.map((p) => `
+        <div class="card" style="margin:0;">
+          <strong class="grad-orange-green">${escapeHtml(p.author)}</strong>
+          <p class="muted">${escapeHtml(p.caption || "Без подписи")}</p>
+        </div>
+      `).join("");
+    }
+
+    function addToCart(itemName) {
+      cart.push(itemName);
+      document.getElementById("cartInfo").textContent =
+        `В корзине (${cart.length}): ${cart.join(", ")}`;
+    }
+
+    function startVoiceCall() {
+      document.getElementById("callBanner").classList.add("active");
+      clearInterval(callInterval);
+      callSeconds = 0;
+      updateCallTimer();
+      callInterval = setInterval(() => {
+        callSeconds += 1;
+        updateCallTimer();
+      }, 1000);
+    }
+
+    function endVoiceCall() {
+      clearInterval(callInterval);
+      callInterval = null;
+      document.getElementById("callBanner").classList.remove("active");
+    }
+
+    function updateCallTimer() {
+      const mins = String(Math.floor(callSeconds / 60)).padStart(2, "0");
+      const secs = String(callSeconds % 60).padStart(2, "0");
+      document.getElementById("callTimer").textContent = `${mins}:${secs}`;
+    }
+
+    async function sendChatMessage(event) {
+      event.preventDefault();
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const messagesEl = document.getElementById("chatMessages");
+      appendChatBubble("user", text);
+      input.value = "";
+
+      const loadingBubble = appendChatBubble("bot", "Печатает...");
+
       try {
         const res = await fetch(RUNOTOKS_AI_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: cleanPrompt,
-            language: languageSelect.value || "ru",
-            history: history.slice(-8).map((m) => ({
-              role: m.senderId === AI_ASSISTANT_ID ? "model" : "user",
-              text: m.text || ""
-            }))
-          })
+          body: JSON.stringify({ message: text })
         });
         const data = await res.json();
-        if (!res.ok) return data.error || "Сервер ИИ вернул ошибку.";
-        return data.reply || "Пустой ответ от модели.";
-      } catch (_) {
-        return "Не удалось получить ответ от сервера ИИ. Проверьте RUNOTOKS_AI_URL и запуск сервера.";
+        loadingBubble.textContent = data.reply || data.response || data.error || "Пустой ответ сервера";
+      } catch (err) {
+        loadingBubble.textContent = "Ошибка соединения с сервером: " + (err?.message || "проверьте доступность Render");
       }
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    function renderAIList() {
-      messagesListEl.innerHTML = "";
-      aiMessagesCache.forEach((m) => {
-        const mine = m.senderId === currentUser?.uid;
-        const bubble = document.createElement("div");
-        bubble.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:10px 13px;border-radius:15px;font-size:13px;line-height:1.45;word-break:break-word;`;
-        bubble.innerHTML = renderFormattedMessageHtml(m.text, m.fontClass || "rtk-font-normal");
-        messagesListEl.appendChild(bubble);
-      });
-      messagesListEl.scrollTop = messagesListEl.scrollHeight;
+    function appendChatBubble(role, text) {
+      const messagesEl = document.getElementById("chatMessages");
+      const div = document.createElement("div");
+      div.className = `msg ${role}`;
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
     }
 
-    function openAIAssistantChat() {
-      if (!currentUser) return;
-      activeChatId = `ai_${currentUser.uid}`;
-      activePeer = AI_ASSISTANT_USER;
-      if (unsubMessages) { unsubMessages(); unsubMessages = null; }
-      if (!aiMessagesCache.length) {
-        aiMessagesCache = [{ id: "ai_init", senderId: AI_ASSISTANT_ID, text: "Привет! Я Рунотокс. Чем могу помочь?" }];
-        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function escapeJs(str) {
+      return String(str || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    (function init() {
+      const savedFont = localStorage.getItem(STORAGE_KEYS.font);
+      if (savedFont) {
+        document.body.className = savedFont;
+        const sel = document.getElementById("fontSelect");
+        if (sel) sel.value = savedFont;
       }
-      composerDock.style.display = "flex";
-      peerInfoBox.innerHTML = `
-        <img src="${AI_ASSISTANT_USER.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
-        <div>
-          <div style="font-size:14px;font-weight:800;">Рунотокс <span style="font-size:11px;color:#60a5fa;">ИИ</span></div>
-          <div style="font-size:11px;color:#34d399;">в сети</div>
-        </div>
-      `;
-      renderAIList();
-      applyMobileChatLayout();
-    }
-
-    function renderPeopleAndDialogs() {
-      if (!currentUser) return;
-      chatListEl.innerHTML = "";
-
-      const aiRow = document.createElement("div");
-      aiRow.style.cssText = `padding:10px;border-radius:14px;background:${activePeer?.isAI ? "#172554" : "#0f172a"};border:1px solid #1e3a8a;display:flex;align-items:center;gap:10px;cursor:pointer;`;
-      aiRow.innerHTML = `
-        <img src="${AI_ASSISTANT_USER.photoURL}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
-        <div style="min-width:0;flex:1;">
-          <div style="font-size:13px;font-weight:800;color:#93c5fd;">Рунотокс • ИИ</div>
-          <div style="font-size:11px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(aiMessagesCache[aiMessagesCache.length - 1]?.text || "Чем могу помочь?")}</div>
-        </div>
-      `;
-      aiRow.addEventListener("click", openAIAssistantChat);
-      chatListEl.appendChild(aiRow);
-
-      const peers = allUsers.filter((u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid));
-      peers.forEach((peer) => {
-        const pairKey = [currentUser.uid, peer.uid].sort().join("_");
-        const meta = chatsMap.get(pairKey);
-        const row = document.createElement("div");
-        row.style.cssText = `padding:10px;border-radius:14px;background:${activeChatId === pairKey ? "#1e293b" : "#0f172a"};border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;`;
-        row.innerHTML = `
-          <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
-            <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
-            <div style="min-width:0;flex:1;">
-              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(peer.name || "Пользователь")}</div>
-              <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(meta?.lastMessage || "@" + (peer.username || "user"))}</div>
-            </div>
-          </div>
-          <button data-block-uid="${peer.uid}" type="button" title="Заблокировать" style="padding:4px 7px;border-radius:8px;border:1px solid #7f1d1d;background:#450a0a;color:#fecaca;font-size:10px;font-weight:700;cursor:pointer;">Блок</button>
-        `;
-        row.addEventListener("click", (ev) => {
-          if (ev.target.dataset.blockUid) return;
-          startOrOpenChat(peer);
-        });
-        row.querySelector("button[data-block-uid]").addEventListener("click", async (ev) => {
-          ev.stopPropagation();
-          const bUid = ev.target.dataset.blockUid;
-          blockedIds.add(bUid);
-          await setDoc(doc(db, "users", currentUser.uid, "blocked", bUid), { blockedAt: serverTimestamp() }).catch(() => {});
-          renderPeopleAndDialogs();
-          renderBlockedUsersList();
-        });
-        chatListEl.appendChild(row);
-      });
-    }
-
-    async function startOrOpenChat(peer) {
-      if (!currentUser || !peer) return;
-      if (peer.isAI) { openAIAssistantChat(); return; }
-      const pairKey = [currentUser.uid, peer.uid].sort().join("_");
-      await setDoc(doc(db, "chats", pairKey), { pairKey, members: [currentUser.uid, peer.uid], updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
-      activeChatId = pairKey;
-      activePeer = peer;
-      composerDock.style.display = "flex";
-      peerInfoBox.innerHTML = `
-        <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
-        <div>
-          <div style="font-size:14px;font-weight:700;">${escapeHtml(peer.name || "Собеседник")} <span style="font-size:11px;color:#60a5fa;">@${escapeHtml(peer.username || "user")}</span></div>
-        </div>
-      `;
-      applyMobileChatLayout();
-
-      if (unsubMessages) unsubMessages();
-      const qM = query(collection(db, "chats", pairKey, "messages"), orderBy("createdAt", "asc"));
-      unsubMessages = onSnapshot(qM, async (snap) => {
-        const targetLang = languageSelect.value || "ru";
-        const rawMsgs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        messagesListEl.innerHTML = "";
-        for (const m of rawMsgs) {
-          const mine = m.senderId === currentUser.uid;
-          const displayText = mine ? (m.text || "") : await translateTextForUser(m.text || "", targetLang);
-          const b = document.createElement("div");
-          b.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:9px 12px;border-radius:14px;font-size:13px;word-break:break-word;`;
-          b.innerHTML = renderFormattedMessageHtml(displayText, m.fontClass || "rtk-font-normal");
-          messagesListEl.appendChild(b);
-        }
-        messagesListEl.scrollTop = messagesListEl.scrollHeight;
-      });
-      renderPeopleAndDialogs();
-    }
-
-    sendMsgForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = msgInput.value.trim();
-      if (!text || !currentUser || !activeChatId || !activePeer) return;
-      const curFont = FONTS[fontIdx]?.cls || "rtk-font-normal";
-      msgInput.value = "";
-
-      if (activePeer.isAI) {
-        aiMessagesCache.push({ id: "u_" + Date.now(), senderId: currentUser.uid, text, fontClass: curFont });
-        const thinkingId = "ai_think_" + (Date.now() + 1);
-        aiMessagesCache.push({ id: thinkingId, senderId: AI_ASSISTANT_ID, text: "Думаю..." });
-        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
-        renderAIList();
-
-        const replyText = await askRunotoksServer(text, aiMessagesCache.filter((x) => x.id !== thinkingId));
-        aiMessagesCache = aiMessagesCache.map((x) => x.id === thinkingId ? { ...x, text: replyText } : x);
-        localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
-        renderAIList();
-        renderPeopleAndDialogs();
-        return;
-      }
-
-      await addDoc(collection(db, "chats", activeChatId, "messages"), {
-        senderId: currentUser.uid,
-        text,
-        fontClass: curFont,
-        createdAt: serverTimestamp()
-      });
-      await setDoc(doc(db, "chats", activeChatId), {
-        lastMessage: text,
-        lastSenderId: currentUser.uid,
-        lastReadByPeer: false,
-        updatedAt: serverTimestamp()
-      }, { merge: true });
-    });
-
-    // Рулетка
-    function updateRouletteJoinedCounter() {
-      const joinedCount = allUsers.filter((u) => u.rouletteEntered === true).length;
-      rouletteJoinedCountEl.textContent = `Зашло в рулетку: ${joinedCount}`;
-    }
-
-    async function markRouletteEntered() {
-      if (!currentUser) return;
-      await updateDoc(doc(db, "users", currentUser.uid), { rouletteEntered: true }).catch(() => {});
-      updateRouletteJoinedCounter();
-    }
-
-    rouletteNextBtn.addEventListener("click", async () => {
-      if (!currentUser) return;
-      await markRouletteEntered();
-      const pool = allUsers.filter((u) => u.uid !== currentUser.uid && !blockedIds.has(u.uid));
-      if (!pool.length) {
-        rouletteCardEl.innerHTML = `<span style="font-size:13px;color:#94a3b8;">Пока нет других пользователей в сети</span>`;
-        return;
-      }
-      roulettePeer = pool[Math.floor(Math.random() * pool.length)];
-      rouletteChatId = [currentUser.uid, roulettePeer.uid].sort().join("_");
-      await setDoc(doc(db, "chats", rouletteChatId), { pairKey: rouletteChatId, members: [currentUser.uid, roulettePeer.uid], updatedAt: serverTimestamp() }, { merge: true });
-
-      rouletteCardEl.innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;">
-          <img src="${roulettePeer.photoURL || DEFAULT_AVATAR}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;" />
-          <div>
-            <div style="font-size:14px;font-weight:700;">${escapeHtml(roulettePeer.name || "Пользователь")}</div>
-            <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(roulettePeer.username || "user")}</div>
-          </div>
-        </div>
-      `;
-
-      if (unsubRouletteMsgs) unsubRouletteMsgs();
-      const qRM = query(collection(db, "chats", rouletteChatId, "messages"), orderBy("createdAt", "asc"));
-      unsubRouletteMsgs = onSnapshot(qRM, (snap) => {
-        rouletteMessagesEl.innerHTML = "";
-        snap.forEach((d) => {
-          const m = d.data();
-          const mine = m.senderId === currentUser.uid;
-          const b = document.createElement("div");
-          b.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:8px 11px;border-radius:13px;font-size:12px;`;
-          b.innerHTML = renderFormattedMessageHtml(m.text || "", m.fontClass || "rtk-font-normal");
-          rouletteMessagesEl.appendChild(b);
-        });
-        rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
-      });
-    });
-
-    rouletteForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = rouletteInput.value.trim();
-      if (!text || !currentUser || !rouletteChatId) return;
-      rouletteInput.value = "";
-      await addDoc(collection(db, "chats", rouletteChatId, "messages"), { senderId: currentUser.uid, text, createdAt: serverTimestamp() });
-      await setDoc(doc(db, "chats", rouletteChatId), { lastMessage: text, lastSenderId: currentUser.uid, lastReadByPeer: false, updatedAt: serverTimestamp() }, { merge: true });
-    });
-
-    function subscribeAll(uid) {
-      if (unsubUsers) unsubUsers();
-      unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
-        allUsers = snap.docs.map((d) => ({ uid: d.id, ...d.data() }));
-        renderPeopleAndDialogs();
-        updateRouletteJoinedCounter();
-        renderBlockedUsersList();
-      });
-
-      onSnapshot(collection(db, "users", uid, "blocked"), (snap) => {
-        blockedIds = new Set(snap.docs.map((d) => d.id));
-        renderPeopleAndDialogs();
-        renderBlockedUsersList();
-      });
-
-      onSnapshot(collection(db, "users", uid, "followers"), (snap) => {
-        followerIds = new Set(snap.docs.map((d) => d.id));
-        renderProfileStatsAndBlocked();
-      });
-
-      onSnapshot(collection(db, "users", uid, "following"), (snap) => {
-        followingIds = new Set(snap.docs.map((d) => d.id));
-        renderProfileStatsAndBlocked();
-      });
-
-      if (unsubChats) unsubChats();
-      const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
-      unsubChats = onSnapshot(qC, (snap) => {
-        chatsMap = new Map();
-        let unread = 0;
-        snap.forEach((d) => {
-          const data = d.data();
-          chatsMap.set(d.id, data);
-          if (data.lastSenderId && data.lastSenderId !== uid && data.lastReadByPeer === false) unread += 1;
-        });
-        unreadBadge.textContent = String(unread);
-        unreadBadge.style.display = unread > 0 ? "inline-flex" : "none";
-        renderPeopleAndDialogs();
-        renderProfileStatsAndBlocked();
-      });
-    }
-
-    renderStoriesStrip();
-    applyMobileChatLayout();
-
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      if (!user) {
-        authScreen.style.display = "flex";
-        mainApp.style.display = "none";
-        unreadBadge.style.display = "none";
-        return;
-      }
-      authScreen.style.display = "none";
-      mainApp.style.display = "flex";
-      currentProfile = await ensureUserProfile(user);
-      fillProfileUI(currentProfile, user);
-      subscribeAll(user.uid);
-      applyMobileChatLayout();
-    });
+      applyOwnerPermissions();
+      renderStories();
+      renderFeed();
+      renderBlocked();
+      renderArchive();
+    })();
   </script>
 </body>
 </html>
