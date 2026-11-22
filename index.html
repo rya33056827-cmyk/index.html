@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>runotoks — Лента, магазин, мессенджер и голосовая рулетка</title>
+  <meta name="description" content="Рунотокс (runotoks) — лента постов, магазин товаров, мессенджер, сторис и голосовая рулетка." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -106,7 +107,7 @@
   <section id="feedPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28">
     <div id="rtkOwnerFeedComposer" class="w-full mb-5 bg-slate-900 text-white rounded-3xl p-4 sm:p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">Новый пост в ленту</span>
+        <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">Новый пост владельца</span>
         <span class="text-[11px] text-slate-400">Фото, видео или текст</span>
       </div>
       <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
@@ -127,7 +128,7 @@
   <!-- СТРАНИЦА 2: МАГАЗИН ТОВАРОВ -->
   <section id="shopPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28" style="display:none;">
     <div id="rtkOwnerProductCreator" class="w-full mb-6 p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
-      <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Добавить товар в магазин</div>
+      <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Добавить товар в магазин (владелец)</div>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <input id="newProdTitle" type="text" placeholder="Название товара" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
         <input id="newProdCategory" type="text" placeholder="Категория (например, Аудио)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
@@ -822,6 +823,10 @@
     };
 
     window.deleteProductCard = (prodId) => {
+      if (window.rtkIsOwner && !window.rtkIsOwner()) {
+        alert("Удалять товары может только владелец сайта.");
+        return;
+      }
       const idx = PRODUCTS.findIndex((x) => x.id === prodId);
       if (idx === -1) return;
       const [removed] = PRODUCTS.splice(idx, 1);
@@ -1049,6 +1054,7 @@
       measurementId: "G-56VTDVLB2H"
     };
 
+    // Укажите свой Google email для жёсткой проверки прав владельца
     const OWNER_EMAIL_OVERRIDE = "";
     const RUNOTOKS_AI_URL = "https://runotoks-1.onrender.com/chat";
     const RUNOTOKS_AI_BASE = "https://runotoks-1.onrender.com";
@@ -1337,16 +1343,29 @@
       document.querySelectorAll(".rtk-card-dots-menu").forEach((el) => el.classList.add("hidden"));
     });
 
-    function canPublishContent() {
-      if (currentUser) return true;
-      if (OWNER_EMAIL_OVERRIDE && (currentUser?.email || "").toLowerCase() === OWNER_EMAIL_OVERRIDE.toLowerCase()) return true;
-      return Boolean(siteOwnerUid && currentUser?.uid === siteOwnerUid);
+    function isOwnerAccount() {
+      if (!currentUser) return false;
+      const userEmail = (currentUser.email || "").trim().toLowerCase();
+      const configuredEmail = (OWNER_EMAIL_OVERRIDE || "").trim().toLowerCase();
+      if (configuredEmail) {
+        return userEmail === configuredEmail;
+      }
+      if (siteOwnerUid) {
+        return currentUser.uid === siteOwnerUid;
+      }
+      return false;
     }
 
+    function canPublishContent() {
+      return isOwnerAccount();
+    }
+
+    window.rtkIsOwner = isOwnerAccount;
+
     function applyOwnerFeedAccess() {
-      const canPublish = canPublishContent();
-      ownerFeedComposer.style.display = canPublish ? "block" : "none";
-      ownerProductCreator.style.display = canPublish ? "block" : "none";
+      const isOwner = canPublishContent();
+      ownerFeedComposer.style.display = isOwner ? "block" : "none";
+      ownerProductCreator.style.display = isOwner ? "block" : "none";
       headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Регистрация";
       renderHomeFeed();
     }
@@ -1821,6 +1840,10 @@
     };
 
     window.deleteFeedPost = async (postId) => {
+      if (!canPublishContent()) {
+        alert("Удалять посты может только владелец сайта.");
+        return;
+      }
       const idx = feedPostsCache.findIndex((p) => p.id === postId);
       if (idx === -1) return;
       const [moved] = feedPostsCache.splice(idx, 1);
@@ -1943,7 +1966,7 @@
 
     publishFeedPostBtn.addEventListener("click", async () => {
       if (!canPublishContent()) {
-        openMessenger("chats");
+        feedPublishStatus.textContent = "Публиковать посты в ленту может только владелец сайта.";
         return;
       }
       const caption = feedCaptionInput.value.trim();
@@ -1954,11 +1977,12 @@
       }
 
       const saveNewPost = async (mediaType = "", mediaData = "") => {
+        if (!canPublishContent()) return;
         const postId = "post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
         const newPost = {
           id: postId,
-          authorUid: currentUser?.uid || "",
-          author: currentProfile?.name || currentUser?.displayName || "Автор",
+          authorUid: currentUser.uid,
+          author: currentProfile?.name || currentUser.displayName || "Владелец",
           caption,
           mediaType,
           mediaData,
@@ -1987,7 +2011,7 @@
 
     createProductBtn.addEventListener("click", async () => {
       if (!canPublishContent()) {
-        openMessenger("chats");
+        newProdStatus.textContent = "Добавлять товары в магазин может только владелец сайта.";
         return;
       }
       const title = newProdTitle.value.trim();
@@ -2449,20 +2473,33 @@
 
     async function resolveOrClaimSiteOwner(user) {
       const configRef = doc(db, "config", "site");
+      const userEmail = (user.email || "").trim().toLowerCase();
+      const configuredEmail = (OWNER_EMAIL_OVERRIDE || "").trim().toLowerCase();
+
       try {
         const snap = await getDoc(configRef);
-        if (snap.exists() && snap.data()?.ownerUid) {
-          siteOwnerUid = snap.data().ownerUid;
-          localStorage.setItem("rtk_site_owner_uid", siteOwnerUid);
-          return;
+        if (snap.exists()) {
+          const data = snap.data() || {};
+          if (configuredEmail && userEmail === configuredEmail) {
+            siteOwnerUid = user.uid;
+            localStorage.setItem("rtk_site_owner_uid", siteOwnerUid);
+            await setDoc(configRef, { ownerUid: user.uid, ownerEmail: user.email || "" }, { merge: true }).catch(() => {});
+            return;
+          }
+          if (data.ownerUid) {
+            siteOwnerUid = data.ownerUid;
+            localStorage.setItem("rtk_site_owner_uid", siteOwnerUid);
+            return;
+          }
         }
-        if (!siteOwnerUid) {
+
+        if (!siteOwnerUid && (!configuredEmail || userEmail === configuredEmail)) {
           siteOwnerUid = user.uid;
           localStorage.setItem("rtk_site_owner_uid", siteOwnerUid);
           await setDoc(configRef, { ownerUid: user.uid, ownerEmail: user.email || "" }, { merge: true }).catch(() => {});
         }
       } catch (_) {
-        if (!siteOwnerUid) {
+        if (!siteOwnerUid && (!configuredEmail || userEmail === configuredEmail)) {
           siteOwnerUid = user.uid;
           localStorage.setItem("rtk_site_owner_uid", siteOwnerUid);
         }
