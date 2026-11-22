@@ -11,6 +11,17 @@
     input, textarea, select { user-select: text; -webkit-user-select: text; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .rtk-font-normal { font-style: normal; font-weight: 400; font-family: 'Inter', sans-serif; }
+    .rtk-font-bold { font-style: normal; font-weight: 800; font-family: 'Inter', sans-serif; }
+    .rtk-font-italic { font-style: italic; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .rtk-font-mono { font-style: normal; font-weight: 500; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .rtk-font-underline { text-decoration: underline; text-underline-offset: 3px; }
+    .rtk-slash-glow {
+      text-decoration: underline !important;
+      text-underline-offset: 3px;
+      color: #f8fafc;
+      text-shadow: 0 0 8px rgba(96, 165, 250, 0.95), 0 0 18px rgba(168, 85, 247, 0.8), 0 0 28px rgba(56, 189, 248, 0.65);
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
@@ -72,7 +83,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         <div class="flex items-center justify-between sm:justify-end gap-3">
-          <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 8 товаров</span>
+          <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 4 товаров</span>
           <select id="sortSelect" class="px-3.5 py-2 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 outline-none">
             <option value="popular">По популярности</option>
             <option value="price-asc">Сначала дешевле</option>
@@ -103,7 +114,7 @@
   <div id="rtkHomePeopleModal" style="display:none;position:fixed;inset:0;z-index:10030;background:rgba(2,6,23,0.72);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
     <div style="width:100%;max-width:420px;max-height:80vh;background:#111827;color:#f8fafc;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:16px;font-weight:800;">Поиск людей</span>
+        <span data-i18n="searchPeople" style="font-size:16px;font-weight:800;">Поиск людей</span>
         <button id="rtkCloseHomePeopleModal" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
       </div>
       <input id="rtkHomePeopleQuery" type="text" placeholder="Имя или @username..."
@@ -116,7 +127,7 @@
   <button id="rtkChatBtn" type="button"
     style="position:fixed;top:84px;right:16px;z-index:9989;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;">
     <span>💬</span>
-    <span>Чат</span>
+    <span data-i18n="chatTab">Чат</span>
     <span id="rtkUnreadBadge"
       style="display:none;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#ef4444;color:#ffffff;font-size:11px;font-weight:800;align-items:center;justify-content:center;line-height:1;">
       0
@@ -145,7 +156,7 @@
     </div>
 
     <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
-      <!-- Верхняя панель (без своего профиля в чате) -->
+      <!-- Верхняя панель -->
       <div style="height:60px;padding:0 12px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-shrink:0;">
         <div style="display:flex;align-items:center;gap:6px;min-width:0;">
           <button id="rtkExitToSiteBtn" type="button"
@@ -156,25 +167,24 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-          <button id="rtkTabChats" type="button"
+          <button id="rtkTabChats" type="button" data-i18n="chatTab"
             style="padding:7px 9px;border-radius:10px;border:none;background:#2563eb;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
             Чат
           </button>
-          <button id="rtkTabRoulette" type="button"
+          <button id="rtkTabRoulette" type="button" data-i18n="rouletteTab"
             style="padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
             🎲 Рулетка
           </button>
-          <button id="rtkTabProfile" type="button"
+          <button id="rtkTabProfile" type="button" data-i18n="profileTab"
             style="padding:7px 9px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
             Профиль
           </button>
         </div>
       </div>
 
-      <!-- Вкладка 1: Чат (своих профилей в шапке нет; компактная лупа поиска друзей, кнопка номера, кнопка сторис) -->
+      <!-- Вкладка 1: Чат (только компактная лупа поиска, кнопка номера, кнопка сторис; без длинного поля поиска) -->
       <div id="rtkChatsView" style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden;">
         <div id="rtkSidebar" style="width:100%;max-width:390px;height:100%;background:#111827;border-right:1px solid #1f2937;display:flex;flex-direction:column;min-height:0;flex-shrink:0;">
-          <!-- Панель инструментов чата: компактная лупа, кнопка номера, кнопка сторис -->
           <div style="padding:10px 12px;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:8px;">
             <div style="display:flex;align-items:center;gap:6px;">
               <button id="rtkCompactSearchBtn" type="button" title="Найти друзей"
@@ -184,39 +194,39 @@
               <button id="rtkPhoneLookupBtn" type="button" title="Найти по номеру"
                 style="padding:0 10px;height:36px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#93c5fd;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;white-space:nowrap;">
                 <span>📞</span>
-                <span>Номер</span>
+                <span data-i18n="numberBtn">Номер</span>
               </button>
             </div>
 
             <button id="rtkCreateStoryBtn" type="button" title="Опубликовать сторис"
               style="padding:0 12px;height:36px;border-radius:10px;border:none;background:linear-gradient(135deg,#2563eb,#9333ea);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
               <span>+</span>
-              <span>Сторис</span>
+              <span data-i18n="storyBtn">Сторис</span>
             </button>
           </div>
 
-          <!-- Поле поиска друзей по лупе -->
+          <!-- Выпадающий поиск по лупе -->
           <div id="rtkFriendSearchBox" style="display:none;padding:8px 12px;border-bottom:1px solid #1f2937;background:#0f172a;">
-            <input id="rtkSearchUsernameInput" type="text" placeholder="Имя или @username друга..."
+            <input id="rtkSearchUsernameInput" type="text" placeholder="Имя или @username..."
               style="width:100%;box-sizing:border-box;padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:12px;outline:none;" />
             <div id="rtkSearchResults" style="margin-top:6px;display:flex;flex-direction:column;gap:6px;"></div>
           </div>
 
-          <!-- Поле поиска по номеру -->
+          <!-- Поиск по номеру -->
           <div id="rtkPhoneLookupBox" style="display:none;padding:8px 12px;border-bottom:1px solid #1f2937;background:#0f172a;">
             <div style="display:flex;gap:6px;">
-              <input id="rtkPhoneLookupInput" type="tel" placeholder="Введите номер телефона..."
+              <input id="rtkPhoneLookupInput" type="tel" placeholder="Номер телефона..."
                 style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:12px;outline:none;" />
               <button id="rtkPhoneLookupSubmitBtn" type="button"
                 style="padding:8px 12px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-                Найти
+                OK
               </button>
             </div>
             <div id="rtkPhoneLookupResult" style="margin-top:6px;font-size:12px;color:#cbd5e1;"></div>
           </div>
 
-          <!-- Лента сторис в чате -->
-          <div id="rtkStoriesStrip" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #1f2937;overflow-x:auto;" class="no-scrollbar"></div>
+          <!-- Лента активных сторис (до 20 часов + счётчик оставшегося времени) -->
+          <div id="rtkStoriesStrip" style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid #1f2937;overflow-x:auto;" class="no-scrollbar"></div>
 
           <!-- Список диалогов -->
           <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;"></div>
@@ -238,15 +248,35 @@
 
           <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <form id="rtkSendMessageForm" style="display:none;padding:10px 12px;border-top:1px solid #1f2937;background:#111827;gap:8px;align-items:center;flex-shrink:0;">
-            <input id="rtkMessageInput" type="text" placeholder="Сообщение..."
-              style="flex:1;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
-            <button type="submit" style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
-          </form>
+          <!-- Панель перед клавиатурой: смена шрифтов + эффекты 🔥 ❤️ ⭐ + подсказка //светящийся подчёркнутый// -->
+          <div id="rtkComposerDock" style="display:none;flex-direction:column;border-top:1px solid #1f2937;background:#111827;flex-shrink:0;">
+            <div style="padding:6px 10px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;gap:6px;overflow-x:auto;" class="no-scrollbar">
+              <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+                <button id="rtkFontCycleBtn" type="button" title="Сменить шрифт"
+                  style="padding:5px 9px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#93c5fd;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">
+                  Aa <span id="rtkFontBadge">Обычный</span>
+                </button>
+                <button data-insert-fx="🔥" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">🔥</button>
+                <button data-insert-fx="❤️" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">❤️</button>
+                <button data-insert-fx="⭐" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:#0f172a;font-size:13px;cursor:pointer;">⭐</button>
+                <button data-insert-fx="//текст//" type="button" title="Подчёркнутый светящийся текст"
+                  style="padding:4px 8px;border-radius:8px;border:1px solid #3b82f6;background:#172554;color:#93c5fd;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">
+                  //✨//
+                </button>
+              </div>
+              <span style="font-size:10px;color:#64748b;white-space:nowrap;">//текст// = свечение</span>
+            </div>
+
+            <form id="rtkSendMessageForm" style="display:flex;padding:8px 10px;gap:8px;align-items:center;">
+              <input id="rtkMessageInput" type="text" placeholder="Сообщение..."
+                style="flex:1;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid #334155;background:#0b1120;color:#f8fafc;font-size:14px;outline:none;" />
+              <button type="submit" style="padding:10px 15px;border-radius:13px;border:none;background:#2563eb;color:#ffffff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
+            </form>
+          </div>
         </div>
       </div>
 
-      <!-- Вкладка 2: Рулетка (показывает сколько человек зашли в рулетку) -->
+      <!-- Вкладка 2: Рулетка -->
       <div id="rtkRouletteView" style="display:none;flex:1;overflow-y:auto;padding:18px 14px;">
         <div style="max-width:540px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
@@ -274,7 +304,7 @@
         </div>
       </div>
 
-      <!-- Вкладка 3: Профиль (весь профиль, посты, подписчики, подписки и кнопка настроек ☰) -->
+      <!-- Вкладка 3: Профиль -->
       <div id="rtkProfileView" style="display:none;flex:1;overflow-y:auto;padding:20px 16px;">
         <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
@@ -294,20 +324,20 @@
             </button>
           </div>
 
-          <!-- Счётчики: Посты, Подписчики, Подписки -->
+          <!-- Счётчики: Посты, Подписчики (кликабельно), Подписки (кликабельно) -->
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#0b1120;border:1px solid #1f2937;border-radius:18px;padding:12px;text-align:center;">
             <div>
               <div id="rtkPostsCountVal" style="font-size:18px;font-weight:800;color:#fff;">0</div>
-              <div style="font-size:11px;color:#94a3b8;font-weight:600;">Посты</div>
+              <div data-i18n="postsLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Посты</div>
             </div>
-            <div>
-              <div id="rtkFollowersCountVal" style="font-size:18px;font-weight:800;color:#fff;">0</div>
-              <div style="font-size:11px;color:#94a3b8;font-weight:600;">Подписчики</div>
-            </div>
-            <div>
-              <div id="rtkFollowingCountVal" style="font-size:18px;font-weight:800;color:#fff;">0</div>
-              <div style="font-size:11px;color:#94a3b8;font-weight:600;">Подписки</div>
-            </div>
+            <button id="rtkOpenFollowersBtn" type="button" style="background:transparent;border:none;cursor:pointer;padding:0;">
+              <div id="rtkFollowersCountVal" style="font-size:18px;font-weight:800;color:#93c5fd;">0</div>
+              <div data-i18n="followersLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Подписчики</div>
+            </button>
+            <button id="rtkOpenFollowingBtn" type="button" style="background:transparent;border:none;cursor:pointer;padding:0;">
+              <div id="rtkFollowingCountVal" style="font-size:18px;font-weight:800;color:#93c5fd;">0</div>
+              <div data-i18n="followingLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Подписки</div>
+            </button>
           </div>
 
           <div id="rtkProfileBioText" style="font-size:13px;color:#cbd5e1;background:#0b1120;padding:12px;border-radius:14px;border:1px solid #1f2937;"></div>
@@ -348,55 +378,72 @@
         </div>
       </div>
 
-      <!-- Отдельная страница настроек (по кнопке ☰): смена языка на любой + заблокированные люди -->
+      <!-- Отдельная страница настроек (по кнопке ☰): смена языка + заблокированные + архив сторис -->
       <div id="rtkSettingsPage" style="display:none;flex:1;overflow-y:auto;padding:20px 16px;background:#0b1120;">
         <div style="max-width:520px;margin:0 auto;background:#111827;border:1px solid #1f2937;border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:18px;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <button id="rtkBackFromSettingsBtn" type="button"
               style="padding:8px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">
-              ← Назад в профиль
+              ← Назад
             </button>
-            <span style="font-size:16px;font-weight:800;">Настройки</span>
-            <span style="width:74px;"></span>
+            <span data-i18n="settingsTitle" style="font-size:16px;font-weight:800;">Настройки</span>
+            <span style="width:60px;"></span>
           </div>
 
           <!-- Выбор любого языка -->
           <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;">
-            <label for="rtkLanguageSelect" style="font-size:13px;font-weight:800;color:#e2e8f0;">Язык интерфейса и ИИ</label>
+            <label for="rtkLanguageSelect" data-i18n="languageLabel" style="font-size:13px;font-weight:800;color:#e2e8f0;">Язык интерфейса и чата</label>
             <select id="rtkLanguageSelect"
               style="width:100%;padding:10px 12px;border-radius:12px;border:1px solid #334155;background:#111827;color:#fff;font-size:13px;">
-              <option value="Русский">Русский</option>
-              <option value="English">English</option>
-              <option value="Українська">Українська</option>
-              <option value="Español">Español</option>
-              <option value="Deutsch">Deutsch</option>
-              <option value="Français">Français</option>
-              <option value="Italiano">Italiano</option>
-              <option value="Polski">Polski</option>
-              <option value="Türkçe">Türkçe</option>
-              <option value="العربية">العربية</option>
-              <option value="中文">中文</option>
-              <option value="日本語">日本語</option>
-              <option value="한국어">한국어</option>
-              <option value="Português">Português</option>
+              <option value="ru">Русский</option>
+              <option value="en">English</option>
+              <option value="uk">Українська</option>
+              <option value="es">Español</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="it">Italiano</option>
+              <option value="pl">Polski</option>
+              <option value="tr">Türkçe</option>
+              <option value="ar">العربية</option>
+              <option value="zh-CN">中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="pt">Português</option>
             </select>
             <div id="rtkLanguageSavedHint" style="font-size:11px;color:#34d399;"></div>
           </div>
 
           <!-- Заблокированные люди -->
           <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;">
-            <div style="font-size:13px;font-weight:800;color:#fca5a5;">Заблокированные люди</div>
+            <div data-i18n="blockedTitle" style="font-size:13px;font-weight:800;color:#fca5a5;">Заблокированные люди</div>
             <div id="rtkBlockedUsersList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+
+          <!-- Архив сторис (после 20 часов) -->
+          <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;">
+            <div data-i18n="archiveTitle" style="font-size:13px;font-weight:800;color:#93c5fd;">Архив сторис (старше 20 ч)</div>
+            <div id="rtkArchivedStoriesList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Модалка создания сторис: выбор фото/видео из галереи, фильтры, музыка, опубликовать -->
+    <!-- Модалка списка подписчиков / подписок -->
+    <div id="rtkFollowListModal" style="display:none;position:fixed;inset:0;z-index:10035;background:rgba(2,6,23,0.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
+      <div style="width:100%;max-width:420px;max-height:78vh;background:#111827;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span id="rtkFollowListTitle" style="font-size:15px;font-weight:800;">Подписчики</span>
+          <button id="rtkCloseFollowListBtn" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
+        </div>
+        <div id="rtkFollowListItems" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+    </div>
+
+    <!-- Модалка создания сторис -->
     <div id="rtkStoryComposerModal" style="display:none;position:fixed;inset:0;z-index:10025;background:rgba(2,6,23,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
       <div style="width:100%;max-width:440px;max-height:90vh;overflow-y:auto;background:#111827;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:16px;font-weight:800;">Новая сторис</span>
+          <span style="font-size:16px;font-weight:800;">Новая сторис (20 ч)</span>
           <button id="rtkCloseStoryComposerBtn" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
         </div>
 
@@ -441,22 +488,39 @@
       </div>
     </div>
 
-    <!-- Просмотр опубликованной сторис -->
-    <div id="rtkStoryViewerModal" style="display:none;position:fixed;inset:0;z-index:10026;background:rgba(2,6,23,0.92);align-items:center;justify-content:center;padding:16px;">
-      <div style="width:100%;max-width:400px;background:#111827;border:1px solid #334155;border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <div id="rtkStoryViewerAuthor" style="font-size:14px;font-weight:800;"></div>
-            <div id="rtkStoryViewerMusic" style="font-size:11px;color:#93c5fd;"></div>
+    <!-- Полноэкранный просмотр сторис: лайки, ответы, счётчики просмотров/лайков/ответов -->
+    <div id="rtkStoryViewerModal" style="display:none;position:fixed;inset:0;z-index:10040;width:100vw;height:100vh;background:#020617;flex-direction:column;justify-content:space-between;padding:16px;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2;">
+        <div style="min-width:0;">
+          <div id="rtkStoryViewerAuthor" style="font-size:15px;font-weight:800;color:#fff;"></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:#93c5fd;flex-wrap:wrap;">
+            <span id="rtkStoryViewerMusic"></span>
+            <span id="rtkStoryViewerCountdown" style="color:#34d399;font-weight:700;"></span>
           </div>
-          <button id="rtkCloseStoryViewerBtn" type="button" style="border:none;background:#1e293b;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
         </div>
-        <div id="rtkStoryViewerMedia" style="width:100%;height:340px;border-radius:16px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center;"></div>
+        <button id="rtkCloseStoryViewerBtn" type="button" style="border:none;background:rgba(30,41,59,0.9);color:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer;">✕</button>
+      </div>
+
+      <div id="rtkStoryViewerMedia" style="flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:10px 0;"></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;z-index:2;max-width:560px;width:100%;margin:0 auto;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:#e2e8f0;background:rgba(15,23,42,0.85);padding:8px 12px;border-radius:14px;border:1px solid #334155;">
+          <span id="rtkStoryStatsText">👁 0 • ❤️ 0 • 💬 0</span>
+          <button id="rtkStoryLikeBtn" type="button" style="padding:5px 12px;border-radius:999px;border:none;background:#e11d48;color:#fff;font-size:12px;font-weight:800;cursor:pointer;">
+            ❤️ Лайк
+          </button>
+        </div>
+
+        <form id="rtkStoryReplyForm" style="display:flex;gap:8px;">
+          <input id="rtkStoryReplyInput" type="text" placeholder="Ответить или написать в сторис..."
+            style="flex:1;padding:10px 14px;border-radius:999px;border:1px solid #334155;background:rgba(15,23,42,0.92);color:#fff;font-size:13px;outline:none;" />
+          <button type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#2563eb;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">➤</button>
+        </form>
       </div>
     </div>
   </div>
 
-  <!-- Модалка товара / корзины / заказов магазина -->
+  <!-- Модалки магазина -->
   <div id="productModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl">
       <div class="relative bg-slate-100 h-64">
@@ -527,13 +591,7 @@
         <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition ${activeCategory === c ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">${c}</button>
       `).join("");
     }
-
-    function filterCategory(cat) {
-      activeCategory = cat;
-      renderCategories();
-      renderProducts();
-    }
-
+    function filterCategory(cat) { activeCategory = cat; renderCategories(); renderProducts(); }
     function renderProducts() {
       let list = PRODUCTS.filter((p) => {
         const matchCat = activeCategory === "Все" || p.category === activeCategory;
@@ -544,13 +602,10 @@
       if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
       if (sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
       if (sortBy === "popular") list.sort((a, b) => b.popular - a.popular);
-
       document.getElementById("productCountLabel").textContent = `Показано: ${list.length} товаров`;
       document.getElementById("productsGrid").innerHTML = list.map((p) => `
         <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden flex flex-col hover:shadow-lg transition">
-          <div onclick="openProductModal(${p.id})" class="h-44 bg-slate-100 overflow-hidden cursor-pointer">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" />
-          </div>
+          <div onclick="openProductModal(${p.id})" class="h-44 bg-slate-100 overflow-hidden cursor-pointer"><img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" /></div>
           <div class="p-4 flex-1 flex flex-col">
             <div class="text-xs text-amber-500 font-semibold mb-1">★ ${p.rating}</div>
             <h3 onclick="openProductModal(${p.id})" class="font-bold text-slate-900 text-base cursor-pointer">${p.title}</h3>
@@ -563,7 +618,6 @@
         </div>
       `).join("");
     }
-
     function openProductModal(id) {
       const p = PRODUCTS.find((x) => x.id === id);
       let sel = p.variants[0];
@@ -581,62 +635,35 @@
       window.setModalVar = (v) => { sel = v; drawVars(); };
       drawVars();
       document.getElementById("modalAddBtn").onclick = () => { addToCart(p.id, sel); closeProductModal(); };
-      const m = document.getElementById("productModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
+      const m = document.getElementById("productModal"); m.classList.remove("hidden"); m.classList.add("flex");
     }
-
-    function closeProductModal() {
-      const m = document.getElementById("productModal");
-      m.classList.add("hidden"); m.classList.remove("flex");
-    }
-
-    function saveCart() {
-      localStorage.setItem("runotoks_cart", JSON.stringify(cart));
-      updateCartUI();
-    }
-
+    function closeProductModal() { const m = document.getElementById("productModal"); m.classList.add("hidden"); m.classList.remove("flex"); }
+    function saveCart() { localStorage.setItem("runotoks_cart", JSON.stringify(cart)); updateCartUI(); }
     function addToCart(id, variant) {
       const p = PRODUCTS.find((x) => x.id === id);
       const key = `${id}_${variant}`;
       const ex = cart.find((i) => i.key === key);
       if (ex) ex.qty += 1;
       else cart.push({ key, id: p.id, title: p.title, price: p.price, image: p.image, variant, qty: 1 });
-      saveCart();
-      openCart();
+      saveCart(); openCart();
     }
-
     function updateCartUI() {
       document.getElementById("cartCount").textContent = cart.reduce((s, i) => s + i.qty, 0);
       const box = document.getElementById("cartStepItems");
       if (!cart.length) box.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm">Корзина пуста</div>`;
-      else box.innerHTML = cart.map((i) => `
-        <div class="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-200">
-          <div><div class="font-bold text-sm">${i.title}</div><div class="text-xs text-slate-500">${i.variant} × ${i.qty}</div></div>
-          <div class="font-extrabold text-sm">${formatPrice(i.price * i.qty)}</div>
-        </div>
-      `).join("");
+      else box.innerHTML = cart.map((i) => `<div class="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-200"><div><div class="font-bold text-sm">${i.title}</div><div class="text-xs text-slate-500">${i.variant} × ${i.qty}</div></div><div class="font-extrabold text-sm">${formatPrice(i.price * i.qty)}</div></div>`).join("");
       document.getElementById("totalText").textContent = formatPrice(cart.reduce((s, i) => s + i.price * i.qty, 0));
     }
-
     function openCart() { updateCartUI(); const d = document.getElementById("cartDrawer"); d.classList.remove("hidden"); d.classList.add("flex"); }
     function closeCart() { const d = document.getElementById("cartDrawer"); d.classList.add("hidden"); d.classList.remove("flex"); }
-
     function checkoutSimple() {
       if (!cart.length) return;
       const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
       orders.unshift({ number: "RNT-" + Math.floor(100000 + Math.random() * 900000), date: new Date().toLocaleString("ru-RU"), total, items: [...cart] });
       localStorage.setItem("runotoks_orders", JSON.stringify(orders));
-      cart = [];
-      saveCart();
-      closeCart();
-      alert("Заказ оформлен!");
+      cart = []; saveCart(); closeCart(); alert("Заказ оформлен!");
     }
-
-    function closeOrdersModal() {
-      const m = document.getElementById("ordersModal");
-      m.classList.add("hidden"); m.classList.remove("flex");
-    }
-
+    function closeOrdersModal() { const m = document.getElementById("ordersModal"); m.classList.add("hidden"); m.classList.remove("flex"); }
     document.getElementById("openCartBtn").onclick = openCart;
     document.getElementById("toggleSearchBtn").onclick = () => document.getElementById("mobileSearchBar").classList.toggle("hidden");
     document.getElementById("searchInputDesktop").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
@@ -646,13 +673,9 @@
       document.getElementById("ordersListContainer").innerHTML = orders.length
         ? orders.map((o) => `<div class="p-3 rounded-2xl bg-slate-50 border border-slate-200"><div class="flex justify-between font-bold"><span>${o.number}</span><span>${formatPrice(o.total)}</span></div><div class="text-xs text-slate-400">${o.date}</div></div>`).join("")
         : `<div class="text-center text-slate-400 py-8">Заказов пока нет.</div>`;
-      const m = document.getElementById("ordersModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
+      const m = document.getElementById("ordersModal"); m.classList.remove("hidden"); m.classList.add("flex");
     };
-
-    renderCategories();
-    renderProducts();
-    updateCartUI();
+    renderCategories(); renderProducts(); updateCartUI();
   </script>
 
   <script type="module">
@@ -691,8 +714,8 @@
       measurementId: "G-56VTDVLB2H"
     };
 
-    // URL вашего сервера с ИИ (замените на ваш публичный HTTPS-адрес с /chat)
     const RUNOTOKS_AI_URL = "https://ВАШ-СЕРВЕР/chat";
+    const STORY_LIFETIME_MS = 20 * 60 * 60 * 1000; // 20 часов
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -709,7 +732,13 @@
       isAI: true
     };
 
-    // Главная страница: нижний поиск + профиль правее
+    const I18N = {
+      ru: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профиль", searchPeople: "Поиск людей", numberBtn: "Номер", storyBtn: "Сторис", postsLabel: "Посты", followersLabel: "Подписчики", followingLabel: "Подписки", settingsTitle: "Настройки", languageLabel: "Язык интерфейса и чата", blockedTitle: "Заблокированные люди", archiveTitle: "Архив сторис (старше 20 ч)" },
+      en: { chatTab: "Chat", rouletteTab: "🎲 Roulette", profileTab: "Profile", searchPeople: "Find people", numberBtn: "Number", storyBtn: "Story", postsLabel: "Posts", followersLabel: "Followers", followingLabel: "Following", settingsTitle: "Settings", languageLabel: "Interface & chat language", blockedTitle: "Blocked users", archiveTitle: "Story archive (20h+)" },
+      uk: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профіль", searchPeople: "Пошук людей", numberBtn: "Номер", storyBtn: "Сторіс", postsLabel: "Дописи", followersLabel: "Підписники", followingLabel: "Підписки", settingsTitle: "Налаштування", languageLabel: "Мова інтерфейсу та чату", blockedTitle: "Заблоковані люди", archiveTitle: "Архів сторіс (понад 20 год)" }
+    };
+
+    // DOM ссылки
     const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
     const homeProfileCircleBtn = document.getElementById("rtkHomeProfileCircleBtn");
     const homeProfileAvatar = document.getElementById("rtkHomeProfileAvatar");
@@ -719,7 +748,6 @@
     const homePeopleQuery = document.getElementById("rtkHomePeopleQuery");
     const homePeopleList = document.getElementById("rtkHomePeopleList");
 
-    // Мессенджер
     const openBtn = document.getElementById("rtkChatBtn");
     const unreadBadge = document.getElementById("rtkUnreadBadge");
     const messengerEl = document.getElementById("rtkMessenger");
@@ -737,7 +765,8 @@
     const profileView = document.getElementById("rtkProfileView");
     const settingsPage = document.getElementById("rtkSettingsPage");
 
-    // Чат: компактная лупа, номер, сторис
+    const sidebarEl = document.getElementById("rtkSidebar");
+    const chatPaneEl = document.getElementById("rtkChatPane");
     const compactSearchBtn = document.getElementById("rtkCompactSearchBtn");
     const friendSearchBox = document.getElementById("rtkFriendSearchBox");
     const searchInput = document.getElementById("rtkSearchUsernameInput");
@@ -763,16 +792,23 @@
     const closeStoryViewerBtn = document.getElementById("rtkCloseStoryViewerBtn");
     const storyViewerAuthor = document.getElementById("rtkStoryViewerAuthor");
     const storyViewerMusic = document.getElementById("rtkStoryViewerMusic");
+    const storyViewerCountdown = document.getElementById("rtkStoryViewerCountdown");
     const storyViewerMedia = document.getElementById("rtkStoryViewerMedia");
+    const storyStatsText = document.getElementById("rtkStoryStatsText");
+    const storyLikeBtn = document.getElementById("rtkStoryLikeBtn");
+    const storyReplyForm = document.getElementById("rtkStoryReplyForm");
+    const storyReplyInput = document.getElementById("rtkStoryReplyInput");
 
     const chatListEl = document.getElementById("rtkChatList");
     const backToDialogsBtn = document.getElementById("rtkBackToDialogsBtn");
     const peerInfoBox = document.getElementById("rtkPeerInfoBox");
     const messagesListEl = document.getElementById("rtkMessagesList");
+    const composerDock = document.getElementById("rtkComposerDock");
+    const fontCycleBtn = document.getElementById("rtkFontCycleBtn");
+    const fontBadge = document.getElementById("rtkFontBadge");
     const sendMsgForm = document.getElementById("rtkSendMessageForm");
     const msgInput = document.getElementById("rtkMessageInput");
 
-    // Рулетка
     const rouletteJoinedCountEl = document.getElementById("rtkRouletteJoinedCount");
     const rouletteNextBtn = document.getElementById("rtkRouletteNextBtn");
     const rouletteCardEl = document.getElementById("rtkRouletteCard");
@@ -780,7 +816,6 @@
     const rouletteForm = document.getElementById("rtkRouletteForm");
     const rouletteInput = document.getElementById("rtkRouletteInput");
 
-    // Профиль и настройки (☰)
     const profileDisplayName = document.getElementById("rtkProfileDisplayName");
     const profileDisplayHandle = document.getElementById("rtkProfileDisplayHandle");
     const profileGoogleEmail = document.getElementById("rtkProfileGoogleEmail");
@@ -788,12 +823,20 @@
     const postsCountVal = document.getElementById("rtkPostsCountVal");
     const followersCountVal = document.getElementById("rtkFollowersCountVal");
     const followingCountVal = document.getElementById("rtkFollowingCountVal");
+    const openFollowersBtn = document.getElementById("rtkOpenFollowersBtn");
+    const openFollowingBtn = document.getElementById("rtkOpenFollowingBtn");
     const profileBioText = document.getElementById("rtkProfileBioText");
     const openSettingsPageBtn = document.getElementById("rtkOpenSettingsPageBtn");
     const backFromSettingsBtn = document.getElementById("rtkBackFromSettingsBtn");
     const languageSelect = document.getElementById("rtkLanguageSelect");
     const languageSavedHint = document.getElementById("rtkLanguageSavedHint");
     const blockedUsersListEl = document.getElementById("rtkBlockedUsersList");
+    const archivedStoriesListEl = document.getElementById("rtkArchivedStoriesList");
+
+    const followListModal = document.getElementById("rtkFollowListModal");
+    const followListTitle = document.getElementById("rtkFollowListTitle");
+    const closeFollowListBtn = document.getElementById("rtkCloseFollowListBtn");
+    const followListItems = document.getElementById("rtkFollowListItems");
 
     const profileForm = document.getElementById("rtkProfileForm");
     const profileName = document.getElementById("rtkProfileName");
@@ -804,33 +847,148 @@
     const profilePhotoUrl = document.getElementById("rtkProfilePhotoUrl");
     const profileStatus = document.getElementById("rtkProfileStatus");
 
+    const FONTS = [
+      { id: "normal", label: "Обычный", cls: "rtk-font-normal" },
+      { id: "bold", label: "Жирный", cls: "rtk-font-bold" },
+      { id: "italic", label: "Курсив", cls: "rtk-font-italic" },
+      { id: "mono", label: "Моно", cls: "rtk-font-mono" },
+      { id: "underline", label: "Подчёрк.", cls: "rtk-font-underline" }
+    ];
+    let fontIdx = 0;
+
     let currentUser = null;
     let currentProfile = null;
     let activeChatId = null;
     let activePeer = null;
     let aiMessagesCache = JSON.parse(localStorage.getItem("rtk_ai_messages") || "[]");
-    let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_v1") || "[]");
+    let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_active_v1") || "[]");
+    let archivedStoriesCache = JSON.parse(localStorage.getItem("rtk_stories_archive_v1") || "[]");
     let draftStoryMedia = null;
+    let activeStoryId = null;
     let roulettePeer = null;
     let rouletteChatId = null;
     let allUsers = [];
     let chatsMap = new Map();
     let blockedIds = new Set();
+    let followingIds = new Set();
+    let followerIds = new Set();
     let unsubUsers = null;
     let unsubChats = null;
     let unsubMessages = null;
     let unsubRouletteMsgs = null;
+    let translatedCache = new Map();
 
     const escapeHtml = (s) => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     const cleanUsername = (u) => (u || "").trim().toLowerCase().replace(/^@+/, "").replace(/[^a-z0-9_]/g, "");
     const cleanPhone = (p) => String(p || "").replace(/[^\d+]/g, "");
+    const isMobileViewport = () => window.innerWidth <= 768;
+
+    function formatRemaining20h(createdAt) {
+      const left = Math.max(0, (createdAt + STORY_LIFETIME_MS) - Date.now());
+      const totalSec = Math.floor(left / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return `${String(h).padStart(2, "0")}ч ${String(m).padStart(2, "0")}м ${String(s).padStart(2, "0")}с`;
+    }
+
+    function rotateExpiredStories() {
+      const now = Date.now();
+      const stillActive = [];
+      let moved = false;
+      for (const st of storiesCache) {
+        if ((st.createdAt + STORY_LIFETIME_MS) <= now) {
+          archivedStoriesCache.unshift(st);
+          moved = true;
+        } else {
+          stillActive.push(st);
+        }
+      }
+      if (moved) {
+        storiesCache = stillActive;
+        archivedStoriesCache = archivedStoriesCache.slice(0, 50);
+        try {
+          localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache));
+          localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache));
+        } catch (_) {}
+      }
+    }
+
+    function applyStaticTranslations(lang) {
+      const dict = I18N[lang] || I18N.ru;
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+    }
+
+    async function translateTextForUser(text, targetLang) {
+      const raw = String(text || "").trim();
+      if (!raw || !targetLang || targetLang === "ru") return raw;
+      const cacheKey = `${targetLang}::${raw}`;
+      if (translatedCache.has(cacheKey)) return translatedCache.get(cacheKey);
+      try {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(targetLang)}&dt=t&q=${encodeURIComponent(raw)}`;
+        const r = await fetch(url);
+        const data = await r.json();
+        const out = (data?.[0] || []).map((part) => part?.[0] || "").join("").trim() || raw;
+        translatedCache.set(cacheKey, out);
+        return out;
+      } catch (_) {
+        return raw;
+      }
+    }
+
+    // Форматирование //светящийся подчёркнутый// текста + шрифта
+    function renderFormattedMessageHtml(rawText, fontClass = "rtk-font-normal") {
+      const safeFont = FONTS.some((f) => f.cls === fontClass) ? fontClass : "rtk-font-normal";
+      const parts = String(rawText || "").split(/(\/\/[^/]+\/\/)/g);
+      const htmlParts = parts.map((chunk) => {
+        if (/^\/\/[^/]+\/\/$/.test(chunk)) {
+          const inner = chunk.slice(2, -2);
+          return `<span class="rtk-slash-glow">${escapeHtml(inner)}</span>`;
+        }
+        return `<span class="${safeFont}">${escapeHtml(chunk)}</span>`;
+      });
+      return htmlParts.join("");
+    }
+
+    function applyMobileChatLayout() {
+      if (!isMobileViewport()) {
+        sidebarEl.style.display = "flex";
+        sidebarEl.style.maxWidth = "390px";
+        sidebarEl.style.width = "100%";
+        chatPaneEl.style.display = "flex";
+        backToDialogsBtn.style.display = "none";
+        return;
+      }
+      if (activeChatId) {
+        sidebarEl.style.display = "none";
+        chatPaneEl.style.display = "flex";
+        backToDialogsBtn.style.display = "inline-flex";
+      } else {
+        sidebarEl.style.display = "flex";
+        sidebarEl.style.maxWidth = "100%";
+        sidebarEl.style.width = "100%";
+        chatPaneEl.style.display = "none";
+        backToDialogsBtn.style.display = "none";
+      }
+    }
+
+    backToDialogsBtn.addEventListener("click", () => {
+      activeChatId = null;
+      activePeer = null;
+      composerDock.style.display = "none";
+      applyMobileChatLayout();
+    });
+
+    window.addEventListener("resize", applyMobileChatLayout);
 
     function openMessenger(targetTab = "chats") {
       messengerEl.style.display = "flex";
       document.body.style.overflow = "hidden";
       if (currentUser) setActiveTab(targetTab);
     }
-
     function closeMessenger() {
       messengerEl.style.display = "none";
       document.body.style.overflow = "";
@@ -847,12 +1005,8 @@
       renderHomePeopleModal("");
       homePeopleModal.style.display = "flex";
     });
-    closeHomePeopleModal.addEventListener("click", () => {
-      homePeopleModal.style.display = "none";
-    });
-    homePeopleQuery.addEventListener("input", (e) => {
-      renderHomePeopleModal(e.target.value);
-    });
+    closeHomePeopleModal.addEventListener("click", () => { homePeopleModal.style.display = "none"; });
+    homePeopleQuery.addEventListener("input", (e) => renderHomePeopleModal(e.target.value));
 
     function renderHomePeopleModal(qText) {
       const needle = (qText || "").trim().toLowerCase().replace(/^@+/, "");
@@ -886,10 +1040,7 @@
       });
     }
 
-    // Кружок профиля правее поиска на главной странице
-    homeProfileCircleBtn.addEventListener("click", () => {
-      openMessenger("profile");
-    });
+    homeProfileCircleBtn.addEventListener("click", () => openMessenger("profile"));
 
     function setActiveTab(tab) {
       settingsPage.style.display = "none";
@@ -906,25 +1057,25 @@
         btn.style.border = active ? "none" : "1px solid #334155";
       });
 
-      if (tab === "roulette" && currentUser) {
-        markRouletteEntered();
-      }
-      if (tab === "profile") {
-        renderProfileStatsAndBlocked();
-      }
+      if (tab === "chats") applyMobileChatLayout();
+      if (tab === "roulette" && currentUser) markRouletteEntered();
+      if (tab === "profile") renderProfileStatsAndBlocked();
     }
 
     tabChats.addEventListener("click", () => setActiveTab("chats"));
     tabRoulette.addEventListener("click", () => setActiveTab("roulette"));
     tabProfile.addEventListener("click", () => setActiveTab("profile"));
 
-    // Кнопка ☰ в профиле -> страница настроек
+    // Настройки (☰)
     openSettingsPageBtn.addEventListener("click", () => {
       chatsView.style.display = "none";
       rouletteView.style.display = "none";
       profileView.style.display = "none";
       settingsPage.style.display = "block";
+      rotateExpiredStories();
+      renderStoriesStrip();
       renderBlockedUsersList();
+      renderArchivedStories();
     });
 
     backFromSettingsBtn.addEventListener("click", () => {
@@ -932,28 +1083,32 @@
       setActiveTab("profile");
     });
 
-    const savedLang = localStorage.getItem("rtk_language") || "Русский";
+    const savedLang = localStorage.getItem("rtk_language") || "ru";
     languageSelect.value = savedLang;
-    languageSelect.addEventListener("change", () => {
-      localStorage.setItem("rtk_language", languageSelect.value);
-      languageSavedHint.textContent = `Выбран язык: ${languageSelect.value}`;
+    applyStaticTranslations(savedLang);
+
+    languageSelect.addEventListener("change", async () => {
+      const lang = languageSelect.value;
+      localStorage.setItem("rtk_language", lang);
+      applyStaticTranslations(lang);
+      languageSavedHint.textContent = `Язык: ${languageSelect.options[languageSelect.selectedIndex].text}`;
+      if (activePeer?.isAI) renderAIList();
+      else if (activeChatId) startOrOpenChat(activePeer);
     });
 
     function renderBlockedUsersList() {
       const blockedList = allUsers.filter((u) => blockedIds.has(u.uid));
-      if (!blockedList.length) {
-        blockedUsersListEl.innerHTML = `<div style="font-size:12px;color:#94a3b8;">Заблокированных пользователей нет</div>`;
-        return;
-      }
-      blockedUsersListEl.innerHTML = blockedList.map((u) => `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:#111827;border:1px solid #1f2937;">
-          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-            <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />
-            <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username || u.uid)}</span>
-          </div>
-          <button data-unblock="${u.uid}" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Разблокировать</button>
-        </div>
-      `).join("");
+      blockedUsersListEl.innerHTML = blockedList.length
+        ? blockedList.map((u) => `
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:#111827;border:1px solid #1f2937;">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+                <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />
+                <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username || u.uid)}</span>
+              </div>
+              <button data-unblock="${u.uid}" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Разблокировать</button>
+            </div>
+          `).join("")
+        : `<div style="font-size:12px;color:#94a3b8;">Заблокированных пользователей нет</div>`;
 
       blockedUsersListEl.querySelectorAll("button[data-unblock]").forEach((btn) => {
         btn.addEventListener("click", async () => {
@@ -967,14 +1122,96 @@
       });
     }
 
+    function renderArchivedStories() {
+      archivedStoriesListEl.innerHTML = archivedStoriesCache.length
+        ? archivedStoriesCache.map((st) => `
+            <div style="border-radius:12px;overflow:hidden;border:1px solid #1f2937;background:#111827;aspect-ratio:9/14;">
+              ${st.mediaType === "video"
+                ? `<video src="${st.mediaData}" style="width:100%;height:100%;object-fit:cover;filter:${st.filter || "none"};"></video>`
+                : `<img src="${st.mediaData}" style="width:100%;height:100%;object-fit:cover;filter:${st.filter || "none"};" />`}
+            </div>
+          `).join("")
+        : `<div style="grid-column:1/-1;font-size:12px;color:#94a3b8;">Архив пуст</div>`;
+    }
+
+    // Подписчики и подписки (просмотр профиля, подписка, написание сообщения)
+    async function toggleFollowUser(targetUid) {
+      if (!currentUser || !targetUid || targetUid === currentUser.uid) return;
+      if (followingIds.has(targetUid)) {
+        followingIds.delete(targetUid);
+        await deleteDoc(doc(db, "users", currentUser.uid, "following", targetUid)).catch(() => {});
+        await deleteDoc(doc(db, "users", targetUid, "followers", currentUser.uid)).catch(() => {});
+      } else {
+        followingIds.add(targetUid);
+        await setDoc(doc(db, "users", currentUser.uid, "following", targetUid), { followedAt: serverTimestamp() }).catch(() => {});
+        await setDoc(doc(db, "users", targetUid, "followers", currentUser.uid), { followedAt: serverTimestamp() }).catch(() => {});
+      }
+      renderProfileStatsAndBlocked();
+    }
+
+    function openFollowModal(mode) {
+      const isFollowers = mode === "followers";
+      followListTitle.textContent = isFollowers ? "Подписчики" : "Подписки";
+      const ids = Array.from(isFollowers ? followerIds : followingIds);
+      const users = ids.map((id) => allUsers.find((u) => u.uid === id) || { uid: id, name: "Пользователь", username: id.slice(0, 6), photoURL: DEFAULT_AVATAR });
+
+      followListItems.innerHTML = users.length
+        ? users.map((u) => {
+            const sub = followingIds.has(u.uid);
+            return `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border-radius:14px;background:#0b1120;border:1px solid #1f2937;">
+                <div data-view-profile="${u.uid}" style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;cursor:pointer;">
+                  <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" />
+                  <div style="min-width:0;">
+                    <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name)}</div>
+                    <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username || "user")}</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <button data-follow-btn="${u.uid}" type="button" style="padding:6px 10px;border-radius:9px;border:1px solid #334155;background:${sub ? "#1e293b" : "#2563eb"};color:#fff;font-size:11px;font-weight:700;cursor:pointer;">${sub ? "Отписаться" : "Подписаться"}</button>
+                  <button data-msg-btn="${u.uid}" type="button" style="padding:6px 10px;border-radius:9px;border:none;background:#059669;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Написать</button>
+                </div>
+              </div>
+            `;
+          }).join("")
+        : `<div style="text-align:center;color:#94a3b8;font-size:12px;padding:16px;">Список пуст</div>`;
+
+      followListItems.querySelectorAll("[data-view-profile]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const u = users.find((x) => x.uid === el.dataset.viewProfile);
+          if (!u) return;
+          alert(`${u.name} (@${u.username || "user"})\n${u.bio || "Профиль пользователя runotoks"}`);
+        });
+      });
+
+      followListItems.querySelectorAll("[data-follow-btn]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await toggleFollowUser(btn.dataset.followBtn);
+          openFollowModal(mode);
+        });
+      });
+
+      followListItems.querySelectorAll("[data-msg-btn]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const peer = allUsers.find((x) => x.uid === btn.dataset.msgBtn) || { uid: btn.dataset.msgBtn, name: "Пользователь", username: "user", photoURL: DEFAULT_AVATAR };
+          followListModal.style.display = "none";
+          setActiveTab("chats");
+          startOrOpenChat(peer);
+        });
+      });
+
+      followListModal.style.display = "flex";
+    }
+
+    openFollowersBtn.addEventListener("click", () => openFollowModal("followers"));
+    openFollowingBtn.addEventListener("click", () => openFollowModal("following"));
+    closeFollowListBtn.addEventListener("click", () => { followListModal.style.display = "none"; });
+
     function renderProfileStatsAndBlocked() {
       const myStoriesCount = storiesCache.filter((s) => s.authorId === currentUser?.uid).length;
-      const posts = currentProfile?.postsCount ?? myStoriesCount;
-      const followers = currentProfile?.followersCount ?? 0;
-      const following = currentProfile?.followingCount ?? Math.max(0, chatsMap.size);
-      postsCountVal.textContent = String(posts);
-      followersCountVal.textContent = String(followers);
-      followingCountVal.textContent = String(following);
+      postsCountVal.textContent = String(currentProfile?.postsCount ?? myStoriesCount);
+      followersCountVal.textContent = String(followerIds.size);
+      followingCountVal.textContent = String(followingIds.size);
       profileBioText.textContent = currentProfile?.bio || "Описание профиля не добавлено.";
       renderBlockedUsersList();
     }
@@ -1017,8 +1254,6 @@
           bio: "",
           photoURL: user.photoURL || DEFAULT_AVATAR,
           postsCount: 0,
-          followersCount: 0,
-          followingCount: 0,
           rouletteEntered: false,
           lastSeen: Date.now()
         };
@@ -1050,10 +1285,7 @@
       e.preventDefault();
       if (!currentUser) return;
       const uname = cleanUsername(profileUsername.value);
-      if (!uname) {
-        profileStatus.textContent = "Введите корректный @username";
-        return;
-      }
+      if (!uname) { profileStatus.textContent = "Введите корректный @username"; return; }
       const updated = {
         name: profileName.value.trim() || "Пользователь",
         username: uname,
@@ -1069,14 +1301,11 @@
       setTimeout(() => { profileStatus.textContent = ""; }, 2000);
     });
 
-    // Компактная лупа поиска друзей в чате
+    // Лупа поиска друзей в чате
     compactSearchBtn.addEventListener("click", () => {
       const open = friendSearchBox.style.display === "none";
       friendSearchBox.style.display = open ? "block" : "none";
-      if (open) {
-        phoneLookupBox.style.display = "none";
-        searchInput.focus();
-      }
+      if (open) { phoneLookupBox.style.display = "none"; searchInput.focus(); }
     });
 
     searchInput.addEventListener("input", () => {
@@ -1104,63 +1333,119 @@
       });
     });
 
-    // Кнопка поиска человека по номеру телефона
+    // Поиск по номеру телефона
     phoneLookupBtn.addEventListener("click", () => {
       const open = phoneLookupBox.style.display === "none";
       phoneLookupBox.style.display = open ? "block" : "none";
-      if (open) {
-        friendSearchBox.style.display = "none";
-        phoneLookupInput.focus();
-      }
+      if (open) { friendSearchBox.style.display = "none"; phoneLookupInput.focus(); }
     });
 
     phoneLookupSubmitBtn.addEventListener("click", async () => {
       const targetPhone = cleanPhone(phoneLookupInput.value);
       phoneLookupResult.textContent = "";
-      if (!targetPhone) {
-        phoneLookupResult.textContent = "Введите номер телефона.";
-        return;
-      }
-      const qP = query(collection(db, "users"), where("phone", "==", targetPhone));
-      const snap = await getDocs(qP);
-      if (snap.empty) {
-        phoneLookupResult.textContent = "Пользователь с таким номером не найден.";
-        return;
-      }
+      if (!targetPhone) { phoneLookupResult.textContent = "Введите номер."; return; }
+      const snap = await getDocs(query(collection(db, "users"), where("phone", "==", targetPhone)));
+      if (snap.empty) { phoneLookupResult.textContent = "Не найдено."; return; }
       const found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
       phoneLookupResult.innerHTML = `
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:#0b1120;border:1px solid #1f2937;">
-          <span style="font-size:12px;font-weight:700;">${escapeHtml(found.name || "Пользователь")} (@${escapeHtml(found.username || "")})</span>
-          <button id="rtkOpenFoundByPhoneBtn" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Написать</button>
+          <span style="font-size:12px;font-weight:700;">${escapeHtml(found.name || "Пользователь")}</span>
+          <button id="rtkOpenFoundByPhoneBtn" type="button" style="padding:5px 10px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
         </div>
       `;
       document.getElementById("rtkOpenFoundByPhoneBtn").addEventListener("click", () => startOrOpenChat(found));
     });
 
-    // Сторис в чате: выбор фото/видео из галереи, фильтры, музыка, опубликовать
+    // Сторис: 20 часов + счётчик + просмотры/лайки/ответы на весь экран
+    function saveStoriesState() {
+      try {
+        localStorage.setItem("rtk_stories_active_v1", JSON.stringify(storiesCache.slice(0, 25)));
+        localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
+      } catch (_) {}
+    }
+
     function renderStoriesStrip() {
-      storiesStrip.innerHTML = storiesCache.map((st, idx) => `
-        <button data-story-idx="${idx}" type="button" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:#f8fafc;cursor:pointer;flex-shrink:0;">
+      rotateExpiredStories();
+      storiesStrip.innerHTML = storiesCache.map((st) => `
+        <button data-story-id="${st.id}" type="button" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:none;color:#f8fafc;cursor:pointer;flex-shrink:0;">
           <div style="width:48px;height:48px;border-radius:50%;padding:2px;background:linear-gradient(135deg,#3b82f6,#ec4899);display:flex;align-items:center;justify-content:center;">
             <img src="${st.authorAvatar || DEFAULT_AVATAR}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
           </div>
-          <span style="font-size:10px;max-width:56px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(st.authorName || "Сторис")}</span>
+          <span style="font-size:10px;max-width:62px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(st.authorName || "Сторис")}</span>
+          <span data-story-timer="${st.id}" style="font-size:9px;color:#34d399;font-weight:700;">${formatRemaining20h(st.createdAt)}</span>
         </button>
       `).join("");
 
-      storiesStrip.querySelectorAll("button[data-story-idx]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const st = storiesCache[Number(btn.dataset.storyIdx)];
-          if (!st) return;
-          storyViewerAuthor.textContent = st.authorName || "Сторис";
-          storyViewerMusic.textContent = st.music || "Без музыки";
-          storyViewerMedia.innerHTML = st.mediaType === "video"
-            ? `<video src="${st.mediaData}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;filter:${st.filter || "none"};"></video>`
-            : `<img src="${st.mediaData}" style="width:100%;height:100%;object-fit:contain;filter:${st.filter || "none"};" />`;
-          storyViewerModal.style.display = "flex";
-        });
+      storiesStrip.querySelectorAll("button[data-story-id]").forEach((btn) => {
+        btn.addEventListener("click", () => openStoryViewer(btn.dataset.storyId));
       });
     }
+
+    function refreshStoryViewerDetails(st) {
+      if (!st) return;
+      const viewsCount = (st.viewers || []).length;
+      const likesCount = (st.likes || []).length;
+      const repliesCount = (st.replies || []).length;
+      storyStatsText.textContent = `👁 ${viewsCount} • ❤️ ${likesCount} • 💬 ${repliesCount}`;
+      storyViewerCountdown.textContent = `⏳ ${formatRemaining20h(st.createdAt)}`;
+    }
+
+    function openStoryViewer(storyId) {
+      rotateExpiredStories();
+      const st = storiesCache.find((x) => x.id === storyId);
+      if (!st) { renderStoriesStrip(); return; }
+      activeStoryId = st.id;
+      const myId = currentUser?.uid || "guest";
+      st.viewers = st.viewers || [];
+      if (!st.viewers.includes(myId)) st.viewers.push(myId);
+      saveStoriesState();
+
+      storyViewerAuthor.textContent = st.authorName || "Сторис";
+      storyViewerMusic.textContent = st.music || "Без музыки";
+      storyViewerMedia.innerHTML = st.mediaType === "video"
+        ? `<video src="${st.mediaData}" controls autoplay playsinline style="max-width:100%;max-height:100%;object-fit:contain;filter:${st.filter || "none"};"></video>`
+        : `<img src="${st.mediaData}" style="max-width:100%;max-height:100%;object-fit:contain;filter:${st.filter || "none"};" />`;
+      refreshStoryViewerDetails(st);
+      storyViewerModal.style.display = "flex";
+    }
+
+    storyLikeBtn.addEventListener("click", () => {
+      if (!activeStoryId) return;
+      const st = storiesCache.find((x) => x.id === activeStoryId);
+      if (!st) return;
+      const myId = currentUser?.uid || "guest";
+      st.likes = st.likes || [];
+      if (!st.likes.includes(myId)) st.likes.push(myId);
+      else st.likes = st.likes.filter((id) => id !== myId);
+      saveStoriesState();
+      refreshStoryViewerDetails(st);
+    });
+
+    storyReplyForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!activeStoryId) return;
+      const txt = storyReplyInput.value.trim();
+      if (!txt) return;
+      const st = storiesCache.find((x) => x.id === activeStoryId);
+      if (!st) return;
+      st.replies = st.replies || [];
+      st.replies.push({ from: currentUser?.uid || "guest", text: txt, at: Date.now() });
+      storyReplyInput.value = "";
+      saveStoriesState();
+      refreshStoryViewerDetails(st);
+
+      if (currentUser && st.authorId && st.authorId !== currentUser.uid) {
+        const pairKey = [currentUser.uid, st.authorId].sort().join("_");
+        await setDoc(doc(db, "chats", pairKey), { pairKey, members: [currentUser.uid, st.authorId], updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
+        await addDoc(collection(db, "chats", pairKey, "messages"), { senderId: currentUser.uid, text: `Ответ на сторис: ${txt}`, createdAt: serverTimestamp() }).catch(() => {});
+      }
+    });
+
+    closeStoryViewerBtn.addEventListener("click", () => {
+      activeStoryId = null;
+      storyViewerModal.style.display = "none";
+      storyViewerMedia.innerHTML = "";
+    });
 
     createStoryBtn.addEventListener("click", () => {
       draftStoryMedia = null;
@@ -1170,12 +1455,7 @@
       storyPreviewWrap.innerHTML = `<span style="font-size:12px;color:#64748b;">Выберите фото или видео из галереи</span>`;
       storyComposerModal.style.display = "flex";
     });
-
     closeStoryComposerBtn.addEventListener("click", () => { storyComposerModal.style.display = "none"; });
-    closeStoryViewerBtn.addEventListener("click", () => {
-      storyViewerModal.style.display = "none";
-      storyViewerMedia.innerHTML = "";
-    });
 
     function refreshStoryPreview() {
       if (!draftStoryMedia) return;
@@ -1188,28 +1468,18 @@
     storyMediaInput.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      if (file.size > 1.5 * 1024 * 1024) {
-        alert("Выберите файл до 1.5 МБ для быстрой публикации сторис.");
-        return;
-      }
+      if (file.size > 1.5 * 1024 * 1024) { alert("Файл должен быть до 1.5 МБ."); return; }
       const reader = new FileReader();
       reader.onload = () => {
-        draftStoryMedia = {
-          mediaType: file.type.startsWith("video/") ? "video" : "image",
-          mediaData: reader.result
-        };
+        draftStoryMedia = { mediaType: file.type.startsWith("video/") ? "video" : "image", mediaData: reader.result };
         refreshStoryPreview();
       };
       reader.readAsDataURL(file);
     });
-
     storyFilterSelect.addEventListener("change", refreshStoryPreview);
 
     publishStoryBtn.addEventListener("click", async () => {
-      if (!draftStoryMedia) {
-        alert("Сначала выберите фото или видео из галереи.");
-        return;
-      }
+      if (!draftStoryMedia) { alert("Выберите фото или видео из галереи."); return; }
       const newStory = {
         id: "story_" + Date.now(),
         authorId: currentUser?.uid || "guest",
@@ -1219,12 +1489,13 @@
         mediaData: draftStoryMedia.mediaData,
         filter: storyFilterSelect.value || "none",
         music: storyMusicSelect.value || "",
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        viewers: [],
+        likes: [],
+        replies: []
       };
       storiesCache.unshift(newStory);
-      try {
-        localStorage.setItem("rtk_stories_v1", JSON.stringify(storiesCache.slice(0, 20)));
-      } catch (_) {}
+      saveStoriesState();
       if (currentUser) {
         const nextPosts = (currentProfile?.postsCount || 0) + 1;
         currentProfile = { ...currentProfile, postsCount: nextPosts };
@@ -1235,7 +1506,42 @@
       storyComposerModal.style.display = "none";
     });
 
-    // Подключение ИИ Рунотокс через ваш сервер + fetch
+    // Обновление таймеров сторис каждую секунду
+    setInterval(() => {
+      rotateExpiredStories();
+      storiesCache.forEach((st) => {
+        const el = storiesStrip.querySelector(`[data-story-timer="${st.id}"]`);
+        if (el) el.textContent = formatRemaining20h(st.createdAt);
+      });
+      if (activeStoryId) {
+        const cur = storiesCache.find((x) => x.id === activeStoryId);
+        if (cur) refreshStoryViewerDetails(cur);
+        else {
+          activeStoryId = null;
+          storyViewerModal.style.display = "none";
+          renderStoriesStrip();
+        }
+      }
+    }, 1000);
+
+    // Шрифты и эффекты перед клавиатурой
+    fontCycleBtn.addEventListener("click", () => {
+      fontIdx = (fontIdx + 1) % FONTS.length;
+      fontBadge.textContent = FONTS[fontIdx].label;
+      msgInput.className = FONTS[fontIdx].cls;
+    });
+
+    composerDock.querySelectorAll("[data-insert-fx]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const fx = btn.dataset.insertFx;
+        const start = msgInput.selectionStart ?? msgInput.value.length;
+        const end = msgInput.selectionEnd ?? msgInput.value.length;
+        msgInput.value = msgInput.value.slice(0, start) + fx + msgInput.value.slice(end);
+        msgInput.focus();
+      });
+    });
+
+    // ИИ Рунотокс через сервер + fetch
     async function askRunotoksServer(promptText, history = []) {
       const cleanPrompt = String(promptText || "").trim();
       if (!cleanPrompt) return "Чем могу помочь?";
@@ -1245,6 +1551,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message: cleanPrompt,
+            language: languageSelect.value || "ru",
             history: history.slice(-8).map((m) => ({
               role: m.senderId === AI_ASSISTANT_ID ? "model" : "user",
               text: m.text || ""
@@ -1255,7 +1562,7 @@
         if (!res.ok) return data.error || "Сервер ИИ вернул ошибку.";
         return data.reply || "Пустой ответ от модели.";
       } catch (_) {
-        return "Не удалось получить ответ от сервера ИИ. Проверьте адрес RUNOTOKS_AI_URL и запуск сервера.";
+        return "Не удалось получить ответ от сервера ИИ. Проверьте RUNOTOKS_AI_URL и запуск сервера.";
       }
     }
 
@@ -1265,7 +1572,7 @@
         const mine = m.senderId === currentUser?.uid;
         const bubble = document.createElement("div");
         bubble.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:10px 13px;border-radius:15px;font-size:13px;line-height:1.45;word-break:break-word;`;
-        bubble.textContent = m.text;
+        bubble.innerHTML = renderFormattedMessageHtml(m.text, m.fontClass || "rtk-font-normal");
         messagesListEl.appendChild(bubble);
       });
       messagesListEl.scrollTop = messagesListEl.scrollHeight;
@@ -1280,7 +1587,7 @@
         aiMessagesCache = [{ id: "ai_init", senderId: AI_ASSISTANT_ID, text: "Привет! Я Рунотокс. Чем могу помочь?" }];
         localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
       }
-      sendMsgForm.style.display = "flex";
+      composerDock.style.display = "flex";
       peerInfoBox.innerHTML = `
         <img src="${AI_ASSISTANT_USER.photoURL}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
         <div>
@@ -1289,6 +1596,7 @@
         </div>
       `;
       renderAIList();
+      applyMobileChatLayout();
     }
 
     function renderPeopleAndDialogs() {
@@ -1343,28 +1651,32 @@
       if (!currentUser || !peer) return;
       if (peer.isAI) { openAIAssistantChat(); return; }
       const pairKey = [currentUser.uid, peer.uid].sort().join("_");
-      await setDoc(doc(db, "chats", pairKey), { pairKey, members: [currentUser.uid, peer.uid], updatedAt: serverTimestamp() }, { merge: true });
+      await setDoc(doc(db, "chats", pairKey), { pairKey, members: [currentUser.uid, peer.uid], updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
       activeChatId = pairKey;
       activePeer = peer;
-      sendMsgForm.style.display = "flex";
+      composerDock.style.display = "flex";
       peerInfoBox.innerHTML = `
         <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" />
         <div>
           <div style="font-size:14px;font-weight:700;">${escapeHtml(peer.name || "Собеседник")} <span style="font-size:11px;color:#60a5fa;">@${escapeHtml(peer.username || "user")}</span></div>
         </div>
       `;
+      applyMobileChatLayout();
+
       if (unsubMessages) unsubMessages();
       const qM = query(collection(db, "chats", pairKey, "messages"), orderBy("createdAt", "asc"));
-      unsubMessages = onSnapshot(qM, (snap) => {
+      unsubMessages = onSnapshot(qM, async (snap) => {
+        const targetLang = languageSelect.value || "ru";
+        const rawMsgs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
         messagesListEl.innerHTML = "";
-        snap.forEach((d) => {
-          const m = d.data();
+        for (const m of rawMsgs) {
           const mine = m.senderId === currentUser.uid;
+          const displayText = mine ? (m.text || "") : await translateTextForUser(m.text || "", targetLang);
           const b = document.createElement("div");
           b.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:9px 12px;border-radius:14px;font-size:13px;word-break:break-word;`;
-          b.textContent = m.text || "";
+          b.innerHTML = renderFormattedMessageHtml(displayText, m.fontClass || "rtk-font-normal");
           messagesListEl.appendChild(b);
-        });
+        }
         messagesListEl.scrollTop = messagesListEl.scrollHeight;
       });
       renderPeopleAndDialogs();
@@ -1374,10 +1686,11 @@
       e.preventDefault();
       const text = msgInput.value.trim();
       if (!text || !currentUser || !activeChatId || !activePeer) return;
+      const curFont = FONTS[fontIdx]?.cls || "rtk-font-normal";
       msgInput.value = "";
 
       if (activePeer.isAI) {
-        aiMessagesCache.push({ id: "u_" + Date.now(), senderId: currentUser.uid, text });
+        aiMessagesCache.push({ id: "u_" + Date.now(), senderId: currentUser.uid, text, fontClass: curFont });
         const thinkingId = "ai_think_" + (Date.now() + 1);
         aiMessagesCache.push({ id: thinkingId, senderId: AI_ASSISTANT_ID, text: "Думаю..." });
         localStorage.setItem("rtk_ai_messages", JSON.stringify(aiMessagesCache));
@@ -1394,6 +1707,7 @@
       await addDoc(collection(db, "chats", activeChatId, "messages"), {
         senderId: currentUser.uid,
         text,
+        fontClass: curFont,
         createdAt: serverTimestamp()
       });
       await setDoc(doc(db, "chats", activeChatId), {
@@ -1404,7 +1718,7 @@
       }, { merge: true });
     });
 
-    // Рулетка: счётчик зашедших в рулетку
+    // Рулетка
     function updateRouletteJoinedCounter() {
       const joinedCount = allUsers.filter((u) => u.rouletteEntered === true).length;
       rouletteJoinedCountEl.textContent = `Зашло в рулетку: ${joinedCount}`;
@@ -1447,7 +1761,7 @@
           const mine = m.senderId === currentUser.uid;
           const b = document.createElement("div");
           b.style.cssText = `max-width:80%;align-self:${mine ? "flex-end" : "flex-start"};background:${mine ? "#2563eb" : "#1e293b"};color:#fff;padding:8px 11px;border-radius:13px;font-size:12px;`;
-          b.textContent = m.text || "";
+          b.innerHTML = renderFormattedMessageHtml(m.text || "", m.fontClass || "rtk-font-normal");
           rouletteMessagesEl.appendChild(b);
         });
         rouletteMessagesEl.scrollTop = rouletteMessagesEl.scrollHeight;
@@ -1478,6 +1792,16 @@
         renderBlockedUsersList();
       });
 
+      onSnapshot(collection(db, "users", uid, "followers"), (snap) => {
+        followerIds = new Set(snap.docs.map((d) => d.id));
+        renderProfileStatsAndBlocked();
+      });
+
+      onSnapshot(collection(db, "users", uid, "following"), (snap) => {
+        followingIds = new Set(snap.docs.map((d) => d.id));
+        renderProfileStatsAndBlocked();
+      });
+
       if (unsubChats) unsubChats();
       const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
       unsubChats = onSnapshot(qC, (snap) => {
@@ -1496,6 +1820,7 @@
     }
 
     renderStoriesStrip();
+    applyMobileChatLayout();
 
     onAuthStateChanged(auth, async (user) => {
       currentUser = user;
@@ -1510,6 +1835,7 @@
       currentProfile = await ensureUserProfile(user);
       fillProfileUI(currentProfile, user);
       subscribeAll(user.uid);
+      applyMobileChatLayout();
     });
   </script>
 </body>
