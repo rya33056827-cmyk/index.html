@@ -55,6 +55,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased w-full">
 
+  <!-- Шапка: только Лента/Покупки (поменяны местами), Чат, Регистрация и Корзина -->
   <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200">
     <div class="w-full px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -66,28 +67,20 @@
           </div>
         </button>
 
+        <!-- Покупки слева, Лента справа -->
         <nav class="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
-          <button id="pageNavFeedBtn" type="button"
-            class="px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap">
-            🏠 Лента
-          </button>
           <button id="pageNavShopBtn" type="button"
             class="px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap">
             🛍 Покупки
           </button>
+          <button id="pageNavFeedBtn" type="button"
+            class="px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap">
+            🏠 Лента
+          </button>
         </nav>
       </div>
 
-      <div id="shopSearchDesktopWrap" class="hidden md:flex flex-1 max-w-md mx-2">
-        <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу..."
-          class="w-full px-4 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 text-sm outline-none transition" />
-      </div>
-
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <button id="rtkHeaderAuthBtn" type="button"
-          class="px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer whitespace-nowrap">
-          Войти через Google
-        </button>
         <button id="rtkChatBtn" type="button"
           class="px-3 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap">
           <span>💬</span>
@@ -95,21 +88,22 @@
           <span id="rtkUnreadBadge"
             class="hidden min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-extrabold items-center justify-center">0</span>
         </button>
-        <button id="toggleSearchBtn" class="md:hidden p-2 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">🔍</button>
-        <button id="ordersHistoryBtn" class="p-2 rounded-full hover:bg-slate-100 text-slate-700 text-sm font-semibold" title="Мои заказы">📦</button>
-        <button id="openCartBtn" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-full text-xs sm:text-sm font-semibold transition">
+
+        <button id="rtkHeaderAuthBtn" type="button"
+          class="px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer whitespace-nowrap">
+          Регистрация
+        </button>
+
+        <button id="openCartBtn" type="button"
+          class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-full text-xs sm:text-sm font-semibold transition cursor-pointer whitespace-nowrap">
           <span>🛒</span>
           <span id="cartCount" class="bg-blue-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
         </button>
       </div>
     </div>
-    <div id="mobileSearchBar" class="hidden md:hidden px-3 pb-3 w-full">
-      <input id="searchInputMobile" type="text" placeholder="Найти наушники, часы, клавиатуру..."
-        class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none" />
-    </div>
   </header>
 
-  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН -->
+  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН (посты видны всем пользователям) -->
   <section id="feedPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28">
     <div id="rtkOwnerFeedComposer" class="w-full mb-5 bg-slate-900 text-white rounded-3xl p-4 sm:p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
       <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
@@ -127,7 +121,7 @@
     <div id="rtkHomeFeedList" class="w-full flex flex-col gap-5"></div>
   </section>
 
-  <!-- СТРАНИЦА 2: ПОКУПКИ ВО ВЕСЬ ЭКРАН -->
+  <!-- СТРАНИЦА 2: ПОКУПКИ ВО ВЕСЬ ЭКРАН (все товары удалены по умолчанию) -->
   <section id="shopPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28" style="display:none;">
     <div id="rtkOwnerProductCreator" class="w-full mb-6 p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -153,13 +147,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         <div class="flex items-center justify-between sm:justify-end gap-3">
-          <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 4 товаров</span>
-          <select id="sortSelect" class="px-3.5 py-2 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 outline-none">
-            <option value="popular">По популярности</option>
-            <option value="price-asc">Сначала дешевле</option>
-            <option value="price-desc">Сначала дороже</option>
-            <option value="rating">По рейтингу</option>
-          </select>
+          <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 0 товаров</span>
         </div>
       </div>
 
@@ -167,16 +155,16 @@
     </main>
   </section>
 
-  <!-- Нижняя панель навигации -->
+  <!-- Нижняя панель: Покупки и Лента поменяны местами -->
   <div id="rtkHomeBottomDock"
     style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
-    <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
-      style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#2563eb;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-      🏠 Лента
-    </button>
     <button id="rtkHomeShopBtn" type="button" title="Покупки"
       style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
       🛍 Покупки
+    </button>
+    <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
+      style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#2563eb;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
+      🏠 Лента
     </button>
     <button id="rtkHomeSearchCircleBtn" type="button" title="Найти людей и подписаться"
       style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:linear-gradient(135deg,#ff7a00,#22c55e);color:#09090b;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(34,197,94,0.35);">
@@ -187,6 +175,29 @@
       <img id="rtkHomeProfileAvatar" src="https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128" alt="Профиль"
         style="width:100%;height:100%;object-fit:cover;border-radius:50%;background:#1e293b;" />
     </button>
+  </div>
+
+  <!-- Входящий звонок и пропущенные звонки (работают в фоне даже когда телефон не на сайте) -->
+  <div id="rtkIncomingCallModal"
+    style="display:none;position:fixed;inset:0;z-index:10060;background:rgba(2,6,23,0.88);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;">
+    <div style="width:100%;max-width:380px;background:#111827;border:1px solid #334155;border-radius:28px;padding:24px;text-align:center;color:#fff;box-shadow:0 24px 60px rgba(0,0,0,0.65);">
+      <div class="rtk-story-ring-fire" style="width:74px;height:74px;margin:0 auto 14px;">
+        <img id="rtkIncomingCallerAvatar" src="https://ui-avatars.com/api/?name=R&background=2563eb&color=ffffff&size=128" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+      </div>
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#34d399;">Входящий звонок</div>
+      <div id="rtkIncomingCallerName" style="font-size:20px;font-weight:800;margin-top:4px;">Собеседник</div>
+      <div id="rtkIncomingCallStatus" style="font-size:12px;color:#94a3b8;margin-top:4px;">Голосовой вызов runotoks...</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;">
+        <button id="rtkDeclineCallBtn" type="button"
+          style="padding:12px;border-radius:16px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:800;cursor:pointer;">
+          ✕ Отклонить
+        </button>
+        <button id="rtkAcceptCallBtn" type="button"
+          style="padding:12px;border-radius:16px;border:none;background:#16a34a;color:#fff;font-size:13px;font-weight:800;cursor:pointer;">
+          📞 Ответить
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Модалка поиска людей и подписок -->
@@ -211,7 +222,7 @@
         </div>
         <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;" class="rtk-grad-orange-green">runotoks</h2>
         <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы общаться в чате, подписываться, ставить лайки и комментарии, заходить в рулетку и общаться с ИИ Рунотокс.
+          Войдите через Google, чтобы общаться в чате, подписываться, ставить лайки и комментарии, звонить и видеть пропущенные звонки.
         </p>
         <button id="rtkGoogleLoginBtn" type="button"
           style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
@@ -323,8 +334,8 @@
 
           <div id="rtkVoiceCallBanner" style="display:none;padding:9px 14px;background:rgba(34,197,94,0.14);border-bottom:1px solid rgba(34,197,94,0.35);align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
-              <span>📞</span>
-              <strong id="rtkVoiceCallPeerName">Звонок...</strong>
+              <span>🎙</span>
+              <strong id="rtkVoiceCallPeerName">Голосовой звонок...</strong>
               <span id="rtkVoiceCallTimer" style="color:#34d399;font-weight:700;">00:00</span>
             </div>
             <button id="rtkEndVoiceCallBtn" type="button"
@@ -427,6 +438,12 @@
               <div id="rtkFollowingCountVal" style="font-size:18px;font-weight:800;color:#93c5fd;">0</div>
               <div data-i18n="followingLabel" style="font-size:11px;color:#94a3b8;font-weight:600;">Подписки</div>
             </button>
+          </div>
+
+          <!-- Журнал звонков и пропущенных звонков -->
+          <div style="background:#0b1120;border:1px solid #1f2937;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;">
+            <div style="font-size:12px;font-weight:800;color:#fca5a5;">📞 Звонки и пропущенные</div>
+            <div id="rtkCallHistoryList" style="display:flex;flex-direction:column;gap:6px;max-height:140px;overflow-y:auto;"></div>
           </div>
 
           <div id="rtkProfileBioText" style="font-size:13px;color:#cbd5e1;background:#0b1120;padding:12px;border-radius:14px;border:1px solid #1f2937;"></div>
@@ -611,7 +628,7 @@
     </div>
   </div>
 
-  <!-- Модалки магазина -->
+  <!-- Модалки магазина и корзины -->
   <div id="productModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="relative bg-slate-100 h-80 sm:h-96">
@@ -655,92 +672,9 @@
     </div>
   </div>
 
-  <div id="ordersModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl">
-      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Мои заказы</h3>
-        <button onclick="closeOrdersModal()" class="w-8 h-8 rounded-full hover:bg-slate-100">✕</button>
-      </div>
-      <div id="ordersListContainer" class="p-5 overflow-y-auto space-y-3 text-sm"></div>
-    </div>
-  </div>
-
   <script>
-    const DEFAULT_PRODUCTS = [
-      {
-        id: 1,
-        title: "runotoks Studio Pro ANC",
-        category: "Аудио",
-        price: 14990,
-        rating: 4.9,
-        popular: 10,
-        variants: ["Графит", "Серебро"],
-        images: [
-          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85",
-          "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=85",
-          "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=85"
-        ],
-        desc: "Беспроводные наушники с шумоподавлением и автономностью до 50 часов."
-      },
-      {
-        id: 2,
-        title: "runotoks Watch Ultra S2",
-        category: "Гаджеты",
-        price: 18500,
-        rating: 4.8,
-        popular: 9,
-        variants: ["Титан", "Черный"],
-        images: [
-          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",
-          "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=85"
-        ],
-        desc: "Умные часы в титановом корпусе с GPS и длительной автономностью."
-      },
-      {
-        id: 3,
-        title: "runotoks KeyMech 75% Wireless",
-        category: "Периферия",
-        price: 9490,
-        rating: 4.9,
-        popular: 8,
-        variants: ["Dark Gray", "Retro White"],
-        images: [
-          "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85",
-          "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=900&q=85"
-        ],
-        desc: "Механическая беспроводная клавиатура с плавным ходом клавиш."
-      },
-      {
-        id: 4,
-        title: "runotoks Pods Air 3",
-        category: "Аудио",
-        price: 6990,
-        rating: 4.7,
-        popular: 7,
-        variants: ["Белый", "Черный"],
-        images: [
-          "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=900&q=85",
-          "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=900&q=85"
-        ],
-        desc: "Компактные наушники с быстрым подключением и чистым звуком."
-      }
-    ];
-
-    function loadProducts() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("runotoks_products_v1") || "null");
-        if (Array.isArray(saved) && saved.length) {
-          return saved.map((p) => ({
-            ...p,
-            images: Array.isArray(p.images) && p.images.length ? p.images.slice(0, 10) : [p.image].filter(Boolean),
-            variants: Array.isArray(p.variants) && p.variants.length ? p.variants : ["Стандарт"]
-          }));
-        }
-      } catch (_) {}
-      return DEFAULT_PRODUCTS;
-    }
-
-    let PRODUCTS = loadProducts();
+    // Все товары удалены по умолчанию; добавляются только владельцем
+    let PRODUCTS = [];
     const cardState = {};
     function getCardState(id) {
       if (!cardState[id]) cardState[id] = { photoIdx: 0, colorIdx: 0 };
@@ -751,14 +685,12 @@
     }
 
     let activeCategory = "Все";
-    let searchQuery = "";
-    let sortBy = "popular";
     let cart = JSON.parse(localStorage.getItem("runotoks_cart") || "[]");
     let orders = JSON.parse(localStorage.getItem("runotoks_orders") || "[]");
     const formatPrice = (n) => Number(n || 0).toLocaleString("ru-RU") + " ₽";
 
     function renderCategories() {
-      const cats = ["Все", ...new Set(PRODUCTS.map((p) => p.category))];
+      const cats = ["Все", ...new Set(PRODUCTS.map((p) => p.category).filter(Boolean))];
       document.getElementById("categoryTabs").innerHTML = cats.map((c) => `
         <button onclick="filterCategory('${c}')" class="px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition ${activeCategory === c ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">${c}</button>
       `).join("");
@@ -792,16 +724,17 @@
     };
 
     function renderProducts() {
-      let list = PRODUCTS.filter((p) => {
-        const matchCat = activeCategory === "Все" || p.category === activeCategory;
-        const matchSearch = p.title.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery);
-        return matchCat && matchSearch;
-      });
-      if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
-      if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
-      if (sortBy === "rating") list.sort((a, b) => b.rating - a.rating);
-      if (sortBy === "popular") list.sort((a, b) => b.popular - a.popular);
+      const list = PRODUCTS.filter((p) => activeCategory === "Все" || p.category === activeCategory);
       document.getElementById("productCountLabel").textContent = `Показано: ${list.length} товаров`;
+
+      if (!list.length) {
+        document.getElementById("productsGrid").innerHTML = `
+          <div class="col-span-full text-center py-14 px-4 rounded-3xl bg-white border border-slate-200 text-slate-500 text-sm">
+            Товаров пока нет.
+          </div>
+        `;
+        return;
+      }
 
       document.getElementById("productsGrid").innerHTML = list.map((p) => {
         const st = getCardState(p.id);
@@ -859,6 +792,7 @@
 
     function openProductModal(id) {
       const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return;
       const st = getCardState(id);
       const photos = (p.images && p.images.length ? p.images : [p.image]).slice(0, 10);
       let photoIdx = st.photoIdx || 0;
@@ -901,6 +835,7 @@
     function saveCart() { localStorage.setItem("runotoks_cart", JSON.stringify(cart)); updateCartUI(); }
     function addToCart(id, variant, chosenImage = "") {
       const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return;
       const key = `${id}_${variant}`;
       const ex = cart.find((i) => i.key === key);
       const img = chosenImage || (p.images && p.images[0]) || p.image || "";
@@ -935,24 +870,7 @@
       localStorage.setItem("runotoks_orders", JSON.stringify(orders));
       cart = []; saveCart(); closeCart(); alert("Заказ оформлен!");
     }
-    function closeOrdersModal() { const m = document.getElementById("ordersModal"); m.classList.add("hidden"); m.classList.remove("flex"); }
     document.getElementById("openCartBtn").onclick = openCart;
-    document.getElementById("toggleSearchBtn").onclick = () => document.getElementById("mobileSearchBar").classList.toggle("hidden");
-    document.getElementById("searchInputDesktop").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
-    document.getElementById("searchInputMobile").oninput = (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); };
-    document.getElementById("sortSelect").onchange = (e) => { sortBy = e.target.value; renderProducts(); };
-    document.getElementById("ordersHistoryBtn").onclick = () => {
-      document.getElementById("ordersListContainer").innerHTML = orders.length
-        ? orders.map((o) => `
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-              <div class="flex justify-between font-bold"><span>${o.number}</span><span>${formatPrice(o.total)}</span></div>
-              <div class="text-xs text-slate-500 mt-1">${(o.items || []).map((it) => `${it.title} (${it.variant}) ×${it.qty}`).join(", ")}</div>
-              <div class="text-xs text-slate-400 mt-0.5">${o.date}</div>
-            </div>
-          `).join("")
-        : `<div class="text-center text-slate-400 py-8">Заказов пока нет.</div>`;
-      const m = document.getElementById("ordersModal"); m.classList.remove("hidden"); m.classList.add("flex");
-    };
     renderCategories(); renderProducts(); updateCartUI();
   </script>
 
@@ -1022,7 +940,6 @@
     const shopPageSection = document.getElementById("shopPageSection");
     const pageNavFeedBtn = document.getElementById("pageNavFeedBtn");
     const pageNavShopBtn = document.getElementById("pageNavShopBtn");
-    const shopSearchDesktopWrap = document.getElementById("shopSearchDesktopWrap");
     const headerAuthBtn = document.getElementById("rtkHeaderAuthBtn");
     const homeFeedJumpBtn = document.getElementById("rtkHomeFeedJumpBtn");
     const homeShopBtn = document.getElementById("rtkHomeShopBtn");
@@ -1032,8 +949,6 @@
       const isShop = pageName === "shop";
       feedPageSection.style.display = isShop ? "none" : "block";
       shopPageSection.style.display = isShop ? "block" : "none";
-      shopSearchDesktopWrap.classList.toggle("md:flex", isShop);
-      shopSearchDesktopWrap.classList.toggle("hidden", !isShop);
 
       if (isShop) {
         pageNavShopBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap";
@@ -1134,6 +1049,14 @@
     const storyReplyForm = document.getElementById("rtkStoryReplyForm");
     const storyReplyInput = document.getElementById("rtkStoryReplyInput");
 
+    const incomingCallModal = document.getElementById("rtkIncomingCallModal");
+    const incomingCallerAvatar = document.getElementById("rtkIncomingCallerAvatar");
+    const incomingCallerName = document.getElementById("rtkIncomingCallerName");
+    const incomingCallStatus = document.getElementById("rtkIncomingCallStatus");
+    const acceptCallBtn = document.getElementById("rtkAcceptCallBtn");
+    const declineCallBtn = document.getElementById("rtkDeclineCallBtn");
+    const callHistoryListEl = document.getElementById("rtkCallHistoryList");
+
     const chatListEl = document.getElementById("rtkChatList");
     const backToDialogsBtn = document.getElementById("rtkBackToDialogsBtn");
     const peerInfoBox = document.getElementById("rtkPeerInfoBox");
@@ -1211,6 +1134,7 @@
     let feedPostsCache = JSON.parse(localStorage.getItem("rtk_feed_posts_v1") || "[]");
     let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_active_v1") || "[]");
     let archivedStoriesCache = JSON.parse(localStorage.getItem("rtk_stories_archive_v1") || "[]");
+    let callHistoryCache = JSON.parse(localStorage.getItem("rtk_call_history_v1") || "[]");
     let draftStoryMedia = null;
     let draftStoryAudioData = "";
     let activeStoryId = null;
@@ -1225,10 +1149,20 @@
     let unsubChats = null;
     let unsubMessages = null;
     let unsubRouletteMsgs = null;
+    let unsubFeedPosts = null;
+    let unsubIncomingCalls = null;
     let translatedCache = new Map();
 
     const storyAudioPlayer = new Audio();
     storyAudioPlayer.loop = true;
+
+    let ringtoneCtx = null;
+    let ringtoneInterval = null;
+    let activeIncomingCallDoc = null;
+    let activeCallId = null;
+    let localAudioStream = null;
+    let peerConnection = null;
+    let remoteAudioEl = null;
     let callTimerInterval = null;
     let callSeconds = 0;
 
@@ -1249,35 +1183,312 @@
       const canPublish = isSiteOwner();
       ownerFeedComposer.style.display = canPublish ? "block" : "none";
       ownerProductCreator.style.display = canPublish ? "block" : "none";
-      headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Войти через Google";
+      headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Регистрация";
       renderHomeFeed();
     }
 
-    function saveFeedPosts() {
+    function saveFeedPostsLocal() {
       try {
         localStorage.setItem("rtk_feed_posts_v1", JSON.stringify(feedPostsCache.slice(0, 50)));
         localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
       } catch (_) {}
     }
 
-    window.togglePostLike = (postId) => {
+    function saveCallHistoryLocal() {
+      try {
+        localStorage.setItem("rtk_call_history_v1", JSON.stringify(callHistoryCache.slice(0, 40)));
+      } catch (_) {}
+      renderCallHistory();
+    }
+
+    function addCallHistoryEntry(entry) {
+      callHistoryCache.unshift({
+        id: "call_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        timeLabel: new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }),
+        ...entry
+      });
+      saveCallHistoryLocal();
+    }
+
+    function renderCallHistory() {
+      callHistoryListEl.innerHTML = callHistoryCache.length
+        ? callHistoryCache.map((c) => {
+            const isMissed = c.type === "missed";
+            return `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:10px;background:#111827;border:1px solid #1f2937;font-size:11px;">
+                <span style="font-weight:700;color:${isMissed ? "#f87171" : "#34d399"};">
+                  ${isMissed ? "📵 Пропущенный" : c.type === "incoming" ? "📲 Входящий" : "📞 Исходящий"}: ${escapeHtml(c.peerName || "Собеседник")}
+                </span>
+                <span style="color:#94a3b8;">${escapeHtml(c.timeLabel || "")}</span>
+              </div>
+            `;
+          }).join("")
+        : `<div style="font-size:11px;color:#94a3b8;">Звонков пока нет</div>`;
+    }
+
+    // Звуковой сигнал звонка + браузерное / системное уведомление (работает даже когда телефон не на сайте)
+    function startRingtone() {
+      stopRingtone();
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        ringtoneCtx = new AudioCtx();
+        const beep = () => {
+          if (!ringtoneCtx) return;
+          const osc = ringtoneCtx.createOscillator();
+          const gain = ringtoneCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(740, ringtoneCtx.currentTime);
+          gain.gain.setValueAtTime(0.18, ringtoneCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ringtoneCtx.currentTime + 0.45);
+          osc.connect(gain);
+          gain.connect(ringtoneCtx.destination);
+          osc.start();
+          osc.stop(ringtoneCtx.currentTime + 0.45);
+        };
+        beep();
+        ringtoneInterval = setInterval(beep, 1300);
+      } catch (_) {}
+      if (navigator.vibrate) {
+        try { navigator.vibrate([400, 200, 400, 200, 400]); } catch (_) {}
+      }
+    }
+
+    function stopRingtone() {
+      if (ringtoneInterval) { clearInterval(ringtoneInterval); ringtoneInterval = null; }
+      if (ringtoneCtx) { ringtoneCtx.close().catch(() => {}); ringtoneCtx = null; }
+      if (navigator.vibrate) {
+        try { navigator.vibrate(0); } catch (_) {}
+      }
+    }
+
+    async function notifyOutsideSite(title, body) {
+      if (document.visibilityState === "visible" && document.hasFocus()) return;
+      try {
+        if ("Notification" in window) {
+          if (Notification.permission === "default") {
+            await Notification.requestPermission().catch(() => {});
+          }
+          if (Notification.permission === "granted") {
+            if ("serviceWorker" in navigator) {
+              const reg = await navigator.serviceWorker.getRegistration().catch(() => null);
+              if (reg && reg.showNotification) {
+                await reg.showNotification(title, { body, tag: "runotoks-call", renotify: true, vibrate: [400, 200, 400] }).catch(() => {});
+                return;
+              }
+            }
+            new Notification(title, { body });
+          }
+        }
+      } catch (_) {}
+    }
+
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission().catch(() => {});
+    }
+
+    // Реальный голосовой WebRTC звонок с передачей звука (чтобы собеседники могли говорить)
+    async function setupLocalAudioStream() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Микрофон недоступен в браузере");
+      }
+      if (!localAudioStream) {
+        localAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      }
+      return localAudioStream;
+    }
+
+    function createPeerConnection(callId, isCaller) {
+      const pc = new RTCPeerConnection({
+        iceServers: [{ urls: "stun:stun.l.google.com:19302" }, { urls: "stun:stun1.l.google.com:19302" }]
+      });
+
+      if (localAudioStream) {
+        localAudioStream.getTracks().forEach((track) => pc.addTrack(track, localAudioStream));
+      }
+
+      pc.ontrack = (event) => {
+        if (!remoteAudioEl) {
+          remoteAudioEl = document.createElement("audio");
+          remoteAudioEl.autoplay = true;
+          remoteAudioEl.playsInline = true;
+          document.body.appendChild(remoteAudioEl);
+        }
+        remoteAudioEl.srcObject = event.streams[0];
+        remoteAudioEl.play().catch(() => {});
+      };
+
+      const candCol = collection(db, "calls", callId, isCaller ? "callerCandidates" : "calleeCandidates");
+      const remoteCandCol = collection(db, "calls", callId, isCaller ? "calleeCandidates" : "callerCandidates");
+
+      pc.onicecandidate = async (ev) => {
+        if (ev.candidate) {
+          await addDoc(candCol, ev.candidate.toJSON()).catch(() => {});
+        }
+      };
+
+      onSnapshot(remoteCandCol, (snap) => {
+        snap.docChanges().forEach(async (change) => {
+          if (change.type === "added") {
+            try {
+              await pc.addIceCandidate(new RTCIceCandidate(change.doc.data()));
+            } catch (_) {}
+          }
+        });
+      });
+
+      return pc;
+    }
+
+    function startCallTimer() {
+      clearInterval(callTimerInterval);
+      callSeconds = 0;
+      voiceCallTimer.textContent = "00:00";
+      callTimerInterval = setInterval(() => {
+        callSeconds += 1;
+        const m = String(Math.floor(callSeconds / 60)).padStart(2, "0");
+        const s = String(callSeconds % 60).padStart(2, "0");
+        voiceCallTimer.textContent = `${m}:${s}`;
+      }, 1000);
+    }
+
+    async function startOutgoingVoiceCall() {
+      if (!currentUser) {
+        openMessenger("chats");
+        return;
+      }
+      const targetPeer = activePeer && !activePeer.isAI ? activePeer : null;
+      if (!targetPeer) {
+        alert("Выберите пользователя в чате, чтобы позвонить.");
+        return;
+      }
+      try {
+        await setupLocalAudioStream();
+        const callDocRef = doc(collection(db, "calls"));
+        activeCallId = callDocRef.id;
+        voiceCallPeerName.textContent = `Звонок: ${targetPeer.name || "Собеседник"}...`;
+        voiceCallBanner.style.display = "flex";
+
+        peerConnection = createPeerConnection(activeCallId, true);
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+
+        await setDoc(callDocRef, {
+          callerId: currentUser.uid,
+          callerName: currentProfile?.name || currentUser.displayName || "Пользователь",
+          callerAvatar: currentProfile?.photoURL || DEFAULT_AVATAR,
+          calleeId: targetPeer.uid,
+          calleeName: targetPeer.name || "Собеседник",
+          status: "ringing",
+          offer: { type: offer.type, sdp: offer.sdp },
+          createdAt: Date.now()
+        });
+
+        addCallHistoryEntry({ type: "outgoing", peerName: targetPeer.name || "Собеседник" });
+
+        onSnapshot(callDocRef, async (snap) => {
+          const data = snap.data();
+          if (!data) return;
+          if (data.answer && peerConnection && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer)).catch(() => {});
+          }
+          if (data.status === "accepted") {
+            voiceCallPeerName.textContent = `На связи: ${targetPeer.name || "Собеседник"}`;
+            startCallTimer();
+          } else if (data.status === "declined" || data.status === "ended") {
+            stopVoiceCall(false);
+          }
+        });
+      } catch (err) {
+        alert("Не удалось начать звонок: " + (err?.message || err));
+        stopVoiceCall(false);
+      }
+    }
+
+    acceptCallBtn.addEventListener("click", async () => {
+      if (!activeIncomingCallDoc || !currentUser) return;
+      stopRingtone();
+      const callId = activeIncomingCallDoc.id;
+      const callData = activeIncomingCallDoc.data();
+      incomingCallModal.style.display = "none";
+
+      try {
+        await setupLocalAudioStream();
+        activeCallId = callId;
+        openMessenger("chats");
+        voiceCallPeerName.textContent = `На связи: ${callData.callerName || "Собеседник"}`;
+        voiceCallBanner.style.display = "flex";
+        startCallTimer();
+
+        peerConnection = createPeerConnection(callId, false);
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(callData.offer));
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+
+        await updateDoc(doc(db, "calls", callId), {
+          status: "accepted",
+          answer: { type: answer.type, sdp: answer.sdp }
+        });
+
+        addCallHistoryEntry({ type: "incoming", peerName: callData.callerName || "Собеседник" });
+      } catch (err) {
+        alert("Ошибка подключения микрофона: " + (err?.message || err));
+      }
+      activeIncomingCallDoc = null;
+    });
+
+    declineCallBtn.addEventListener("click", async () => {
+      stopRingtone();
+      incomingCallModal.style.display = "none";
+      if (activeIncomingCallDoc) {
+        const callData = activeIncomingCallDoc.data();
+        await updateDoc(doc(db, "calls", activeIncomingCallDoc.id), { status: "declined" }).catch(() => {});
+        addCallHistoryEntry({ type: "missed", peerName: callData?.callerName || "Собеседник" });
+        activeIncomingCallDoc = null;
+      }
+    });
+
+    async function stopVoiceCall(notifyRemote = true) {
+      stopRingtone();
+      clearInterval(callTimerInterval);
+      callTimerInterval = null;
+      voiceCallBanner.style.display = "none";
+      if (notifyRemote && activeCallId) {
+        await updateDoc(doc(db, "calls", activeCallId), { status: "ended" }).catch(() => {});
+      }
+      if (peerConnection) { peerConnection.close(); peerConnection = null; }
+      if (localAudioStream) {
+        localAudioStream.getTracks().forEach((t) => t.stop());
+        localAudioStream = null;
+      }
+      activeCallId = null;
+    }
+
+    voiceCallBtn.addEventListener("click", startOutgoingVoiceCall);
+    composerCallBtn.addEventListener("click", startOutgoingVoiceCall);
+    endVoiceCallBtn.addEventListener("click", () => stopVoiceCall(true));
+
+    // Лента: посты видны всем пользователям
+    window.togglePostLike = async (postId) => {
       if (!currentUser) {
         openMessenger("chats");
         return;
       }
       const post = feedPostsCache.find((p) => p.id === postId);
       if (!post) return;
-      post.likes = Array.isArray(post.likes) ? post.likes : [];
-      if (post.likes.includes(currentUser.uid)) {
-        post.likes = post.likes.filter((id) => id !== currentUser.uid);
-      } else {
-        post.likes.push(currentUser.uid);
-      }
-      saveFeedPosts();
+      const likes = Array.isArray(post.likes) ? [...post.likes] : [];
+      const nextLikes = likes.includes(currentUser.uid)
+        ? likes.filter((id) => id !== currentUser.uid)
+        : [...likes, currentUser.uid];
+      post.likes = nextLikes;
+      saveFeedPostsLocal();
       renderHomeFeed();
+      if (post.firestoreId) {
+        await updateDoc(doc(db, "posts", post.firestoreId), { likes: nextLikes }).catch(() => {});
+      }
     };
 
-    window.addPostComment = (event, postId) => {
+    window.addPostComment = async (event, postId) => {
       event.preventDefault();
       if (!currentUser) {
         openMessenger("chats");
@@ -1288,17 +1499,21 @@
       if (!txt) return;
       const post = feedPostsCache.find((p) => p.id === postId);
       if (!post) return;
-      post.comments = Array.isArray(post.comments) ? post.comments : [];
-      post.comments.push({
+      const newComment = {
         id: "cmt_" + Date.now(),
         authorUid: currentUser.uid,
         authorName: currentProfile?.name || currentUser.displayName || "Пользователь",
         text: txt,
         createdAtLabel: new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
-      });
+      };
+      const comments = Array.isArray(post.comments) ? [...post.comments, newComment] : [newComment];
+      post.comments = comments;
       input.value = "";
-      saveFeedPosts();
+      saveFeedPostsLocal();
       renderHomeFeed();
+      if (post.firestoreId) {
+        await updateDoc(doc(db, "posts", post.firestoreId), { comments }).catch(() => {});
+      }
     };
 
     window.toggleFollowFromFeed = async (targetUid) => {
@@ -1387,20 +1602,42 @@
       }).join("");
 
       homeFeedList.querySelectorAll("button[data-archive-post]").forEach((btn) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
           if (!isSiteOwner()) return;
           const idx = feedPostsCache.findIndex((p) => p.id === btn.dataset.archivePost);
           if (idx === -1) return;
           const [moved] = feedPostsCache.splice(idx, 1);
           archivedStoriesCache.unshift(moved);
-          saveFeedPosts();
+          saveFeedPostsLocal();
           renderHomeFeed();
           renderArchivedStories();
+          if (moved.firestoreId) {
+            await deleteDoc(doc(db, "posts", moved.firestoreId)).catch(() => {});
+          }
         });
       });
     }
 
-    publishFeedPostBtn.addEventListener("click", () => {
+    function subscribePublicFeed() {
+      if (unsubFeedPosts) unsubFeedPosts();
+      const qP = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+      unsubFeedPosts = onSnapshot(qP, (snap) => {
+        const cloudPosts = snap.docs.map((d) => ({
+          firestoreId: d.id,
+          id: d.data().id || d.id,
+          ...d.data()
+        }));
+        if (cloudPosts.length || !feedPostsCache.length) {
+          feedPostsCache = cloudPosts;
+          saveFeedPostsLocal();
+          renderHomeFeed();
+        }
+      }, () => {
+        renderHomeFeed();
+      });
+    }
+
+    publishFeedPostBtn.addEventListener("click", async () => {
       if (!isSiteOwner()) {
         alert("Публиковать посты может только владелец.");
         return;
@@ -1411,14 +1648,15 @@
         feedPublishStatus.textContent = "Введите текст поста или выберите фото/видео.";
         return;
       }
-      if (file && file.size > 2.5 * 1024 * 1024) {
-        feedPublishStatus.textContent = "Файл должен быть до 2.5 МБ.";
+      if (file && file.size > 900 * 1024) {
+        feedPublishStatus.textContent = "Для публикации всем пользователям выберите файл до 900 КБ.";
         return;
       }
 
-      const saveNewPost = (mediaType = "", mediaData = "") => {
-        feedPostsCache.unshift({
-          id: "post_" + Date.now(),
+      const saveNewPost = async (mediaType = "", mediaData = "") => {
+        const postId = "post_" + Date.now();
+        const newPost = {
+          id: postId,
           authorUid: currentUser?.uid || "",
           author: currentProfile?.name || currentUser?.displayName || "Владелец",
           caption,
@@ -1428,12 +1666,14 @@
           comments: [],
           createdAt: Date.now(),
           createdAtLabel: new Date().toLocaleString("ru-RU")
-        });
+        };
+        feedPostsCache.unshift(newPost);
         feedCaptionInput.value = "";
         feedMediaInput.value = "";
-        feedPublishStatus.textContent = "Пост опубликован в ленте.";
-        saveFeedPosts();
+        feedPublishStatus.textContent = "Пост опубликован в ленте для всех пользователей.";
+        saveFeedPostsLocal();
         renderHomeFeed();
+        await addDoc(collection(db, "posts"), newPost).catch(() => {});
       };
 
       if (file) {
@@ -1441,7 +1681,7 @@
         reader.onload = () => saveNewPost(file.type.startsWith("video/") ? "video" : "image", reader.result);
         reader.readAsDataURL(file);
       } else {
-        saveNewPost("", "");
+        await saveNewPost("", "");
       }
     });
 
@@ -1613,31 +1853,6 @@
     headerAuthBtn.addEventListener("click", () => openMessenger(currentUser ? "profile" : "chats"));
     authBackToSite.addEventListener("click", closeMessenger);
     exitToSiteBtn.addEventListener("click", closeMessenger);
-
-    function triggerVoiceCall() {
-      const targetName = activePeer?.name || "Собеседник";
-      voiceCallPeerName.textContent = `Звонок: ${targetName}`;
-      voiceCallBanner.style.display = "flex";
-      clearInterval(callTimerInterval);
-      callSeconds = 0;
-      voiceCallTimer.textContent = "00:00";
-      callTimerInterval = setInterval(() => {
-        callSeconds += 1;
-        const m = String(Math.floor(callSeconds / 60)).padStart(2, "0");
-        const s = String(callSeconds % 60).padStart(2, "0");
-        voiceCallTimer.textContent = `${m}:${s}`;
-      }, 1000);
-    }
-
-    function stopVoiceCall() {
-      clearInterval(callTimerInterval);
-      callTimerInterval = null;
-      voiceCallBanner.style.display = "none";
-    }
-
-    voiceCallBtn.addEventListener("click", triggerVoiceCall);
-    composerCallBtn.addEventListener("click", triggerVoiceCall);
-    endVoiceCallBtn.addEventListener("click", stopVoiceCall);
 
     homeSearchCircleBtn.addEventListener("click", () => {
       homePeopleQuery.value = "";
@@ -2558,6 +2773,36 @@
       await setDoc(doc(db, "chats", rouletteChatId), { lastMessage: text, lastSenderId: currentUser.uid, lastReadByPeer: false, updatedAt: serverTimestamp() }, { merge: true });
     });
 
+    function subscribeIncomingCalls(uid) {
+      if (unsubIncomingCalls) unsubIncomingCalls();
+      const qCalls = query(collection(db, "calls"), where("calleeId", "==", uid), where("status", "==", "ringing"));
+      unsubIncomingCalls = onSnapshot(qCalls, (snap) => {
+        snap.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            const callDoc = change.doc;
+            const d = callDoc.data();
+            activeIncomingCallDoc = callDoc;
+            incomingCallerName.textContent = d.callerName || "Собеседник";
+            incomingCallerAvatar.src = d.callerAvatar || DEFAULT_AVATAR;
+            incomingCallStatus.textContent = "Входящий звонок runotoks...";
+            incomingCallModal.style.display = "flex";
+            startRingtone();
+            notifyOutsideSite("Входящий звонок • runotoks", `${d.callerName || "Собеседник"} звонит вам`);
+          }
+          if (change.type === "removed" || (change.type === "modified" && change.doc.data()?.status !== "ringing")) {
+            const st = change.doc.data()?.status;
+            if (activeIncomingCallDoc && activeIncomingCallDoc.id === change.doc.id && st === "ended") {
+              stopRingtone();
+              incomingCallModal.style.display = "none";
+              addCallHistoryEntry({ type: "missed", peerName: change.doc.data()?.callerName || "Собеседник" });
+              notifyOutsideSite("Пропущенный звонок • runotoks", `Пропущенный звонок от ${change.doc.data()?.callerName || "собеседника"}`);
+              activeIncomingCallDoc = null;
+            }
+          }
+        });
+      });
+    }
+
     function subscribeAll(uid) {
       if (unsubUsers) unsubUsers();
       unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
@@ -2585,6 +2830,8 @@
         renderHomeFeed();
       });
 
+      subscribeIncomingCalls(uid);
+
       if (unsubChats) unsubChats();
       const qC = query(collection(db, "chats"), where("members", "array-contains", uid));
       unsubChats = onSnapshot(qC, (snap) => {
@@ -2606,7 +2853,9 @@
     setActiveSitePage("feed");
     applyOwnerFeedAccess();
     renderStoriesStrip();
+    renderCallHistory();
     applyMobileChatLayout();
+    subscribePublicFeed();
 
     onAuthStateChanged(auth, async (user) => {
       currentUser = user;
