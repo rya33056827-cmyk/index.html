@@ -7,7 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; }
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
     input, textarea, select { user-select: text; -webkit-user-select: text; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -45,130 +53,86 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased w-full">
 
-  <!-- Шапка сайта -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3 shrink-0">
-        <button id="rtkLogoHomeBtn" type="button" class="flex items-center gap-2.5 text-left cursor-pointer">
+  <!-- Шапка во всю ширину -->
+  <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200">
+    <div class="w-full px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <button id="rtkLogoHomeBtn" type="button" class="flex items-center gap-2 text-left cursor-pointer shrink-0">
           <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
-          <div>
+          <div class="hidden sm:block">
             <div class="font-extrabold text-lg tracking-tight leading-none rtk-grad-orange-green">runotoks</div>
             <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">FEED & STORE</div>
           </div>
         </button>
 
-        <!-- Переключатель двух отдельных страниц: Лента и Покупки -->
-        <nav class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
+        <nav class="flex items-center gap-1 bg-slate-100 p-1 rounded-full border border-slate-200">
           <button id="pageNavFeedBtn" type="button"
-            class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer">
+            class="px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap">
             🏠 Лента
           </button>
           <button id="pageNavShopBtn" type="button"
-            class="px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer">
+            class="px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap">
             🛍 Покупки
           </button>
         </nav>
       </div>
 
-      <div id="shopSearchDesktopWrap" class="hidden md:flex flex-1 max-w-sm mx-2">
+      <div id="shopSearchDesktopWrap" class="hidden md:flex flex-1 max-w-md mx-2">
         <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу..."
           class="w-full px-4 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 text-sm outline-none transition" />
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <button id="rtkHeaderAuthBtn" type="button"
-          class="px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer">
+          class="px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer whitespace-nowrap">
           Войти через Google
         </button>
-        <button id="toggleSearchBtn" class="md:hidden p-2.5 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">🔍</button>
-        <button id="ordersHistoryBtn" class="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 text-sm font-semibold" title="Мои заказы">📦</button>
-        <button id="openCartBtn" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
+        <button id="rtkChatBtn" type="button"
+          class="px-3 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap">
+          <span>💬</span>
+          <span data-i18n="chatTab">Чат</span>
+          <span id="rtkUnreadBadge"
+            class="hidden min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-extrabold items-center justify-center">0</span>
+        </button>
+        <button id="toggleSearchBtn" class="md:hidden p-2 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">🔍</button>
+        <button id="ordersHistoryBtn" class="p-2 rounded-full hover:bg-slate-100 text-slate-700 text-sm font-semibold" title="Мои заказы">📦</button>
+        <button id="openCartBtn" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-full text-xs sm:text-sm font-semibold transition">
           <span>🛒</span>
-          <span id="cartCount" class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          <span id="cartCount" class="bg-blue-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
         </button>
       </div>
     </div>
-    <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-3">
+    <div id="mobileSearchBar" class="hidden md:hidden px-3 pb-3 w-full">
       <input id="searchInputMobile" type="text" placeholder="Найти наушники, часы, клавиатуру..."
         class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none" />
     </div>
   </header>
 
-  <!-- СТРАНИЦА 1: ОТДЕЛЬНАЯ ЛЕНТА (изначально пустая, публикует только владелец) -->
-  <section id="feedPageSection" class="max-w-3xl mx-auto px-4 pt-6 pb-28">
-    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-6 md:p-8 shadow-xl mb-6">
-      <div class="flex items-center justify-between gap-3 flex-wrap">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200">
-          ✨ Страница Ленты runotoks
-        </span>
-        <span id="rtkOwnerRoleBadge" class="text-xs px-3 py-1 rounded-full bg-slate-800 text-emerald-300 border border-slate-700 font-semibold">
-          Только просмотр
-        </span>
-      </div>
-      <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mt-3 leading-tight">
-        Публикации <span class="rtk-grad-orange-green">владельца runotoks</span>
-      </h1>
-      <p id="rtkOwnerFeedNotice" class="text-slate-300 text-xs md:text-sm mt-2">
-        Публиковать посты может только владелец. Пользователи могут входить через Google, лайкать, комментировать и подписываться.
-      </p>
-      <div class="flex flex-wrap gap-3 mt-5">
-        <button id="rtkSwitchToShopFromFeedBtn" type="button"
-          class="px-5 py-2.5 rounded-full bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition cursor-pointer">
-          Перейти в Покупки →
-        </button>
-        <button id="rtkOpenFromHeroBtn" type="button"
-          class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition cursor-pointer">
-          Открыть чат и ИИ Рунотокс
-        </button>
-      </div>
-    </div>
-
+  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН (без лишнего текста владельца, по умолчанию пустая) -->
+  <section id="feedPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28">
     <!-- Форма публикации поста (видна только владельцу) -->
-    <div id="rtkOwnerFeedComposer" class="mb-6 bg-slate-900 text-white rounded-3xl p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
-      <div class="text-sm font-extrabold rtk-grad-orange-green">Новый пост владельца</div>
+    <div id="rtkOwnerFeedComposer" class="w-full mb-5 bg-slate-900 text-white rounded-3xl p-4 sm:p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
       <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
         class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white outline-none" />
-      <div class="flex flex-wrap items-center gap-3">
-        <input id="rtkFeedMediaInput" type="file" accept="image/*,video/*" class="text-xs text-slate-300" />
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <input id="rtkFeedMediaInput" type="file" accept="image/*,video/*" class="text-xs text-slate-300 max-w-full" />
         <button id="rtkPublishFeedPostBtn" type="button"
-          class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-emerald-500 text-slate-950 text-xs font-extrabold cursor-pointer">
+          class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-emerald-500 text-slate-950 text-xs font-extrabold cursor-pointer">
           Опубликовать пост
         </button>
       </div>
       <div id="rtkFeedPublishStatus" class="text-xs text-emerald-400"></div>
     </div>
 
-    <!-- Список постов ленты (по умолчанию пустой) -->
-    <div id="rtkHomeFeedList" class="flex flex-col gap-6"></div>
+    <!-- Список постов ленты во всю ширину -->
+    <div id="rtkHomeFeedList" class="w-full flex flex-col gap-5"></div>
   </section>
 
-  <!-- СТРАНИЦА 2: ОТДЕЛЬНЫЕ ПОКУПКИ -->
-  <section id="shopPageSection" class="max-w-5xl mx-auto px-4 pt-6 pb-28" style="display:none;">
-    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-6 md:p-8 shadow-xl mb-7 flex items-center justify-between gap-4 flex-wrap">
-      <div>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200 mb-2">
-          🛍 Страница Покупок runotoks
-        </span>
-        <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight">
-          Каталог товаров <span class="rtk-grad-orange-green">runotoks</span>
-        </h2>
-        <p class="text-slate-300 text-xs md:text-sm mt-1.5">
-          Выбирайте цвета, просматривайте фото товаров и оформляйте заказы.
-        </p>
-      </div>
-      <button id="rtkSwitchToFeedFromShopBtn" type="button"
-        class="px-5 py-2.5 rounded-full bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition cursor-pointer">
-        ← Вернуться в Ленту
-      </button>
-    </div>
-
-    <div id="rtkOwnerProductCreator" class="mb-7 p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
-      <div class="flex items-center justify-between gap-2 flex-wrap">
-        <h3 class="text-base font-extrabold text-slate-900">Добавить товар (до 10 фото и выбор цветов)</h3>
-        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Режим владельца</span>
-      </div>
+  <!-- СТРАНИЦА 2: ПОКУПКИ ВО ВЕСЬ ЭКРАН -->
+  <section id="shopPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28" style="display:none;">
+    <div id="rtkOwnerProductCreator" class="w-full mb-6 p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <input id="newProdTitle" type="text" placeholder="Название товара" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
         <input id="newProdCategory" type="text" placeholder="Категория (например, Аудио)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
@@ -188,8 +152,8 @@
       <div id="newProdStatus" class="text-xs font-medium text-blue-600"></div>
     </div>
 
-    <main id="catalog">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <main id="catalog" class="w-full">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         <div class="flex items-center justify-between sm:justify-end gap-3">
           <span id="productCountLabel" class="text-xs text-slate-500 font-medium">Показано: 4 товаров</span>
@@ -202,13 +166,13 @@
         </div>
       </div>
 
-      <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-7"></div>
+      <div id="productsGrid" class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </main>
   </section>
 
-  <!-- Нижняя панель навигации -->
+  <!-- Нижняя панель навигации по центру экрана -->
   <div id="rtkHomeBottomDock"
-    style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 14px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
+    style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
     <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
       style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#2563eb;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
       🏠 Лента
@@ -218,11 +182,11 @@
       🛍 Покупки
     </button>
     <button id="rtkHomeSearchCircleBtn" type="button" title="Найти людей и подписаться"
-      style="width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:linear-gradient(135deg,#ff7a00,#22c55e);color:#09090b;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(34,197,94,0.35);">
+      style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:linear-gradient(135deg,#ff7a00,#22c55e);color:#09090b;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(34,197,94,0.35);">
       🔍
     </button>
     <button id="rtkHomeProfileCircleBtn" type="button" title="Мой профиль"
-      class="rtk-story-ring-fire" style="width:44px;height:44px;padding:2px;cursor:pointer;">
+      class="rtk-story-ring-fire" style="width:42px;height:42px;padding:2px;cursor:pointer;">
       <img id="rtkHomeProfileAvatar" src="https://ui-avatars.com/api/?name=R&background=1e293b&color=ffffff&size=128" alt="Профиль"
         style="width:100%;height:100%;object-fit:cover;border-radius:50%;background:#1e293b;" />
     </button>
@@ -240,17 +204,6 @@
       <div id="rtkHomePeopleList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
     </div>
   </div>
-
-  <!-- Кнопка входа в чат / мессенджер -->
-  <button id="rtkChatBtn" type="button"
-    style="position:fixed;top:84px;right:16px;z-index:9989;padding:11px 16px;border-radius:14px;border:1px solid rgba(148,163,184,0.35);background:linear-gradient(135deg,#0f172a,#1e293b);color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(15,23,42,0.25);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;">
-    <span>💬</span>
-    <span data-i18n="chatTab">Чат</span>
-    <span id="rtkUnreadBadge"
-      style="display:none;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#ef4444;color:#ffffff;font-size:11px;font-weight:800;align-items:center;justify-content:center;line-height:1;">
-      0
-    </span>
-  </button>
 
   <!-- Полноэкранный мессенджер / соцсеть runotoks -->
   <div id="rtkMessenger" style="display:none;position:fixed;inset:0;z-index:10000;background:#0b1120;color:#f8fafc;font-family:Inter,system-ui,sans-serif;flex-direction:column;">
@@ -276,7 +229,6 @@
     </div>
 
     <div id="rtkMainApp" style="display:none;flex:1;min-height:0;flex-direction:column;">
-      <!-- Верхняя панель -->
       <div style="height:60px;padding:0 12px;background:#111827;border-bottom:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-shrink:0;">
         <div style="display:flex;align-items:center;gap:6px;min-width:0;">
           <button id="rtkExitToSiteBtn" type="button"
@@ -1043,9 +995,7 @@
       measurementId: "G-56VTDVLB2H"
     };
 
-    // Опционально: укажите ваш email владельца (например "you@gmail.com"), иначе владельцем закрепляется первый вошедший аккаунт
     const OWNER_EMAIL_OVERRIDE = "";
-
     const RUNOTOKS_AI_URL = "https://runotoks-1.onrender.com/chat";
     const RUNOTOKS_AI_BASE = "https://runotoks-1.onrender.com";
     const STORY_LIFETIME_MS = 20 * 60 * 60 * 1000;
@@ -1071,15 +1021,12 @@
       uk: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профіль", searchPeople: "Пошук людей", numberBtn: "Номер", storyBtn: "Сторіс", postsLabel: "Дописи", followersLabel: "Підписники", followingLabel: "Підписки", settingsTitle: "Налаштування", languageLabel: "Мова інтерфейсу та чату", blockedTitle: "Заблоковані люди", archiveTitle: "Архів публікацій і сторіс" }
     };
 
-    // Переключение 2 отдельных страниц: Лента и Покупки
     const feedPageSection = document.getElementById("feedPageSection");
     const shopPageSection = document.getElementById("shopPageSection");
     const pageNavFeedBtn = document.getElementById("pageNavFeedBtn");
     const pageNavShopBtn = document.getElementById("pageNavShopBtn");
     const shopSearchDesktopWrap = document.getElementById("shopSearchDesktopWrap");
     const headerAuthBtn = document.getElementById("rtkHeaderAuthBtn");
-    const switchToShopFromFeedBtn = document.getElementById("rtkSwitchToShopFromFeedBtn");
-    const switchToFeedFromShopBtn = document.getElementById("rtkSwitchToFeedFromShopBtn");
     const homeFeedJumpBtn = document.getElementById("rtkHomeFeedJumpBtn");
     const homeShopBtn = document.getElementById("rtkHomeShopBtn");
     const logoHomeBtn = document.getElementById("rtkLogoHomeBtn");
@@ -1092,13 +1039,13 @@
       shopSearchDesktopWrap.classList.toggle("hidden", !isShop);
 
       if (isShop) {
-        pageNavShopBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer";
-        pageNavFeedBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer";
+        pageNavShopBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap";
+        pageNavFeedBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap";
         homeShopBtn.style.background = "#2563eb";
         homeFeedJumpBtn.style.background = "#1e293b";
       } else {
-        pageNavFeedBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer";
-        pageNavShopBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer";
+        pageNavFeedBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer whitespace-nowrap";
+        pageNavShopBtn.className = "px-3 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer whitespace-nowrap";
         homeFeedJumpBtn.style.background = "#2563eb";
         homeShopBtn.style.background = "#1e293b";
       }
@@ -1107,8 +1054,6 @@
 
     pageNavFeedBtn.addEventListener("click", () => setActiveSitePage("feed"));
     pageNavShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
-    switchToShopFromFeedBtn.addEventListener("click", () => setActiveSitePage("shop"));
-    switchToFeedFromShopBtn.addEventListener("click", () => setActiveSitePage("feed"));
     homeFeedJumpBtn.addEventListener("click", () => setActiveSitePage("feed"));
     homeShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
     logoHomeBtn.addEventListener("click", () => setActiveSitePage("feed"));
@@ -1116,7 +1061,6 @@
     const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
     const homeProfileCircleBtn = document.getElementById("rtkHomeProfileCircleBtn");
     const homeProfileAvatar = document.getElementById("rtkHomeProfileAvatar");
-    const openFromHeroBtn = document.getElementById("rtkOpenFromHeroBtn");
     const homePeopleModal = document.getElementById("rtkHomePeopleModal");
     const closeHomePeopleModal = document.getElementById("rtkCloseHomePeopleModal");
     const homePeopleQuery = document.getElementById("rtkHomePeopleQuery");
@@ -1124,7 +1068,6 @@
 
     const ownerFeedComposer = document.getElementById("rtkOwnerFeedComposer");
     const ownerProductCreator = document.getElementById("rtkOwnerProductCreator");
-    const ownerRoleBadge = document.getElementById("rtkOwnerRoleBadge");
     const feedCaptionInput = document.getElementById("rtkFeedCaptionInput");
     const feedMediaInput = document.getElementById("rtkFeedMediaInput");
     const publishFeedPostBtn = document.getElementById("rtkPublishFeedPostBtn");
@@ -1268,7 +1211,6 @@
     let activeChatId = null;
     let activePeer = null;
     let aiMessagesCache = JSON.parse(localStorage.getItem("rtk_ai_messages") || "[]");
-    // Лента по умолчанию полностью пустая
     let feedPostsCache = JSON.parse(localStorage.getItem("rtk_feed_posts_v1") || "[]");
     let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_active_v1") || "[]");
     let archivedStoriesCache = JSON.parse(localStorage.getItem("rtk_stories_archive_v1") || "[]");
@@ -1310,7 +1252,6 @@
       const canPublish = isSiteOwner();
       ownerFeedComposer.style.display = canPublish ? "block" : "none";
       ownerProductCreator.style.display = canPublish ? "block" : "none";
-      ownerRoleBadge.textContent = canPublish ? "Доступ владельца" : "Только просмотр";
       headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Войти через Google";
       renderHomeFeed();
     }
@@ -1376,7 +1317,7 @@
     function renderHomeFeed() {
       const canPublish = isSiteOwner();
       if (!feedPostsCache.length) {
-        homeFeedList.innerHTML = `<div class="text-sm text-slate-400 text-center py-12 rounded-3xl bg-slate-950/60 border border-slate-800">Лента пока пуста. Владелец может опубликовать первый пост.</div>`;
+        homeFeedList.innerHTML = `<div class="w-full text-sm text-slate-400 text-center py-14 rounded-3xl bg-slate-950/60 border border-slate-800">Лента пуста.</div>`;
         return;
       }
 
@@ -1388,9 +1329,9 @@
         const isFollowingAuthor = post.authorUid ? followingIds.has(post.authorUid) : false;
 
         const mediaHtml = post.mediaType === "video"
-          ? `<video src="${post.mediaData}" controls playsinline class="w-full max-h-[500px] object-cover rounded-2xl bg-black mt-3"></video>`
+          ? `<video src="${post.mediaData}" controls playsinline class="w-full max-h-[560px] object-cover rounded-2xl bg-black mt-3"></video>`
           : post.mediaData
-            ? `<img src="${post.mediaData}" alt="Post" class="w-full max-h-[500px] object-cover rounded-2xl bg-black mt-3" />`
+            ? `<img src="${post.mediaData}" alt="Post" class="w-full max-h-[560px] object-cover rounded-2xl bg-black mt-3" />`
             : "";
 
         const followBtnHtml = canFollowAuthor
@@ -1413,7 +1354,7 @@
         `).join("");
 
         return `
-          <article class="p-4 sm:p-5 rounded-3xl bg-slate-950/85 border border-slate-800 flex flex-col gap-3">
+          <article class="w-full p-4 sm:p-5 rounded-3xl bg-slate-950/90 border border-slate-800 flex flex-col gap-3">
             <div class="flex items-center justify-between gap-2 flex-wrap">
               <div>
                 <div class="text-sm font-extrabold rtk-grad-orange-green">${escapeHtml(post.author || "Владелец")}</div>
@@ -1428,7 +1369,6 @@
             ${post.caption ? `<p class="text-sm text-slate-100 leading-relaxed">${escapeHtml(post.caption)}</p>` : ""}
             ${mediaHtml}
 
-            <!-- Лайки и счётчик комментариев -->
             <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
               <button type="button" onclick="togglePostLike('${post.id}')"
                 class="px-3.5 py-1.5 rounded-full text-xs font-extrabold cursor-pointer transition ${likedByMe ? 'bg-rose-600 text-white' : 'bg-slate-900 text-slate-200 border border-slate-700 hover:border-rose-500'}">
@@ -1437,14 +1377,11 @@
               <span class="text-xs text-slate-400 font-semibold">💬 Комментариев: ${comments.length}</span>
             </div>
 
-            <!-- Комментарии -->
-            <div class="space-y-2">
-              ${commentsHtml}
-            </div>
+            <div class="space-y-2">${commentsHtml}</div>
             <form onsubmit="addPostComment(event, '${post.id}')" class="flex gap-2 pt-1">
               <input id="comment_input_${post.id}" type="text" placeholder="Написать комментарий..."
-                class="flex-1 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white outline-none" />
-              <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer">
+                class="flex-1 min-w-0 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white outline-none" />
+              <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer shrink-0">
                 Отправить
               </button>
             </form>
@@ -1486,7 +1423,7 @@
         feedPostsCache.unshift({
           id: "post_" + Date.now(),
           authorUid: currentUser?.uid || "",
-          author: currentProfile?.name || currentUser?.displayName || "Владелец runotoks",
+          author: currentProfile?.name || currentUser?.displayName || "Владелец",
           caption,
           mediaType,
           mediaData,
@@ -1676,7 +1613,6 @@
     }
 
     openBtn.addEventListener("click", () => openMessenger("chats"));
-    openFromHeroBtn.addEventListener("click", () => openMessenger("chats"));
     headerAuthBtn.addEventListener("click", () => openMessenger(currentUser ? "profile" : "chats"));
     authBackToSite.addEventListener("click", closeMessenger);
     exitToSiteBtn.addEventListener("click", closeMessenger);
@@ -2663,7 +2599,8 @@
           if (data.lastSenderId && data.lastSenderId !== uid && data.lastReadByPeer === false) unread += 1;
         });
         unreadBadge.textContent = String(unread);
-        unreadBadge.style.display = unread > 0 ? "inline-flex" : "none";
+        unreadBadge.classList.toggle("hidden", unread <= 0);
+        unreadBadge.classList.toggle("inline-flex", unread > 0);
         renderPeopleAndDialogs();
         renderProfileStatsAndBlocked();
       });
@@ -2679,7 +2616,7 @@
       if (!user) {
         authScreen.style.display = "flex";
         mainApp.style.display = "none";
-        unreadBadge.style.display = "none";
+        unreadBadge.classList.add("hidden");
         applyOwnerFeedAccess();
         return;
       }
