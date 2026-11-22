@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>runotoks — Магазин и мессенджер</title>
+  <title>runotoks — Лента, магазин и мессенджер</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -47,23 +47,41 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
-  <!-- Шапка магазина -->
+  <!-- Шапка сайта -->
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-      <a href="#" class="flex items-center gap-2.5 shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
-        <div>
-          <div class="font-extrabold text-lg tracking-tight leading-none rtk-grad-orange-green">runotoks</div>
-          <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">TECH STORE</div>
-        </div>
-      </a>
+      <div class="flex items-center gap-3 shrink-0">
+        <button id="rtkLogoHomeBtn" type="button" class="flex items-center gap-2.5 text-left cursor-pointer">
+          <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-lg">R</div>
+          <div>
+            <div class="font-extrabold text-lg tracking-tight leading-none rtk-grad-orange-green">runotoks</div>
+            <div class="text-[10px] font-semibold tracking-widest text-slate-400 uppercase mt-0.5">FEED & STORE</div>
+          </div>
+        </button>
 
-      <div class="hidden md:flex flex-1 max-w-md mx-4">
-        <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу runotoks..."
+        <!-- Переключатель двух отдельных страниц: Лента и Покупки -->
+        <nav class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
+          <button id="pageNavFeedBtn" type="button"
+            class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer">
+            🏠 Лента
+          </button>
+          <button id="pageNavShopBtn" type="button"
+            class="px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer">
+            🛍 Покупки
+          </button>
+        </nav>
+      </div>
+
+      <div id="shopSearchDesktopWrap" class="hidden md:flex flex-1 max-w-sm mx-2">
+        <input id="searchInputDesktop" type="text" placeholder="Поиск по каталогу..."
           class="w-full px-4 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 text-sm outline-none transition" />
       </div>
 
       <div class="flex items-center gap-2">
+        <button id="rtkHeaderAuthBtn" type="button"
+          class="px-3 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer">
+          Войти через Google
+        </button>
         <button id="toggleSearchBtn" class="md:hidden p-2.5 rounded-full hover:bg-slate-100 text-slate-700" aria-label="Поиск">🔍</button>
         <button id="ordersHistoryBtn" class="p-2.5 rounded-full hover:bg-slate-100 text-slate-700 text-sm font-semibold" title="Мои заказы">📦</button>
         <button id="openCartBtn" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-semibold transition">
@@ -78,83 +96,99 @@
     </div>
   </header>
 
-  <!-- Главная страница -->
-  <section class="max-w-5xl mx-auto px-4 pt-6 pb-28">
-    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-7 md:p-11 shadow-xl">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200 mb-4">
-        ✨ runotoks • Магазин, лента и ИИ Рунотокс
-      </span>
-      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight max-w-2xl leading-tight">
-        Технологии, <span class="rtk-grad-orange-green">общение и ИИ Рунотокс</span> в одном месте
+  <!-- СТРАНИЦА 1: ОТДЕЛЬНАЯ ЛЕНТА (изначально пустая, публикует только владелец) -->
+  <section id="feedPageSection" class="max-w-3xl mx-auto px-4 pt-6 pb-28">
+    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-6 md:p-8 shadow-xl mb-6">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200">
+          ✨ Страница Ленты runotoks
+        </span>
+        <span id="rtkOwnerRoleBadge" class="text-xs px-3 py-1 rounded-full bg-slate-800 text-emerald-300 border border-slate-700 font-semibold">
+          Только просмотр
+        </span>
+      </div>
+      <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mt-3 leading-tight">
+        Публикации <span class="rtk-grad-orange-green">владельца runotoks</span>
       </h1>
-      <p class="text-slate-300 text-sm md:text-base max-w-xl mt-4 leading-relaxed">
-        Выбирайте гаджеты и цвета, смотрите ленту и сторис, находите людей через нижний поиск или переходите в чат.
+      <p id="rtkOwnerFeedNotice" class="text-slate-300 text-xs md:text-sm mt-2">
+        Публиковать посты может только владелец. Пользователи могут входить через Google, лайкать, комментировать и подписываться.
       </p>
-      <div class="flex flex-wrap gap-3 mt-7">
-        <a href="#catalog" class="px-6 py-3 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition">
-          Перейти в каталог ↓
-        </a>
-        <button id="rtkOpenFromHeroBtn" type="button" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition">
+      <div class="flex flex-wrap gap-3 mt-5">
+        <button id="rtkSwitchToShopFromFeedBtn" type="button"
+          class="px-5 py-2.5 rounded-full bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition cursor-pointer">
+          Перейти в Покупки →
+        </button>
+        <button id="rtkOpenFromHeroBtn" type="button"
+          class="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition cursor-pointer">
           Открыть чат и ИИ Рунотокс
         </button>
       </div>
     </div>
 
-    <!-- Главная лента фото/видео (в стиле ленты покрупнее): публиковать может только владелец -->
-    <div id="rtkHomeFeedSection" class="mt-8 bg-slate-900 text-white rounded-3xl p-5 md:p-7 border border-slate-800 shadow-lg">
-      <div class="flex items-center justify-between gap-2 mb-4 flex-wrap">
-        <div>
-          <h2 class="text-2xl font-extrabold rtk-grad-orange-green">Лента runotoks</h2>
-          <p id="rtkOwnerFeedNotice" class="text-xs text-slate-400 mt-0.5">Публиковать фото и видео в ленту может только владелец.</p>
-        </div>
-        <span id="rtkOwnerRoleBadge" class="text-xs px-3 py-1 rounded-full bg-slate-800 text-emerald-300 border border-slate-700 font-semibold">
-          Только просмотр
-        </span>
+    <!-- Форма публикации поста (видна только владельцу) -->
+    <div id="rtkOwnerFeedComposer" class="mb-6 bg-slate-900 text-white rounded-3xl p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
+      <div class="text-sm font-extrabold rtk-grad-orange-green">Новый пост владельца</div>
+      <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
+        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white outline-none" />
+      <div class="flex flex-wrap items-center gap-3">
+        <input id="rtkFeedMediaInput" type="file" accept="image/*,video/*" class="text-xs text-slate-300" />
+        <button id="rtkPublishFeedPostBtn" type="button"
+          class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-emerald-500 text-slate-950 text-xs font-extrabold cursor-pointer">
+          Опубликовать пост
+        </button>
       </div>
-
-      <div id="rtkOwnerFeedComposer" class="mb-6 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3" style="display:none;">
-        <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
-          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white outline-none" />
-        <div class="flex flex-wrap items-center gap-3">
-          <input id="rtkFeedMediaInput" type="file" accept="image/*,video/*" class="text-xs text-slate-300" />
-          <button id="rtkPublishFeedPostBtn" type="button"
-            class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-emerald-500 text-slate-950 text-xs font-extrabold cursor-pointer">
-            Опубликовать в ленту
-          </button>
-        </div>
-        <div id="rtkFeedPublishStatus" class="text-xs text-emerald-400"></div>
-      </div>
-
-      <!-- Крупная лента в стиле Instagram -->
-      <div id="rtkHomeFeedList" class="max-w-xl mx-auto flex flex-col gap-6"></div>
+      <div id="rtkFeedPublishStatus" class="text-xs text-emerald-400"></div>
     </div>
 
-    <!-- Каталог товаров (крупные карточки + добавление товара до 10 фото владельцем) -->
-    <main id="catalog" class="pt-9">
-      <div id="rtkOwnerProductCreator" class="mb-7 p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
-        <div class="flex items-center justify-between gap-2 flex-wrap">
-          <h3 class="text-base font-extrabold text-slate-900">Добавить товар (до 10 фото и выбор цветов)</h3>
-          <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Режим владельца</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <input id="newProdTitle" type="text" placeholder="Название товара" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
-          <input id="newProdCategory" type="text" placeholder="Категория (например, Аудио)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
-          <input id="newProdPrice" type="number" placeholder="Цена, ₽" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
-        </div>
-        <input id="newProdColors" type="text" placeholder="Цвета через запятую (например: Черный, Серебро, Красный)" class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
-        <textarea id="newProdDesc" rows="2" placeholder="Описание товара..." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none"></textarea>
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="space-y-1">
-            <label class="block text-xs font-semibold text-slate-600">Фотографии товара (до 10 штук):</label>
-            <input id="newProdImagesInput" type="file" accept="image/*" multiple class="text-xs text-slate-600" />
-          </div>
-          <button id="createProductBtn" type="button" class="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition cursor-pointer">
-            + Добавить товар
-          </button>
-        </div>
-        <div id="newProdStatus" class="text-xs font-medium text-blue-600"></div>
-      </div>
+    <!-- Список постов ленты (по умолчанию пустой) -->
+    <div id="rtkHomeFeedList" class="flex flex-col gap-6"></div>
+  </section>
 
+  <!-- СТРАНИЦА 2: ОТДЕЛЬНЫЕ ПОКУПКИ -->
+  <section id="shopPageSection" class="max-w-5xl mx-auto px-4 pt-6 pb-28" style="display:none;">
+    <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-6 md:p-8 shadow-xl mb-7 flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-blue-200 mb-2">
+          🛍 Страница Покупок runotoks
+        </span>
+        <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight">
+          Каталог товаров <span class="rtk-grad-orange-green">runotoks</span>
+        </h2>
+        <p class="text-slate-300 text-xs md:text-sm mt-1.5">
+          Выбирайте цвета, просматривайте фото товаров и оформляйте заказы.
+        </p>
+      </div>
+      <button id="rtkSwitchToFeedFromShopBtn" type="button"
+        class="px-5 py-2.5 rounded-full bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition cursor-pointer">
+        ← Вернуться в Ленту
+      </button>
+    </div>
+
+    <div id="rtkOwnerProductCreator" class="mb-7 p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-3" style="display:none;">
+      <div class="flex items-center justify-between gap-2 flex-wrap">
+        <h3 class="text-base font-extrabold text-slate-900">Добавить товар (до 10 фото и выбор цветов)</h3>
+        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Режим владельца</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <input id="newProdTitle" type="text" placeholder="Название товара" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
+        <input id="newProdCategory" type="text" placeholder="Категория (например, Аудио)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
+        <input id="newProdPrice" type="number" placeholder="Цена, ₽" class="px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
+      </div>
+      <input id="newProdColors" type="text" placeholder="Цвета через запятую (например: Черный, Серебро, Красный)" class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none" />
+      <textarea id="newProdDesc" rows="2" placeholder="Описание товара..." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 text-sm outline-none"></textarea>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-semibold text-slate-600">Фотографии товара (до 10 штук):</label>
+          <input id="newProdImagesInput" type="file" accept="image/*" multiple class="text-xs text-slate-600" />
+        </div>
+        <button id="createProductBtn" type="button" class="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition cursor-pointer">
+          + Добавить товар
+        </button>
+      </div>
+      <div id="newProdStatus" class="text-xs font-medium text-blue-600"></div>
+    </div>
+
+    <main id="catalog">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         <div class="flex items-center justify-between sm:justify-end gap-3">
@@ -168,23 +202,22 @@
         </div>
       </div>
 
-      <!-- Крупные карточки товаров (1–2 колонки) -->
       <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-7"></div>
     </main>
   </section>
 
-  <!-- Нижняя панель на главной странице -->
+  <!-- Нижняя панель навигации -->
   <div id="rtkHomeBottomDock"
     style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 14px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
+    <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
+      style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#2563eb;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
+      🏠 Лента
+    </button>
     <button id="rtkHomeShopBtn" type="button" title="Покупки"
       style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
       🛍 Покупки
     </button>
-    <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
-      style="padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.16);background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-      🏠 Лента
-    </button>
-    <button id="rtkHomeSearchCircleBtn" type="button" title="Найти людей"
+    <button id="rtkHomeSearchCircleBtn" type="button" title="Найти людей и подписаться"
       style="width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:linear-gradient(135deg,#ff7a00,#22c55e);color:#09090b;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(34,197,94,0.35);">
       🔍
     </button>
@@ -195,9 +228,9 @@
     </button>
   </div>
 
-  <!-- Модалка поиска людей с главной страницы -->
+  <!-- Модалка поиска людей и подписок -->
   <div id="rtkHomePeopleModal" style="display:none;position:fixed;inset:0;z-index:10030;background:rgba(2,6,23,0.72);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
-    <div style="width:100%;max-width:420px;max-height:80vh;background:#111827;color:#f8fafc;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+    <div style="width:100%;max-width:440px;max-height:80vh;background:#111827;color:#f8fafc;border:1px solid #334155;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span data-i18n="searchPeople" style="font-size:16px;font-weight:800;">Поиск людей</span>
         <button id="rtkCloseHomePeopleModal" type="button" style="border:none;background:#1e293b;color:#cbd5e1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
@@ -228,7 +261,7 @@
         </div>
         <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;" class="rtk-grad-orange-green">runotoks</h2>
         <p style="margin:0 0 22px;font-size:13px;color:#94a3b8;line-height:1.5;">
-          Войдите через Google, чтобы общаться в чате, публиковать сторис, заходить в рулетку и общаться с ИИ Рунотокс.
+          Войдите через Google, чтобы общаться в чате, подписываться, ставить лайки и комментарии, заходить в рулетку и общаться с ИИ Рунотокс.
         </p>
         <button id="rtkGoogleLoginBtn" type="button"
           style="width:100%;padding:12px 16px;border-radius:14px;border:none;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
@@ -237,7 +270,7 @@
         </button>
         <button id="rtkAuthBackToSite" type="button"
           style="margin-top:14px;width:100%;padding:10px 14px;border-radius:12px;border:1px solid #334155;background:transparent;color:#cbd5e1;font-size:13px;font-weight:600;cursor:pointer;">
-          ← Главная страница
+          ← На сайт
         </button>
       </div>
     </div>
@@ -248,7 +281,7 @@
         <div style="display:flex;align-items:center;gap:6px;min-width:0;">
           <button id="rtkExitToSiteBtn" type="button"
             style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-            ← Главная
+            ← На сайт
           </button>
           <span style="font-weight:800;font-size:14px;white-space:nowrap;" class="rtk-grad-orange-green">runotoks</span>
         </div>
@@ -310,14 +343,10 @@
             <div id="rtkPhoneLookupResult" style="margin-top:6px;font-size:12px;color:#cbd5e1;"></div>
           </div>
 
-          <!-- Лента активных сторис с огоньками по кругу -->
           <div id="rtkStoriesStrip" style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid #1f2937;overflow-x:auto;" class="no-scrollbar"></div>
-
-          <!-- Список диалогов -->
           <div id="rtkChatList" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;"></div>
         </div>
 
-        <!-- Правая область диалога -->
         <div id="rtkChatPane" style="flex:1;height:100%;display:flex;flex-direction:column;background:#0b1120;min-height:0;min-width:0;position:relative;">
           <div id="rtkActiveChatHeader" style="height:60px;padding:0 12px;border-bottom:1px solid #1f2937;background:#111827;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:10px;min-width:0;">
@@ -343,7 +372,6 @@
             </div>
           </div>
 
-          <!-- Баннер активного звонка -->
           <div id="rtkVoiceCallBanner" style="display:none;padding:9px 14px;background:rgba(34,197,94,0.14);border-bottom:1px solid rgba(34,197,94,0.35);align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
               <span>📞</span>
@@ -358,7 +386,6 @@
 
           <div id="rtkMessagesList" style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
 
-          <!-- Панель перед клавиатурой -->
           <div id="rtkComposerDock" style="display:none;flex-direction:column;border-top:1px solid #1f2937;background:#111827;flex-shrink:0;">
             <div style="padding:6px 10px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;gap:6px;overflow-x:auto;" class="no-scrollbar">
               <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
@@ -765,16 +792,13 @@
     }
 
     let PRODUCTS = loadProducts();
-    const cardState = {}; // { [productId]: { photoIdx: 0, colorIdx: 0 } }
+    const cardState = {};
     function getCardState(id) {
       if (!cardState[id]) cardState[id] = { photoIdx: 0, colorIdx: 0 };
       return cardState[id];
     }
-
     function saveProducts() {
-      try {
-        localStorage.setItem("runotoks_products_v1", JSON.stringify(PRODUCTS));
-      } catch (_) {}
+      try { localStorage.setItem("runotoks_products_v1", JSON.stringify(PRODUCTS)); } catch (_) {}
     }
 
     let activeCategory = "Все";
@@ -805,10 +829,7 @@
       if (!p) return;
       const st = getCardState(prodId);
       st.colorIdx = cIdx;
-      // При выборе цвета переключаем фото на соответствующее, если фото больше одного
-      if (p.images.length > 1) {
-        st.photoIdx = cIdx % p.images.length;
-      }
+      if (p.images.length > 1) st.photoIdx = cIdx % p.images.length;
       renderProducts();
     };
 
@@ -876,9 +897,7 @@
               </div>
               <h3 onclick="openProductModal(${p.id})" class="font-extrabold text-slate-900 text-lg cursor-pointer">${p.title}</h3>
               <p class="text-sm text-slate-500 mt-1 flex-1">${p.desc}</p>
-              <div class="flex flex-wrap gap-1.5 mt-3">
-                ${colorsHtml}
-              </div>
+              <div class="flex flex-wrap gap-1.5 mt-3">${colorsHtml}</div>
               <div class="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
                 <span class="font-extrabold text-xl">${formatPrice(p.price)}</span>
                 <button onclick="addSelectedFromCard(${p.id})" class="px-4 py-2.5 rounded-full bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition">+ В корзину</button>
@@ -911,23 +930,18 @@
           </button>
         `).join("");
       };
-
       const drawVars = () => {
         document.getElementById("modalVariants").innerHTML = p.variants.map((v, idx) => `
           <button type="button" onclick="setModalVar('${v}', ${idx})" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border ${sel === v ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200'}">${v}</button>
         `).join("");
       };
-
       window.setModalPhoto = (idx) => { photoIdx = idx; drawModalMedia(); };
       window.setModalVar = (v, idx) => {
         sel = v;
         if (photos.length > 1) photoIdx = idx % photos.length;
-        drawVars();
-        drawModalMedia();
+        drawVars(); drawModalMedia();
       };
-
-      drawModalMedia();
-      drawVars();
+      drawModalMedia(); drawVars();
       document.getElementById("modalAddBtn").onclick = () => {
         addToCart(p.id, sel, photos[photoIdx] || photos[0] || "");
         closeProductModal();
@@ -941,12 +955,8 @@
       const key = `${id}_${variant}`;
       const ex = cart.find((i) => i.key === key);
       const img = chosenImage || (p.images && p.images[0]) || p.image || "";
-      if (ex) {
-        ex.qty += 1;
-        if (img) ex.image = img;
-      } else {
-        cart.push({ key, id: p.id, title: p.title, price: p.price, image: img, variant, qty: 1 });
-      }
+      if (ex) { ex.qty += 1; if (img) ex.image = img; }
+      else { cart.push({ key, id: p.id, title: p.title, price: p.price, image: img, variant, qty: 1 }); }
       saveCart(); openCart();
     }
     function updateCartUI() {
@@ -994,8 +1004,6 @@
         : `<div class="text-center text-slate-400 py-8">Заказов пока нет.</div>`;
       const m = document.getElementById("ordersModal"); m.classList.remove("hidden"); m.classList.add("flex");
     };
-    document.getElementById("rtkHomeShopBtn").onclick = () => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
-    document.getElementById("rtkHomeFeedJumpBtn").onclick = () => document.getElementById("rtkHomeFeedSection")?.scrollIntoView({ behavior: "smooth" });
     renderCategories(); renderProducts(); updateCartUI();
   </script>
 
@@ -1035,7 +1043,7 @@
       measurementId: "G-56VTDVLB2H"
     };
 
-    // Опционально: укажите ваш email владельца (например "you@gmail.com"), иначе первым владельцем станет первый вошедший аккаунт
+    // Опционально: укажите ваш email владельца (например "you@gmail.com"), иначе владельцем закрепляется первый вошедший аккаунт
     const OWNER_EMAIL_OVERRIDE = "";
 
     const RUNOTOKS_AI_URL = "https://runotoks-1.onrender.com/chat";
@@ -1062,6 +1070,48 @@
       en: { chatTab: "Chat", rouletteTab: "🎲 Roulette", profileTab: "Profile", searchPeople: "Find people", numberBtn: "Number", storyBtn: "Story", postsLabel: "Posts", followersLabel: "Followers", followingLabel: "Following", settingsTitle: "Settings", languageLabel: "Interface & chat language", blockedTitle: "Blocked users", archiveTitle: "Posts & story archive" },
       uk: { chatTab: "Чат", rouletteTab: "🎲 Рулетка", profileTab: "Профіль", searchPeople: "Пошук людей", numberBtn: "Номер", storyBtn: "Сторіс", postsLabel: "Дописи", followersLabel: "Підписники", followingLabel: "Підписки", settingsTitle: "Налаштування", languageLabel: "Мова інтерфейсу та чату", blockedTitle: "Заблоковані люди", archiveTitle: "Архів публікацій і сторіс" }
     };
+
+    // Переключение 2 отдельных страниц: Лента и Покупки
+    const feedPageSection = document.getElementById("feedPageSection");
+    const shopPageSection = document.getElementById("shopPageSection");
+    const pageNavFeedBtn = document.getElementById("pageNavFeedBtn");
+    const pageNavShopBtn = document.getElementById("pageNavShopBtn");
+    const shopSearchDesktopWrap = document.getElementById("shopSearchDesktopWrap");
+    const headerAuthBtn = document.getElementById("rtkHeaderAuthBtn");
+    const switchToShopFromFeedBtn = document.getElementById("rtkSwitchToShopFromFeedBtn");
+    const switchToFeedFromShopBtn = document.getElementById("rtkSwitchToFeedFromShopBtn");
+    const homeFeedJumpBtn = document.getElementById("rtkHomeFeedJumpBtn");
+    const homeShopBtn = document.getElementById("rtkHomeShopBtn");
+    const logoHomeBtn = document.getElementById("rtkLogoHomeBtn");
+
+    function setActiveSitePage(pageName) {
+      const isShop = pageName === "shop";
+      feedPageSection.style.display = isShop ? "none" : "block";
+      shopPageSection.style.display = isShop ? "block" : "none";
+      shopSearchDesktopWrap.classList.toggle("md:flex", isShop);
+      shopSearchDesktopWrap.classList.toggle("hidden", !isShop);
+
+      if (isShop) {
+        pageNavShopBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer";
+        pageNavFeedBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer";
+        homeShopBtn.style.background = "#2563eb";
+        homeFeedJumpBtn.style.background = "#1e293b";
+      } else {
+        pageNavFeedBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-slate-900 text-white transition cursor-pointer";
+        pageNavShopBtn.className = "px-3.5 py-1.5 rounded-full text-xs font-extrabold text-slate-700 hover:bg-white transition cursor-pointer";
+        homeFeedJumpBtn.style.background = "#2563eb";
+        homeShopBtn.style.background = "#1e293b";
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    pageNavFeedBtn.addEventListener("click", () => setActiveSitePage("feed"));
+    pageNavShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
+    switchToShopFromFeedBtn.addEventListener("click", () => setActiveSitePage("shop"));
+    switchToFeedFromShopBtn.addEventListener("click", () => setActiveSitePage("feed"));
+    homeFeedJumpBtn.addEventListener("click", () => setActiveSitePage("feed"));
+    homeShopBtn.addEventListener("click", () => setActiveSitePage("shop"));
+    logoHomeBtn.addEventListener("click", () => setActiveSitePage("feed"));
 
     const homeSearchCircleBtn = document.getElementById("rtkHomeSearchCircleBtn");
     const homeProfileCircleBtn = document.getElementById("rtkHomeProfileCircleBtn");
@@ -1218,6 +1268,7 @@
     let activeChatId = null;
     let activePeer = null;
     let aiMessagesCache = JSON.parse(localStorage.getItem("rtk_ai_messages") || "[]");
+    // Лента по умолчанию полностью пустая
     let feedPostsCache = JSON.parse(localStorage.getItem("rtk_feed_posts_v1") || "[]");
     let storiesCache = JSON.parse(localStorage.getItem("rtk_stories_active_v1") || "[]");
     let archivedStoriesCache = JSON.parse(localStorage.getItem("rtk_stories_archive_v1") || "[]");
@@ -1260,40 +1311,143 @@
       ownerFeedComposer.style.display = canPublish ? "block" : "none";
       ownerProductCreator.style.display = canPublish ? "block" : "none";
       ownerRoleBadge.textContent = canPublish ? "Доступ владельца" : "Только просмотр";
+      headerAuthBtn.textContent = currentUser ? (currentProfile?.name || "Профиль") : "Войти через Google";
       renderHomeFeed();
     }
 
     function saveFeedPosts() {
       try {
-        localStorage.setItem("rtk_feed_posts_v1", JSON.stringify(feedPostsCache.slice(0, 30)));
+        localStorage.setItem("rtk_feed_posts_v1", JSON.stringify(feedPostsCache.slice(0, 50)));
         localStorage.setItem("rtk_stories_archive_v1", JSON.stringify(archivedStoriesCache.slice(0, 50)));
       } catch (_) {}
     }
 
+    window.togglePostLike = (postId) => {
+      if (!currentUser) {
+        openMessenger("chats");
+        return;
+      }
+      const post = feedPostsCache.find((p) => p.id === postId);
+      if (!post) return;
+      post.likes = Array.isArray(post.likes) ? post.likes : [];
+      if (post.likes.includes(currentUser.uid)) {
+        post.likes = post.likes.filter((id) => id !== currentUser.uid);
+      } else {
+        post.likes.push(currentUser.uid);
+      }
+      saveFeedPosts();
+      renderHomeFeed();
+    };
+
+    window.addPostComment = (event, postId) => {
+      event.preventDefault();
+      if (!currentUser) {
+        openMessenger("chats");
+        return;
+      }
+      const input = document.getElementById(`comment_input_${postId}`);
+      const txt = (input?.value || "").trim();
+      if (!txt) return;
+      const post = feedPostsCache.find((p) => p.id === postId);
+      if (!post) return;
+      post.comments = Array.isArray(post.comments) ? post.comments : [];
+      post.comments.push({
+        id: "cmt_" + Date.now(),
+        authorUid: currentUser.uid,
+        authorName: currentProfile?.name || currentUser.displayName || "Пользователь",
+        text: txt,
+        createdAtLabel: new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
+      });
+      input.value = "";
+      saveFeedPosts();
+      renderHomeFeed();
+    };
+
+    window.toggleFollowFromFeed = async (targetUid) => {
+      if (!currentUser) {
+        openMessenger("chats");
+        return;
+      }
+      if (!targetUid || targetUid === currentUser.uid) return;
+      await toggleFollowUser(targetUid);
+      renderHomeFeed();
+    };
+
     function renderHomeFeed() {
       const canPublish = isSiteOwner();
       if (!feedPostsCache.length) {
-        homeFeedList.innerHTML = `<div class="text-sm text-slate-400 text-center py-6">Пока нет публикаций в ленте.</div>`;
+        homeFeedList.innerHTML = `<div class="text-sm text-slate-400 text-center py-12 rounded-3xl bg-slate-950/60 border border-slate-800">Лента пока пуста. Владелец может опубликовать первый пост.</div>`;
         return;
       }
+
       homeFeedList.innerHTML = feedPostsCache.map((post) => {
+        const likes = Array.isArray(post.likes) ? post.likes : [];
+        const comments = Array.isArray(post.comments) ? post.comments : [];
+        const likedByMe = currentUser ? likes.includes(currentUser.uid) : false;
+        const canFollowAuthor = post.authorUid && currentUser && post.authorUid !== currentUser.uid;
+        const isFollowingAuthor = post.authorUid ? followingIds.has(post.authorUid) : false;
+
         const mediaHtml = post.mediaType === "video"
-          ? `<video src="${post.mediaData}" controls playsinline class="w-full max-h-[480px] object-cover rounded-2xl bg-black mt-3"></video>`
-          : `<img src="${post.mediaData}" alt="Post" class="w-full max-h-[480px] object-cover rounded-2xl bg-black mt-3" />`;
+          ? `<video src="${post.mediaData}" controls playsinline class="w-full max-h-[500px] object-cover rounded-2xl bg-black mt-3"></video>`
+          : post.mediaData
+            ? `<img src="${post.mediaData}" alt="Post" class="w-full max-h-[500px] object-cover rounded-2xl bg-black mt-3" />`
+            : "";
+
+        const followBtnHtml = canFollowAuthor
+          ? `<button type="button" onclick="toggleFollowFromFeed('${post.authorUid}')"
+              class="text-xs px-3 py-1 rounded-full font-bold cursor-pointer ${isFollowingAuthor ? 'bg-slate-800 text-emerald-300 border border-slate-700' : 'bg-blue-600 text-white'}">
+              ${isFollowingAuthor ? 'Вы подписаны' : '+ Подписаться'}
+            </button>`
+          : "";
+
         const archiveBtn = canPublish
           ? `<button data-archive-post="${post.id}" type="button" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 cursor-pointer">В архив</button>`
           : "";
+
+        const commentsHtml = comments.map((c) => `
+          <div class="text-xs bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="font-bold text-blue-300">${escapeHtml(c.authorName)}</span>
+            <span class="text-slate-500 ml-1.5">${escapeHtml(c.createdAtLabel || "")}</span>
+            <div class="text-slate-200 mt-0.5">${escapeHtml(c.text)}</div>
+          </div>
+        `).join("");
+
         return `
-          <article class="p-4 sm:p-5 rounded-3xl bg-slate-950/80 border border-slate-800 flex flex-col">
-            <div class="flex items-center justify-between gap-2">
+          <article class="p-4 sm:p-5 rounded-3xl bg-slate-950/85 border border-slate-800 flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
               <div>
                 <div class="text-sm font-extrabold rtk-grad-orange-green">${escapeHtml(post.author || "Владелец")}</div>
                 <div class="text-[11px] text-slate-400">${escapeHtml(post.createdAtLabel || "")}</div>
               </div>
-              ${archiveBtn}
+              <div class="flex items-center gap-2">
+                ${followBtnHtml}
+                ${archiveBtn}
+              </div>
             </div>
-            ${post.caption ? `<p class="text-sm text-slate-100 mt-3 leading-relaxed">${escapeHtml(post.caption)}</p>` : ""}
+
+            ${post.caption ? `<p class="text-sm text-slate-100 leading-relaxed">${escapeHtml(post.caption)}</p>` : ""}
             ${mediaHtml}
+
+            <!-- Лайки и счётчик комментариев -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+              <button type="button" onclick="togglePostLike('${post.id}')"
+                class="px-3.5 py-1.5 rounded-full text-xs font-extrabold cursor-pointer transition ${likedByMe ? 'bg-rose-600 text-white' : 'bg-slate-900 text-slate-200 border border-slate-700 hover:border-rose-500'}">
+                ${likedByMe ? '❤️' : '🤍'} Лайк • ${likes.length}
+              </button>
+              <span class="text-xs text-slate-400 font-semibold">💬 Комментариев: ${comments.length}</span>
+            </div>
+
+            <!-- Комментарии -->
+            <div class="space-y-2">
+              ${commentsHtml}
+            </div>
+            <form onsubmit="addPostComment(event, '${post.id}')" class="flex gap-2 pt-1">
+              <input id="comment_input_${post.id}" type="text" placeholder="Написать комментарий..."
+                class="flex-1 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white outline-none" />
+              <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer">
+                Отправить
+              </button>
+            </form>
           </article>
         `;
       }).join("");
@@ -1314,36 +1468,47 @@
 
     publishFeedPostBtn.addEventListener("click", () => {
       if (!isSiteOwner()) {
-        alert("Публиковать в ленту может только владелец.");
+        alert("Публиковать посты может только владелец.");
         return;
       }
+      const caption = feedCaptionInput.value.trim();
       const file = feedMediaInput.files?.[0];
-      if (!file) {
-        feedPublishStatus.textContent = "Выберите фото или видео.";
+      if (!caption && !file) {
+        feedPublishStatus.textContent = "Введите текст поста или выберите фото/видео.";
         return;
       }
-      if (file.size > 2.5 * 1024 * 1024) {
+      if (file && file.size > 2.5 * 1024 * 1024) {
         feedPublishStatus.textContent = "Файл должен быть до 2.5 МБ.";
         return;
       }
-      const reader = new FileReader();
-      reader.onload = () => {
+
+      const saveNewPost = (mediaType = "", mediaData = "") => {
         feedPostsCache.unshift({
           id: "post_" + Date.now(),
+          authorUid: currentUser?.uid || "",
           author: currentProfile?.name || currentUser?.displayName || "Владелец runotoks",
-          caption: feedCaptionInput.value.trim(),
-          mediaType: file.type.startsWith("video/") ? "video" : "image",
-          mediaData: reader.result,
+          caption,
+          mediaType,
+          mediaData,
+          likes: [],
+          comments: [],
           createdAt: Date.now(),
           createdAtLabel: new Date().toLocaleString("ru-RU")
         });
         feedCaptionInput.value = "";
         feedMediaInput.value = "";
-        feedPublishStatus.textContent = "Опубликовано в ленте.";
+        feedPublishStatus.textContent = "Пост опубликован в ленте.";
         saveFeedPosts();
         renderHomeFeed();
       };
-      reader.readAsDataURL(file);
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => saveNewPost(file.type.startsWith("video/") ? "video" : "image", reader.result);
+        reader.readAsDataURL(file);
+      } else {
+        saveNewPost("", "");
+      }
     });
 
     createProductBtn.addEventListener("click", async () => {
@@ -1378,7 +1543,7 @@
       });
 
       const images = await Promise.all(files.map(readFileAsDataUrl));
-      const newProd = {
+      PRODUCTS.unshift({
         id: Date.now(),
         title,
         category,
@@ -1388,9 +1553,7 @@
         variants: colors.length ? colors : ["Стандарт"],
         images,
         desc
-      };
-
-      PRODUCTS.unshift(newProd);
+      });
       saveProducts();
       renderCategories();
       renderProducts();
@@ -1463,14 +1626,12 @@
     function renderFormattedMessageHtml(rawText, fontClass = "rtk-font-normal") {
       const safeFont = FONTS.some((f) => f.cls === fontClass) ? fontClass : "rtk-font-normal";
       const parts = String(rawText || "").split(/(\/\/[^/]+\/\/)/g);
-      const htmlParts = parts.map((chunk) => {
+      return parts.map((chunk) => {
         if (/^\/\/[^/]+\/\/$/.test(chunk)) {
-          const inner = chunk.slice(2, -2);
-          return `<span class="rtk-slash-glow">${escapeHtml(inner)}</span>`;
+          return `<span class="rtk-slash-glow">${escapeHtml(chunk.slice(2, -2))}</span>`;
         }
         return `<span class="${safeFont}">${escapeHtml(chunk)}</span>`;
-      });
-      return htmlParts.join("");
+      }).join("");
     }
 
     function applyMobileChatLayout() {
@@ -1516,6 +1677,7 @@
 
     openBtn.addEventListener("click", () => openMessenger("chats"));
     openFromHeroBtn.addEventListener("click", () => openMessenger("chats"));
+    headerAuthBtn.addEventListener("click", () => openMessenger(currentUser ? "profile" : "chats"));
     authBackToSite.addEventListener("click", closeMessenger);
     exitToSiteBtn.addEventListener("click", closeMessenger);
 
@@ -1560,19 +1722,38 @@
         return (u.name || "").toLowerCase().includes(needle) || (u.username || "").toLowerCase().includes(needle);
       });
       homePeopleList.innerHTML = list.length
-        ? list.map((u) => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:14px;background:#0b1120;border:1px solid #1f2937;">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" />
-                <div style="min-width:0;">
-                  <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || "Пользователь")}</div>
-                  <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username || "user")}</div>
+        ? list.map((u) => {
+            const sub = followingIds.has(u.uid);
+            return `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border-radius:14px;background:#0b1120;border:1px solid #1f2937;">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" />
+                  <div style="min-width:0;">
+                    <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || "Пользователь")}</div>
+                    <div style="font-size:11px;color:#60a5fa;">@${escapeHtml(u.username || "user")}</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <button data-sub-uid="${u.uid}" type="button" style="padding:7px 10px;border-radius:10px;border:1px solid #334155;background:${sub ? "#1e293b" : "#059669"};color:#fff;font-size:11px;font-weight:700;cursor:pointer;">${sub ? "Отписаться" : "Подписаться"}</button>
+                  <button data-uid="${u.uid}" type="button" style="padding:7px 11px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
                 </div>
               </div>
-              <button data-uid="${u.uid}" type="button" style="padding:7px 12px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">Чат</button>
-            </div>
-          `).join("")
+            `;
+          }).join("")
         : `<div style="text-align:center;color:#94a3b8;font-size:12px;padding:16px;">Люди не найдены</div>`;
+
+      homePeopleList.querySelectorAll("button[data-sub-uid]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (!currentUser) {
+            homePeopleModal.style.display = "none";
+            openMessenger("chats");
+            return;
+          }
+          await toggleFollowUser(btn.dataset.subUid);
+          renderHomePeopleModal(homePeopleQuery.value);
+          renderHomeFeed();
+        });
+      });
 
       homePeopleList.querySelectorAll("button[data-uid]").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1730,6 +1911,7 @@
         btn.addEventListener("click", async () => {
           await toggleFollowUser(btn.dataset.followBtn);
           openFollowModal(mode);
+          renderHomeFeed();
         });
       });
 
@@ -1750,8 +1932,8 @@
     closeFollowListBtn.addEventListener("click", () => { followListModal.style.display = "none"; });
 
     function renderProfileStatsAndBlocked() {
-      const myStoriesCount = storiesCache.filter((s) => s.authorId === currentUser?.uid).length;
-      postsCountVal.textContent = String(currentProfile?.postsCount ?? myStoriesCount);
+      const myPostsCount = feedPostsCache.filter((p) => p.authorUid === currentUser?.uid).length;
+      postsCountVal.textContent = String(myPostsCount || currentProfile?.postsCount || 0);
       followersCountVal.textContent = String(followerIds.size);
       followingCountVal.textContent = String(followingIds.size);
       profileBioText.textContent = currentProfile?.bio || "Описание профиля не добавлено.";
@@ -1882,13 +2064,27 @@
         ((u.username || "").toLowerCase().includes(needle) || (u.name || "").toLowerCase().includes(needle))
       );
       searchResultsEl.innerHTML = matches.length
-        ? matches.map((u) => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:#0b1120;border:1px solid #1f2937;">
-              <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username)} <span style="color:#60a5fa;">@${escapeHtml(u.username || "")}</span></span>
-              <button data-open-uid="${u.uid}" type="button" style="padding:4px 8px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Чат</button>
-            </div>
-          `).join("")
+        ? matches.map((u) => {
+            const sub = followingIds.has(u.uid);
+            return `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 8px;border-radius:10px;background:#0b1120;border:1px solid #1f2937;">
+                <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.name || u.username)} <span style="color:#60a5fa;">@${escapeHtml(u.username || "")}</span></span>
+                <div style="display:flex;gap:4px;">
+                  <button data-follow-uid="${u.uid}" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:${sub ? "#1e293b" : "#059669"};color:#fff;font-size:10px;font-weight:700;cursor:pointer;">${sub ? "Отпис." : "Подпис."}</button>
+                  <button data-open-uid="${u.uid}" type="button" style="padding:4px 8px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-size:10px;font-weight:700;cursor:pointer;">Чат</button>
+                </div>
+              </div>
+            `;
+          }).join("")
         : `<div style="font-size:11px;color:#94a3b8;">Ничего не найдено</div>`;
+
+      searchResultsEl.querySelectorAll("button[data-follow-uid]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await toggleFollowUser(btn.dataset.followUid);
+          searchInput.dispatchEvent(new Event("input"));
+          renderHomeFeed();
+        });
+      });
 
       searchResultsEl.querySelectorAll("button[data-open-uid]").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -2180,14 +2376,8 @@
       });
       const rawText = await res.text();
       let data = {};
-      try {
-        data = rawText ? JSON.parse(rawText) : {};
-      } catch (_) {
-        data = { error: rawText };
-      }
-      if (!res.ok) {
-        throw new Error(data.error || data.message || `Ошибка сервера (${res.status})`);
-      }
+      try { data = rawText ? JSON.parse(rawText) : {}; } catch (_) { data = { error: rawText }; }
+      if (!res.ok) throw new Error(data.error || data.message || `Ошибка сервера (${res.status})`);
       return data.reply || data.response || data.answer || "Пустой ответ от модели.";
     }
 
@@ -2202,7 +2392,6 @@
           text: m.text || ""
         }))
       };
-
       try {
         return await postChatRequest(payload);
       } catch (firstErr) {
@@ -2269,8 +2458,9 @@
       peers.forEach((peer) => {
         const pairKey = [currentUser.uid, peer.uid].sort().join("_");
         const meta = chatsMap.get(pairKey);
+        const sub = followingIds.has(peer.uid);
         const row = document.createElement("div");
-        row.style.cssText = `padding:10px;border-radius:14px;background:${activeChatId === pairKey ? "#1e293b" : "#0f172a"};border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;`;
+        row.style.cssText = `padding:10px;border-radius:14px;background:${activeChatId === pairKey ? "#1e293b" : "#0f172a"};border:1px solid #1f2937;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;`;
         row.innerHTML = `
           <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
             <img src="${peer.photoURL || DEFAULT_AVATAR}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
@@ -2279,11 +2469,20 @@
               <div style="font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(meta?.lastMessage || "@" + (peer.username || "user"))}</div>
             </div>
           </div>
-          <button data-block-uid="${peer.uid}" type="button" title="Заблокировать" style="padding:4px 7px;border-radius:8px;border:1px solid #7f1d1d;background:#450a0a;color:#fecaca;font-size:10px;font-weight:700;cursor:pointer;">Блок</button>
+          <div style="display:flex;gap:4px;">
+            <button data-follow-peer="${peer.uid}" type="button" style="padding:4px 7px;border-radius:8px;border:1px solid #334155;background:${sub ? "#1e293b" : "#059669"};color:#fff;font-size:10px;font-weight:700;cursor:pointer;">${sub ? "✓" : "+"}</button>
+            <button data-block-uid="${peer.uid}" type="button" title="Заблокировать" style="padding:4px 7px;border-radius:8px;border:1px solid #7f1d1d;background:#450a0a;color:#fecaca;font-size:10px;font-weight:700;cursor:pointer;">Блок</button>
+          </div>
         `;
         row.addEventListener("click", (ev) => {
-          if (ev.target.dataset.blockUid) return;
+          if (ev.target.dataset.blockUid || ev.target.dataset.followPeer) return;
           startOrOpenChat(peer);
+        });
+        row.querySelector("button[data-follow-peer]").addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          await toggleFollowUser(ev.target.dataset.followPeer);
+          renderPeopleAndDialogs();
+          renderHomeFeed();
         });
         row.querySelector("button[data-block-uid]").addEventListener("click", async (ev) => {
           ev.stopPropagation();
@@ -2433,6 +2632,7 @@
         renderPeopleAndDialogs();
         updateRouletteJoinedCounter();
         renderBlockedUsersList();
+        renderHomeFeed();
       });
 
       onSnapshot(collection(db, "users", uid, "blocked"), (snap) => {
@@ -2449,6 +2649,7 @@
       onSnapshot(collection(db, "users", uid, "following"), (snap) => {
         followingIds = new Set(snap.docs.map((d) => d.id));
         renderProfileStatsAndBlocked();
+        renderHomeFeed();
       });
 
       if (unsubChats) unsubChats();
@@ -2468,6 +2669,7 @@
       });
     }
 
+    setActiveSitePage("feed");
     applyOwnerFeedAccess();
     renderStoriesStrip();
     applyMobileChatLayout();
