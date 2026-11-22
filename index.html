@@ -55,7 +55,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased w-full">
 
-  <!-- Шапка во всю ширину -->
   <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200">
     <div class="w-full px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -110,9 +109,8 @@
     </div>
   </header>
 
-  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН (без лишнего текста владельца, по умолчанию пустая) -->
+  <!-- СТРАНИЦА 1: ЛЕНТА ВО ВЕСЬ ЭКРАН -->
   <section id="feedPageSection" class="w-full px-3 sm:px-6 pt-4 pb-28">
-    <!-- Форма публикации поста (видна только владельцу) -->
     <div id="rtkOwnerFeedComposer" class="w-full mb-5 bg-slate-900 text-white rounded-3xl p-4 sm:p-5 border border-slate-800 shadow-lg space-y-3" style="display:none;">
       <input id="rtkFeedCaptionInput" type="text" placeholder="Подпись к фото или видео..."
         class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white outline-none" />
@@ -126,7 +124,6 @@
       <div id="rtkFeedPublishStatus" class="text-xs text-emerald-400"></div>
     </div>
 
-    <!-- Список постов ленты во всю ширину -->
     <div id="rtkHomeFeedList" class="w-full flex flex-col gap-5"></div>
   </section>
 
@@ -170,7 +167,7 @@
     </main>
   </section>
 
-  <!-- Нижняя панель навигации по центру экрана -->
+  <!-- Нижняя панель навигации -->
   <div id="rtkHomeBottomDock"
     style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9990;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);box-shadow:0 12px 32px rgba(2,6,23,0.45);">
     <button id="rtkHomeFeedJumpBtn" type="button" title="Лента"
