@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>runotoks — Магазин, лента и чат-рулетка</title>
+  <title>runotoks</title>
   <style>
-    /* =========================================================================
-       1. DESIGN TOKENS & GLOBAL RESET
-       ========================================================================= */
     :root {
       --bg-page: #f2f5f9;
       --bg-card-light: #ffffff;
@@ -25,9 +22,7 @@
       --green-dark: #16a34a;
       --amber: #f59e0b;
       --blue: #2563eb;
-      --blue-dark: #1d4ed8;
       --red: #ef4444;
-      --purple: #8b5cf6;
 
       --border-light: #e2e8f0;
       --border-dark: rgba(148, 163, 184, 0.2);
@@ -35,7 +30,7 @@
       --radius-sm: 12px;
       --radius-md: 16px;
       --radius-lg: 22px;
-      --radius-xl: 28px;
+      --radius-xl: 26px;
       --radius-pill: 999px;
 
       --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.06);
@@ -65,14 +60,12 @@
       overflow-x: hidden;
     }
 
-    /* =========================================================================
-       2. TOP HEADER
-       ========================================================================= */
+    /* TOP HEADER */
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
       padding: 10px 16px;
@@ -95,12 +88,12 @@
     }
 
     .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       background: var(--bg-dark);
       color: #fff;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -111,15 +104,7 @@
       font-size: 20px;
       font-weight: 800;
       color: var(--green);
-      line-height: 1.05;
-    }
-
-    .brand-subtitle {
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      text-transform: uppercase;
+      line-height: 1.1;
     }
 
     .header-controls {
@@ -189,9 +174,7 @@
       padding: 0 6px;
     }
 
-    /* =========================================================================
-       3. SEPARATE PAGES ARCHITECTURE (ONLY ONE ACTIVE PAGE VISIBLE AT A TIME)
-       ========================================================================= */
+    /* PAGES ARCHITECTURE */
     .app-container {
       max-width: 1080px;
       margin: 0 auto;
@@ -200,7 +183,7 @@
 
     .page-view {
       display: none;
-      animation: pageFadeIn 0.2s ease;
+      animation: pageFadeIn 0.18s ease;
     }
 
     .page-view.active {
@@ -208,132 +191,32 @@
     }
 
     @keyframes pageFadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* =========================================================================
-       4. HERO BANNER
-       ========================================================================= */
-    .hero-box {
-      background: linear-gradient(155deg, #17233a 0%, #0d1524 100%);
-      color: var(--text-light);
-      border-radius: var(--radius-xl);
-      padding: 22px 20px;
-      margin-bottom: 18px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .hero-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .hero-tag {
-      background: rgba(30, 41, 59, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 7px 13px;
-      border-radius: var(--radius-pill);
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-
-    .hero-chat-btn {
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      padding: 9px 16px;
-      border-radius: var(--radius-pill);
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .hero-title {
-      font-size: clamp(28px, 6vw, 44px);
-      font-weight: 800;
-      line-height: 1.08;
-      margin-bottom: 12px;
-      letter-spacing: -0.025em;
-    }
-
-    .hero-title .amber { color: var(--amber); }
-    .hero-title .green { color: var(--green); }
-
-    .hero-desc {
-      font-size: 15px;
-      color: var(--text-light-muted);
-      margin-bottom: 18px;
-      max-width: 640px;
-    }
-
-    .hero-btns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .btn-white {
-      background: #ffffff;
-      color: #0f172a;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 13px 20px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .btn-blue {
-      background: var(--blue);
-      color: #ffffff;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 13px 20px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* =========================================================================
-       5. PURCHASES PAGE ("ПОКУПКИ" — SEPARATE CLEAN PAGE)
-       ========================================================================= */
+    /* COMMON CONTROLS & FORMS */
     .page-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .page-heading {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text-dark);
+      margin-bottom: 14px;
     }
 
     .owner-panel-card {
       background: var(--bg-dark);
       color: var(--text-light);
       border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 20px;
+      padding: 16px;
+      margin-bottom: 18px;
       border: 1px solid var(--border-dark);
       box-shadow: var(--shadow-md);
     }
 
     .owner-panel-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--green);
       margin-bottom: 12px;
@@ -359,7 +242,7 @@
       font-family: inherit;
       font-size: 14px;
       padding: 11px 13px;
-      margin-bottom: 11px;
+      margin-bottom: 10px;
       outline: none;
     }
 
@@ -368,7 +251,7 @@
     }
 
     .dark-area {
-      min-height: 82px;
+      min-height: 78px;
       resize: vertical;
     }
 
@@ -409,25 +292,200 @@
       cursor: pointer;
     }
 
-    .btn-green-full:hover {
-      background: #4ade80;
+    .btn-blue {
+      background: var(--blue);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
+    /* CLEAN EMPTY STATES */
     .empty-state-box {
       background: #ffffff;
       border: 2px dashed #cbd5e1;
       border-radius: var(--radius-lg);
-      padding: 36px 20px;
+      padding: 40px 20px;
       text-align: center;
       color: var(--text-muted);
     }
 
     .empty-state-box.dark-empty {
       background: var(--bg-dark-2);
-      border-color: rgba(148, 163, 184, 0.25);
+      border-color: rgba(148, 163, 184, 0.22);
       color: var(--text-light-muted);
     }
 
+    /* =========================================================================
+       FEED PAGE ("ЛЕНТА" — ONLY OWNER POSTS, NO HERO/BANNERS)
+       ========================================================================= */
+    .feed-wrapper {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      border-radius: var(--radius-xl);
+      padding: 18px 16px;
+      border: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .post-card {
+      background: var(--bg-dark-2);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.18s ease;
+    }
+
+    .post-card:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .post-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #fff;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dots-btn {
+      background: none;
+      border: none;
+      color: var(--text-light-muted);
+      font-size: 22px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .dots-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dots-menu {
+      position: absolute;
+      top: 48px;
+      right: 16px;
+      background: #1e293b;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      z-index: 30;
+      min-width: 190px;
+      display: none;
+      overflow: hidden;
+    }
+
+    .dots-menu.open {
+      display: block;
+    }
+
+    .dots-menu button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: #f8fafc;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dots-menu button:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dots-menu button.delete-opt {
+      color: #f87171;
+    }
+
+    .post-text {
+      font-size: 15px;
+      line-height: 1.55;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+
+    .post-media {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #060a12;
+      margin-bottom: 12px;
+    }
+
+    .post-media img, .post-media video {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sound-corner-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .post-footer-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-stat-btn {
+      background: #233047;
+      color: #f8fafc;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: var(--radius-pill);
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       PURCHASES PAGE ("ПОКУПКИ" — ONLY OWNER PRODUCTS)
+       ========================================================================= */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -455,7 +513,7 @@
 
     .product-thumb {
       width: 100%;
-      height: 170px;
+      height: 175px;
       border-radius: var(--radius-md);
       background: #0f172a;
       overflow: hidden;
@@ -526,7 +584,7 @@
     }
 
     /* =========================================================================
-       6. DETAIL SUB-PAGES (PRODUCT DETAIL PAGE & POST DETAIL PAGE)
+       DETAIL PAGES (PRODUCT FULL PAGE & POST FULL PAGE)
        ========================================================================= */
     .detail-card-light {
       background: #ffffff;
@@ -586,171 +644,7 @@
     }
 
     /* =========================================================================
-       7. FEED PAGE ("ЛЕНТА" — SEPARATE CLEAN PAGE, OWNER UNLIMITED POSTING)
-       ========================================================================= */
-    .feed-wrapper {
-      background: var(--bg-dark);
-      color: var(--text-light);
-      border-radius: var(--radius-xl);
-      padding: 20px 16px;
-      border: 1px solid var(--border-dark);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .post-card {
-      background: var(--bg-dark-2);
-      border: 1px solid var(--border-dark);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-bottom: 14px;
-      position: relative;
-      cursor: pointer;
-      transition: border-color 0.18s ease;
-    }
-
-    .post-card:hover {
-      border-color: rgba(34, 197, 94, 0.45);
-    }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .post-user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .avatar-circle {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--green), var(--blue));
-      color: #fff;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .dots-btn {
-      background: none;
-      border: none;
-      color: var(--text-light-muted);
-      font-size: 22px;
-      padding: 4px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .dots-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .dots-menu {
-      position: absolute;
-      top: 48px;
-      right: 16px;
-      background: #1e293b;
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      border-radius: 12px;
-      box-shadow: var(--shadow-lg);
-      z-index: 30;
-      min-width: 185px;
-      display: none;
-      overflow: hidden;
-    }
-
-    .dots-menu.open {
-      display: block;
-    }
-
-    .dots-menu button {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      color: #f8fafc;
-      padding: 11px 14px;
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .dots-menu button:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .dots-menu button.delete-opt {
-      color: #f87171;
-    }
-
-    .post-text {
-      font-size: 15px;
-      line-height: 1.55;
-      color: #f1f5f9;
-      margin-bottom: 12px;
-      white-space: pre-wrap;
-    }
-
-    .post-media {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: #060a12;
-      margin-bottom: 12px;
-    }
-
-    .post-media img, .post-media video {
-      width: 100%;
-      max-height: 360px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .sound-corner-btn {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: rgba(15, 23, 42, 0.85);
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .post-footer-btns {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .pill-stat-btn {
-      background: #233047;
-      color: #f8fafc;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: var(--radius-pill);
-      padding: 7px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* =========================================================================
-       8. CHAT ROULETTE + VIDEO/AUDIO CALLS + FONTS PAGE ("ЧАТ РУЛЕТКА")
+       CHAT ROULETTE + VIDEO/AUDIO CALLS + FONTS
        ========================================================================= */
     .roulette-card {
       background: var(--bg-dark);
@@ -914,7 +808,7 @@
     }
 
     .roulette-messages {
-      height: 280px;
+      height: 290px;
       overflow-y: auto;
       background: var(--bg-input-dark);
       border: 1px solid var(--border-dark);
@@ -963,9 +857,7 @@
       gap: 8px;
     }
 
-    /* =========================================================================
-       9. BOTTOM NAVIGATION DOCK ("ПОКУПКИ" LEFT OF "ЛЕНТА" IN SAME ROW)
-       ========================================================================= */
+    /* BOTTOM DOCK */
     .bottom-dock-bar {
       position: fixed;
       bottom: 14px;
@@ -1033,9 +925,7 @@
       color: #052e16;
     }
 
-    /* =========================================================================
-       10. MODALS & TOASTS
-       ========================================================================= */
+    /* MODALS & TOASTS */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -1110,24 +1000,19 @@
 </head>
 <body>
 
-  <!-- =======================================================================
-       TOP HEADER
-       ======================================================================= -->
+  <!-- TOP HEADER -->
   <header class="top-bar">
     <div class="top-bar-inner">
       <div class="brand" onclick="switchPage('feedPage')">
         <div class="brand-icon">R</div>
-        <div>
-          <div class="brand-title">runotoks</div>
-          <div class="brand-subtitle">TECH STORE</div>
-        </div>
+        <div class="brand-title">runotoks</div>
       </div>
 
       <div class="header-controls">
-        <button type="button" class="owner-pill is-owner" id="ownerModeBtn" onclick="openModal('ownerAuthModal')" title="Режим владельца сайта">
+        <button type="button" class="owner-pill is-owner" id="ownerModeBtn" onclick="openModal('ownerAuthModal')">
           👑 Владелец
         </button>
-        <button type="button" class="header-icon-btn" onclick="switchPage('roulettePage')" title="Чат-рулетка и звонки">
+        <button type="button" class="header-icon-btn" onclick="switchPage('roulettePage')" title="Чат-рулетка">
           💬
         </button>
         <button type="button" class="cart-btn" onclick="openModal('cartModal')" title="Корзина">
@@ -1143,57 +1028,29 @@
   <main class="app-container">
 
     <!-- =====================================================================
-         PAGE 1: ЛЕНТА (ПОЛНОСТЬЮ ОТДЕЛЬНАЯ ЧИСТАЯ СТРАНИЦА)
+         PAGE 1: ЛЕНТА (ПОЛНОСТЬЮ ПУСТАЯ ОТДЕЛЬНАЯ СТРАНИЦА ДЛЯ ПОСТОВ ВЛАДЕЛЬЦА)
          ===================================================================== -->
     <section class="page-view active" id="feedPage">
-      <div class="hero-box">
-        <div class="hero-top">
-          <div class="hero-tag">✨ <strong>runotoks</strong> • Магазин, лента и чат-рулетка</div>
-          <button type="button" class="hero-chat-btn" onclick="switchPage('roulettePage')">
-            💬 Чат-рулетка
-          </button>
-        </div>
-
-        <h1 class="hero-title">
-          Технологии, <span class="amber">общение</span> и <span class="green">чат</span><br />
-          <span class="green">Рунотокси</span> в одном месте
-        </h1>
-
-        <p class="hero-desc">
-          Отдельная страница «Покупки» для товаров владельца, чистая «Лента» для публикаций и чат-рулетка со звонками и шрифтами.
-        </p>
-
-        <div class="hero-btns">
-          <button type="button" class="btn-white" onclick="switchPage('purchasesPage')">
-            Перейти в покупки →
-          </button>
-          <button type="button" class="btn-blue" onclick="switchPage('roulettePage')">
-            Открыть чат-рулетку и звонки
-          </button>
-        </div>
-      </div>
-
       <div class="feed-wrapper">
         <div class="page-header-row">
-          <h2 style="font-size:22px; font-weight:800;">🏠 Лента публикаций</h2>
-          <span style="font-size:12.5px; color:#94a3b8;" id="feedOwnerHint">Доступ владельца: без ограничений</span>
+          <h2 style="font-size:21px; font-weight:800;">🏠 Лента</h2>
+          <span style="font-size:12.5px; color:#94a3b8;" id="feedCountLabel">Постов: 0</span>
         </div>
 
-        <!-- Форма публикации (только для владельца) -->
+        <!-- Форма публикации (ТОЛЬКО ВЛАДЕЛЕЦ) -->
         <div class="owner-panel-card" id="feedComposerBox" style="background:#162033; margin-bottom:18px;">
           <div class="owner-panel-title">
-            <span>✍️ Новая публикация владельца</span>
-            <span style="font-size:12px; color:#94a3b8;">Фото, видео, текст без ограничений</span>
+            <span>✍️ Новая публикация</span>
           </div>
 
           <label class="field-label">Ссылка на фото или видео (необязательно)</label>
-          <input type="text" id="feedUrlInput" class="dark-field" placeholder="https://... (фото или видео)" />
+          <input type="text" id="feedUrlInput" class="dark-field" placeholder="https://..." />
 
           <label class="field-label">Текст публикации</label>
-          <textarea id="feedTextInput" class="dark-area" placeholder="Напишите любой текст публикации..."></textarea>
+          <textarea id="feedTextInput" class="dark-area" placeholder="Напишите текст публикации..."></textarea>
 
           <div class="file-row">
-            <span class="field-label" style="margin:0;">Файл фото/видео:</span>
+            <span class="field-label" style="margin:0;">Фото/видео:</span>
             <button type="button" class="btn-file-select" onclick="document.getElementById('feedFileInput').click()">
               Вибрати файл
             </button>
@@ -1202,21 +1059,17 @@
           </div>
 
           <button type="button" class="btn-green-full" onclick="createFeedPost()">
-            Опубликовать в ленту
+            Опубликовать
           </button>
         </div>
 
-        <div id="feedRestrictedNotice" class="empty-state-box dark-empty" style="display:none; margin-bottom:16px;">
-          Публиковать посты в ленте может только владелец сайта. Нажмите «👑 Владелец» вверху для входа.
-        </div>
-
-        <!-- Список постов (изначально абсолютно чистый) -->
+        <!-- Список постов (изначально пустой) -->
         <div id="feedPostsList"></div>
       </div>
     </section>
 
     <!-- =====================================================================
-         PAGE 2: ОТДЕЛЬНАЯ СТРАНИЦА ПОСТА (ОТКРЫВАЕТСЯ ПО НАЖАТИЮ НА ПОСТ)
+         PAGE 2: ОТДЕЛЬНАЯ СТРАНИЦА ПОСТА
          ===================================================================== -->
     <section class="page-view" id="postDetailPage">
       <button type="button" class="back-nav-btn dark" onclick="switchPage('feedPage')">
@@ -1226,35 +1079,34 @@
     </section>
 
     <!-- =====================================================================
-         PAGE 3: ПОКУПКИ (ПОЛНОСТЬЮ ОТДЕЛЬНАЯ ЧИСТАЯ СТРАНИЦА)
+         PAGE 3: ПОКУПКИ (ПОЛНОСТЬЮ ПУСТАЯ ОТДЕЛЬНАЯ СТРАНИЦА ДЛЯ ТОВАРОВ ВЛАДЕЛЬЦА)
          ===================================================================== -->
     <section class="page-view" id="purchasesPage">
       <div class="page-header-row">
-        <h2 class="page-heading">🛍️ Покупки</h2>
+        <h2 style="font-size:22px; font-weight:800;">🛍️ Покупки</h2>
         <span style="font-size:13px; color:var(--text-muted); font-weight:700;" id="productsCountLabel">Товаров: 0</span>
       </div>
 
-      <!-- Панель добавления товара (ТОЛЬКО ВЛАДЕЛЕЦ) -->
+      <!-- Форма добавления товара (ТОЛЬКО ВЛАДЕЛЕЦ) -->
       <div class="owner-panel-card" id="productComposerBox">
         <div class="owner-panel-title">
-          <span>➕ Добавить свой товар (только владелец)</span>
-          <span style="font-size:12px; color:#94a3b8;">Витрина магазина</span>
+          <span>➕ Добавить товар</span>
         </div>
 
         <label class="field-label">Название товара</label>
-        <input type="text" id="prodNameInput" class="dark-field" placeholder="Например: Наушники П47 Pro" />
+        <input type="text" id="prodNameInput" class="dark-field" placeholder="Название товара..." />
 
-        <label class="field-label">Стоимость (в ₴ / грн)</label>
-        <input type="number" id="prodPriceInput" class="dark-field" placeholder="Например: 750" min="0" />
+        <label class="field-label">Стоимость (в ₴)</label>
+        <input type="number" id="prodPriceInput" class="dark-field" placeholder="Цена..." min="0" />
 
-        <label class="field-label">Полное описание товара</label>
-        <textarea id="prodDescInput" class="dark-area" placeholder="Характеристики, комплектация, состояние..."></textarea>
+        <label class="field-label">Описание товара</label>
+        <textarea id="prodDescInput" class="dark-area" placeholder="Описание товара..."></textarea>
 
-        <label class="field-label">Ссылка на фото/видео товара (необязательно)</label>
+        <label class="field-label">Ссылка на фото или видео (необязательно)</label>
         <input type="text" id="prodUrlInput" class="dark-field" placeholder="https://..." />
 
         <div class="file-row">
-          <span class="field-label" style="margin:0;">Фото/видео с устройства:</span>
+          <span class="field-label" style="margin:0;">Фото/видео:</span>
           <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
             Вибрати файл
           </button>
@@ -1263,20 +1115,16 @@
         </div>
 
         <button type="button" class="btn-green-full" onclick="addOwnerProduct()">
-          Выставить товар на витрину
+          Выставить товар
         </button>
       </div>
 
-      <div id="prodRestrictedNotice" class="empty-state-box" style="display:none; margin-bottom:16px;">
-        Добавлять товары на страницу «Покупки» может только владелец. Вы можете просматривать товары, добавлять в корзину и нажимать «Купить».
-      </div>
-
-      <!-- Сетка товаров (изначально абсолютно чистая) -->
+      <!-- Список товаров (изначально пустой) -->
       <div id="productsGridContainer"></div>
     </section>
 
     <!-- =====================================================================
-         PAGE 4: ОТДЕЛЬНАЯ СТРАНИЦА ТОВАРА (ОТКРЫВАЕТСЯ ПО НАЖАТИЮ НА ТОВАР)
+         PAGE 4: ОТДЕЛЬНАЯ СТРАНИЦА ТОВАРА
          ===================================================================== -->
     <section class="page-view" id="productDetailPage">
       <button type="button" class="back-nav-btn" onclick="switchPage('purchasesPage')">
@@ -1286,7 +1134,7 @@
     </section>
 
     <!-- =====================================================================
-         PAGE 5: ЧАТ С РУЛЕТКОЙ, ЗВОНКАМИ И ВЫБОРОМ ШРИФТОВ
+         PAGE 5: ЧАТ-РУЛЕТКА, ЗВОНКИ И ШРИФТЫ
          ===================================================================== -->
     <section class="page-view" id="roulettePage">
       <div class="roulette-card">
@@ -1304,7 +1152,6 @@
           </div>
         </div>
 
-        <!-- Экран видео/аудио звонка -->
         <div class="call-stage" id="callStage">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong id="callStatusText" style="color:var(--green);">🔊 Идёт звонок...</strong>
@@ -1313,7 +1160,7 @@
           <div class="video-grid">
             <div class="video-box">
               <video id="localVideo" autoplay muted playsinline></video>
-              <span class="video-label">Вы (Камера / Микрофон)</span>
+              <span class="video-label">Вы</span>
             </div>
             <div class="video-box">
               <div style="font-size:46px;">👤</div>
@@ -1323,28 +1170,25 @@
           </div>
         </div>
 
-        <!-- Панель выбора шрифтов для сообщений -->
         <div class="font-toolbar">
-          <span style="font-size:12px; font-weight:700; color:#94a3b8; margin-right:4px;">Шрифт текста:</span>
+          <span style="font-size:12px; font-weight:700; color:#94a3b8; margin-right:4px;">Шрифт:</span>
           <button type="button" class="font-chip active" data-font="default" onclick="setChatFont('default', this)">Обычный</button>
-          <button type="button" class="font-chip" data-font="mono" style="font-family:var(--font-mono);" onclick="setChatFont('mono', this)">Моно (Код)</button>
+          <button type="button" class="font-chip" data-font="mono" style="font-family:var(--font-mono);" onclick="setChatFont('mono', this)">Моно</button>
           <button type="button" class="font-chip" data-font="serif" style="font-family:var(--font-serif);" onclick="setChatFont('serif', this)">Классика</button>
           <button type="button" class="font-chip" data-font="rounded" style="font-family:var(--font-rounded);" onclick="setChatFont('rounded', this)">Мягкий</button>
           <button type="button" class="font-chip" data-font="bold-caps" style="font-weight:800; letter-spacing:0.06em;" onclick="setChatFont('bold-caps', this)">ЖИРНЫЙ</button>
-          <button type="button" class="font-chip" data-font="fancy" onclick="setChatFont('fancy', this)">𝔖𝔱𝔶𝔩𝔢 / Декор</button>
+          <button type="button" class="font-chip" data-font="fancy" onclick="setChatFont('fancy', this)">𝔖𝔱𝔶𝔩𝔢</button>
         </div>
 
-        <!-- Окно переписки рулетки -->
         <div class="roulette-messages" id="rouletteMessages"></div>
 
-        <!-- Ввод сообщения -->
         <form class="roulette-form" onsubmit="sendRouletteMessage(event)">
           <input
             type="text"
             id="rouletteInput"
             class="dark-field"
             style="margin-bottom:0; flex:1;"
-            placeholder="Напишите сообщение собеседнику выбранным шрифтом..."
+            placeholder="Напишите сообщение..."
             required
           />
           <button type="submit" class="btn-blue" style="padding:11px 18px; border-radius:12px;">
@@ -1355,16 +1199,16 @@
     </section>
 
     <!-- =====================================================================
-         PAGE 6: ПОИСК ЛЮДЕЙ
+         PAGE 6: ПОИСК
          ===================================================================== -->
     <section class="page-view" id="searchPage">
       <div class="roulette-card">
-        <h2 style="font-size:20px; font-weight:800; margin-bottom:12px;">🔍 Поиск людей и каналов</h2>
+        <h2 style="font-size:20px; font-weight:800; margin-bottom:12px;">🔍 Поиск</h2>
         <input
           type="text"
           id="peopleSearchInput"
           class="dark-field"
-          placeholder="Введите имя или @никнейм..."
+          placeholder="Введите имя..."
           oninput="renderPeopleList(this.value)"
         />
         <div id="peopleListContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
@@ -1380,27 +1224,25 @@
           <div class="avatar-circle" style="width:56px; height:56px; font-size:22px;" id="profileLetter">R</div>
           <div>
             <div style="font-size:19px; font-weight:800;" id="profileNameTitle">runotoks</div>
-            <div style="font-size:13px; color:#94a3b8;" id="profileRoleBadge">Статус: Владелец сайта</div>
+            <div style="font-size:13px; color:#94a3b8;" id="profileRoleBadge">Владелец</div>
           </div>
         </div>
 
-        <label class="field-label">Имя профиля</label>
+        <label class="field-label">Имя</label>
         <input type="text" id="profileNameInput" class="dark-field" />
 
         <label class="field-label">О себе</label>
         <textarea id="profileBioInput" class="dark-area" style="min-height:66px;"></textarea>
 
         <button type="button" class="btn-green-full" onclick="saveProfile()">
-          Сохранить профиль
+          Сохранить
         </button>
       </div>
     </section>
 
   </main>
 
-  <!-- =======================================================================
-       BOTTOM NAVIGATION DOCK ("ПОКУПКИ" IN SAME ROW AND TO THE LEFT OF "ЛЕНТА")
-       ======================================================================= -->
+  <!-- BOTTOM NAVIGATION DOCK ("ПОКУПКИ" LEFT OF "ЛЕНТА" IN SAME ROW) -->
   <nav class="bottom-dock-bar">
     <div class="bottom-dock-inner">
       <button type="button" class="nav-pill" id="navPurchasesBtn" onclick="switchPage('purchasesPage')">
@@ -1423,60 +1265,52 @@
     </div>
   </nav>
 
-  <!-- =======================================================================
-       MODAL: CART ("КОРЗИНА")
-       ======================================================================= -->
+  <!-- CART MODAL -->
   <div class="modal-overlay" id="cartModal">
     <div class="modal-box light">
       <div class="modal-head">
-        <span>🛒 Корзина покупок</span>
+        <span>🛒 Корзина</span>
         <button type="button" style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeModal('cartModal')">✕</button>
       </div>
       <div class="modal-body" id="cartBody"></div>
     </div>
   </div>
 
-  <!-- =======================================================================
-       MODAL: OWNER ACCESS SWITCH ("ДОСТУП ВЛАДЕЛЬЦА")
-       ======================================================================= -->
+  <!-- OWNER ACCESS MODAL -->
   <div class="modal-overlay" id="ownerAuthModal">
     <div class="modal-box">
       <div class="modal-head">
-        <span>👑 Управление доступом владельца</span>
+        <span>👑 Доступ владельца</span>
         <button type="button" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="closeModal('ownerAuthModal')">✕</button>
       </div>
       <div class="modal-body">
-        <p style="font-size:14px; color:#cbd5e1; margin-bottom:14px;">
-          Сейчас включён режим <strong>Владельца</strong>: вам доступно добавление товаров в «Покупки» и публикация постов в «Ленте» без ограничений. Вы можете проверить, как сайт видят обычные посетители, переключив режим ниже.
-        </p>
         <label class="field-label">PIN-код владельца (по умолчанию: 1234)</label>
-        <input type="password" id="ownerPinInput" class="dark-field" placeholder="Введите PIN (1234)" value="1234" />
+        <input type="password" id="ownerPinInput" class="dark-field" placeholder="PIN (1234)" value="1234" />
         <div style="display:flex; gap:10px;">
-          <button type="button" class="btn-green-full" onclick="setOwnerMode(true)">Войти как Владелец</button>
-          <button type="button" class="btn-blue" style="width:100%; border-radius:12px;" onclick="setOwnerMode(false)">Режим Гостя</button>
+          <button type="button" class="btn-green-full" onclick="setOwnerMode(true)">Владелец</button>
+          <button type="button" class="btn-blue" style="width:100%; border-radius:12px;" onclick="setOwnerMode(false)">Гость</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const DB_KEY = 'runotoks_clean_pages_v2';
+    const DB_KEY = 'runotoks_pure_pages_v3';
 
     const DEFAULT_STATE = {
       isOwner: true,
       ownerPin: '1234',
       profile: {
         name: 'runotoks',
-        bio: 'Владелец магазина и ленты runotoks'
+        bio: ''
       },
-      // Оба списка изначально абсолютно чистые!
       products: [],
       posts: [],
       cart: [],
       selectedFont: 'default',
       roulettePeer: 'Собеседник #4821',
       rouletteChat: [
-        { type: 'system', text: 'Вы подключены к чат-рулетке runotoks. Выберите шрифт выше или начните аудио/видео звонок.' }
+        { type: 'system', text: 'Чат-рулетка активна.' }
       ]
     };
 
@@ -1509,7 +1343,7 @@
       div.className = 'toast';
       div.textContent = msg;
       box.appendChild(div);
-      setTimeout(() => div.remove(), 2600);
+      setTimeout(() => div.remove(), 2500);
     }
 
     function esc(str) {
@@ -1520,9 +1354,7 @@
         .replace(/"/g, '&quot;');
     }
 
-    /* =========================================================================
-       NAVIGATION BETWEEN SEPARATE PAGES
-       ========================================================================= */
+    /* NAVIGATION */
     function switchPage(pageId) {
       document.querySelectorAll('.page-view').forEach(sec => sec.classList.remove('active'));
       const target = document.getElementById(pageId);
@@ -1549,21 +1381,19 @@
       document.getElementById(id).classList.remove('open');
     }
 
-    /* =========================================================================
-       OWNER ACCESS CONTROL
-       ========================================================================= */
+    /* OWNER ACCESS */
     function setOwnerMode(enableOwner) {
       if (enableOwner) {
         const pin = document.getElementById('ownerPinInput').value.trim();
         if (pin !== appState.ownerPin) {
-          toast('Неверный PIN-код владельца');
+          toast('Неверный PIN-код');
           return;
         }
         appState.isOwner = true;
-        toast('Режим Владельца активирован');
+        toast('Режим Владельца включён');
       } else {
         appState.isOwner = false;
-        toast('Включён режим Гостя (только просмотр и покупки)');
+        toast('Режим Гостя включён');
       }
       saveAppState();
       applyOwnerPermissions();
@@ -1577,15 +1407,10 @@
       pill.textContent = isOwner ? '👑 Владелец' : '👀 Гость';
 
       document.getElementById('productComposerBox').style.display = isOwner ? 'block' : 'none';
-      document.getElementById('prodRestrictedNotice').style.display = isOwner ? 'none' : 'block';
-
       document.getElementById('feedComposerBox').style.display = isOwner ? 'block' : 'none';
-      document.getElementById('feedRestrictedNotice').style.display = isOwner ? 'none' : 'block';
     }
 
-    /* =========================================================================
-       PURCHASES PAGE & PRODUCT DETAIL PAGE
-       ========================================================================= */
+    /* PURCHASES PAGE & PRODUCT DETAIL PAGE */
     function onProdFileChange(input) {
       const file = input.files && input.files[0];
       if (!file) {
@@ -1603,17 +1428,14 @@
     }
 
     function addOwnerProduct() {
-      if (!appState.isOwner) {
-        toast('Только владелец может добавлять товары');
-        return;
-      }
+      if (!appState.isOwner) return;
       const name = document.getElementById('prodNameInput').value.trim();
       const price = Number(document.getElementById('prodPriceInput').value);
       const desc = document.getElementById('prodDescInput').value.trim();
       const url = document.getElementById('prodUrlInput').value.trim();
 
       if (!name || !price || !desc) {
-        toast('Заполните название, стоимость и описание товара');
+        toast('Заполните название, стоимость и описание');
         return;
       }
 
@@ -1627,7 +1449,7 @@
         mediaType = /\.(mp4|webm|ogg)(\?|$)/i.test(url) ? 'video' : 'image';
       }
 
-      const product = {
+      appState.products.unshift({
         id: 'prod-' + Date.now(),
         name,
         price,
@@ -1635,9 +1457,7 @@
         mediaUrl,
         mediaType,
         createdAt: new Date().toLocaleDateString('ru-RU')
-      };
-
-      appState.products.unshift(product);
+      });
       saveAppState();
 
       document.getElementById('prodNameInput').value = '';
@@ -1649,7 +1469,7 @@
       pendingProdMedia = { url: '', type: 'none' };
 
       renderProductsPage();
-      toast('Товар добавлен на страницу «Покупки»');
+      toast('Товар добавлен');
     }
 
     function renderProductsPage() {
@@ -1657,13 +1477,7 @@
       document.getElementById('productsCountLabel').textContent = `Товаров: ${appState.products.length}`;
 
       if (!appState.products.length) {
-        container.innerHTML = `
-          <div class="empty-state-box">
-            <div style="font-size:38px; margin-bottom:8px;">🛍️</div>
-            <div style="font-weight:800; font-size:17px; color:#0f172a; margin-bottom:4px;">Страница покупок пока чистая</div>
-            <div>Владелец может выставить свой первый товар через форму выше.</div>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state-box">Товаров пока нет</div>`;
         return;
       }
 
@@ -1692,7 +1506,7 @@
           </div>
           <div class="product-card-actions" onclick="event.stopPropagation()">
             <button type="button" class="btn-buy-now" onclick="buyProductInstant('${prod.id}')">Купить</button>
-            <button type="button" class="btn-to-cart" onclick="addProductToCart('${prod.id}')">🛒 В корзину</button>
+            <button type="button" class="btn-to-cart" onclick="addProductToCart('${prod.id}')">🛒 Корзина</button>
           </div>
         `;
         grid.appendChild(card);
@@ -1714,18 +1528,17 @@
       }
 
       const deleteBtnHtml = appState.isOwner
-        ? `<button type="button" style="background:#ef4444; color:#fff; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer;" onclick="deleteOwnerProduct('${prod.id}')">🗑️ Удалить товар</button>`
+        ? `<button type="button" style="background:#ef4444; color:#fff; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer;" onclick="deleteOwnerProduct('${prod.id}')">🗑️ Удалить</button>`
         : '';
 
       document.getElementById('productDetailContainer').innerHTML = `
         ${mediaBlock}
-        <div style="font-size:12.5px; color:#64748b; margin-bottom:4px;">Опубликовано: ${esc(prod.createdAt)}</div>
         <h2 style="font-size:26px; font-weight:800; margin-bottom:8px;">${esc(prod.name)}</h2>
         <div style="font-size:24px; font-weight:800; color:#16a34a; margin-bottom:14px;">${prod.price.toLocaleString('ru-RU')} ₴</div>
         <div style="font-size:15.5px; line-height:1.65; color:#1e293b; white-space:pre-wrap; margin-bottom:20px;">${esc(prod.desc)}</div>
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <button type="button" class="btn-buy-now" style="padding:14px 22px; font-size:16px;" onclick="buyProductInstant('${prod.id}')">Купить сейчас</button>
-          <button type="button" class="btn-to-cart" style="padding:14px 22px; font-size:16px;" onclick="addProductToCart('${prod.id}')">🛒 Добавить в корзину</button>
+          <button type="button" class="btn-buy-now" style="padding:14px 22px; font-size:16px;" onclick="buyProductInstant('${prod.id}')">Купить</button>
+          <button type="button" class="btn-to-cart" style="padding:14px 22px; font-size:16px;" onclick="addProductToCart('${prod.id}')">🛒 В корзину</button>
           ${deleteBtnHtml}
         </div>
       `;
@@ -1748,7 +1561,7 @@
       else appState.cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
       saveAppState();
       updateCartCounter();
-      toast(`«${prod.name}» добавлен в корзину`);
+      toast('Добавлено в корзину');
     }
 
     function buyProductInstant(prodId) {
@@ -1764,7 +1577,7 @@
     function renderCartModal() {
       const body = document.getElementById('cartBody');
       if (!appState.cart.length) {
-        body.innerHTML = `<div style="text-align:center; padding:24px; color:#64748b;">Корзина пуста.</div>`;
+        body.innerHTML = `<div style="text-align:center; padding:24px; color:#64748b;">Корзина пуста</div>`;
         return;
       }
       let sum = 0;
@@ -1784,7 +1597,7 @@
       body.innerHTML = `
         ${itemsHtml}
         <div style="font-size:18px; font-weight:800; margin:14px 0;">Итого: ${sum.toLocaleString('ru-RU')} ₴</div>
-        <button type="button" class="btn-green-full" onclick="completePurchase()">Подтвердить покупку</button>
+        <button type="button" class="btn-green-full" onclick="completePurchase()">Купить</button>
       `;
     }
 
@@ -1800,12 +1613,10 @@
       saveAppState();
       updateCartCounter();
       closeModal('cartModal');
-      toast('Покупка успешно оформлена!');
+      toast('Покупка оформлена');
     }
 
-    /* =========================================================================
-       FEED PAGE & SEPARATE POST DETAIL PAGE (UNLIMITED OWNER POSTING + 3 DOTS)
-       ========================================================================= */
+    /* FEED PAGE & POST DETAIL PAGE */
     function onFeedFileChange(input) {
       const file = input.files && input.files[0];
       if (!file) {
@@ -1823,10 +1634,7 @@
     }
 
     function createFeedPost() {
-      if (!appState.isOwner) {
-        toast('Только владелец может публиковать в ленту');
-        return;
-      }
+      if (!appState.isOwner) return;
       const url = document.getElementById('feedUrlInput').value.trim();
       const text = document.getElementById('feedTextInput').value.trim();
 
@@ -1845,7 +1653,7 @@
         mediaType = /\.(mp4|webm|ogg)(\?|$)/i.test(url) ? 'video' : 'image';
       }
 
-      const post = {
+      appState.posts.unshift({
         id: 'post-' + Date.now(),
         author: appState.profile.name,
         date: new Date().toLocaleDateString('ru-RU'),
@@ -1856,9 +1664,7 @@
         likes: 0,
         liked: false,
         comments: []
-      };
-
-      appState.posts.unshift(post);
+      });
       saveAppState();
 
       document.getElementById('feedUrlInput').value = '';
@@ -1868,19 +1674,15 @@
       pendingFeedMedia = { url: '', type: 'none' };
 
       renderFeedPage();
-      toast('Пост опубликован в ленте');
+      toast('Опубликовано');
     }
 
     function renderFeedPage() {
       const list = document.getElementById('feedPostsList');
+      document.getElementById('feedCountLabel').textContent = `Постов: ${appState.posts.length}`;
+
       if (!appState.posts.length) {
-        list.innerHTML = `
-          <div class="empty-state-box dark-empty">
-            <div style="font-size:36px; margin-bottom:8px;">🎬</div>
-            <div style="font-weight:800; font-size:17px; color:#fff; margin-bottom:4px;">Лента сейчас абсолютно пуста</div>
-            <div>Опубликуйте первое фото, видео или текст без ограничений.</div>
-          </div>
-        `;
+        list.innerHTML = `<div class="empty-state-box dark-empty">Публикаций пока нет</div>`;
         return;
       }
 
@@ -1894,7 +1696,7 @@
                  <button type="button" class="sound-corner-btn" onclick="toggleFeedSound('${post.id}')">${post.soundOn ? '🔊' : '🔇'}</button>
                </div>`
             : `<div class="post-media">
-                 <img src="${esc(post.mediaUrl)}" alt="Фото поста" />
+                 <img src="${esc(post.mediaUrl)}" alt="Фото" />
                  <button type="button" class="sound-corner-btn" onclick="event.stopPropagation(); toggleFeedSound('${post.id}')">${post.soundOn ? '🔊' : '🔇'}</button>
                </div>`;
         }
@@ -1919,7 +1721,7 @@
           </div>
 
           <div class="dots-menu" id="dots-${post.id}" onclick="event.stopPropagation()">
-            <button type="button" onclick="shareFeedPost('${post.id}')">📤 Отправить / Поделиться</button>
+            <button type="button" onclick="shareFeedPost('${post.id}')">📤 Отправить</button>
             <button type="button" onclick="openPostDetailPage('${post.id}')">📄 Открыть полностью</button>
             ${deleteMenuHtml}
           </div>
@@ -1972,10 +1774,10 @@
     function shareFeedPost(postId) {
       const link = `${window.location.origin}${window.location.pathname}#${postId}`;
       if (navigator.share) {
-        navigator.share({ title: 'Публикация runotoks', url: link }).catch(() => {});
+        navigator.share({ title: 'runotoks', url: link }).catch(() => {});
       } else {
         navigator.clipboard?.writeText(link).catch(() => {});
-        toast('Ссылка на пост скопирована для отправки');
+        toast('Ссылка скопирована');
       }
       document.querySelectorAll('.dots-menu.open').forEach(m => m.classList.remove('open'));
     }
@@ -2047,9 +1849,7 @@
       openPostDetailPage(postId);
     }
 
-    /* =========================================================================
-       CHAT ROULETTE + VIDEO/AUDIO CALLS + TEXT FONTS
-       ========================================================================= */
+    /* CHAT ROULETTE + CALLS + FONTS */
     function setChatFont(fontKey, btn) {
       appState.selectedFont = fontKey;
       document.querySelectorAll('.font-chip').forEach(c => c.classList.remove('active'));
@@ -2081,8 +1881,8 @@
       const dot = document.getElementById('rouletteDot');
       const title = document.getElementById('roulettePeerTitle');
       dot.classList.add('searching');
-      title.textContent = 'Поиск нового собеседника...';
-      appState.rouletteChat = [{ type: 'system', text: 'Ищем нового случайного собеседника в рулетке...' }];
+      title.textContent = 'Поиск...';
+      appState.rouletteChat = [{ type: 'system', text: 'Поиск собеседника...' }];
       renderRouletteChat();
 
       setTimeout(() => {
@@ -2091,12 +1891,12 @@
         dot.classList.remove('searching');
         title.textContent = `${appState.roulettePeer} (Онлайн)`;
         appState.rouletteChat = [
-          { type: 'system', text: `Соединение установлено! Вы общаетесь с ${appState.roulettePeer}.` },
-          { type: 'peer', font: 'default', text: 'Привет! Как дела? Можем пообщаться или созвониться.' }
+          { type: 'system', text: `Подключено: ${appState.roulettePeer}` },
+          { type: 'peer', font: 'default', text: 'Привет!' }
         ];
         saveAppState();
         renderRouletteChat();
-      }, 650);
+      }, 600);
     }
 
     function renderRouletteChat() {
@@ -2134,16 +1934,12 @@
       renderRouletteChat();
 
       setTimeout(() => {
-        const replies = [
-          'Крутой шрифт! Слышно и видно отлично 👍',
-          'Понял тебя! Нажимай видеозвонок или аудиозвонок сверху, если хочешь голосом.',
-          'Ого, классная тема! Расскажи подробнее.'
-        ];
+        const replies = ['Привет! Как дела?', 'Слышно отлично!', 'Классный шрифт 👍'];
         const reply = replies[Math.floor(Math.random() * replies.length)];
         appState.rouletteChat.push({ type: 'peer', font: 'default', text: reply });
         saveAppState();
         renderRouletteChat();
-      }, 700);
+      }, 650);
     }
 
     async function startCall(mode) {
@@ -2154,8 +1950,8 @@
 
       stage.classList.add('active');
       endBtn.style.display = 'inline-block';
-      statusText.textContent = mode === 'video' ? '📹 Видеозвонок активен' : '📞 Аудиозвонок активен';
-      document.getElementById('remotePeerCallName').textContent = `${appState.roulettePeer} в звонке`;
+      statusText.textContent = mode === 'video' ? '📹 Видеозвонок' : '📞 Аудиозвонок';
+      document.getElementById('remotePeerCallName').textContent = appState.roulettePeer;
 
       try {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -2166,7 +1962,7 @@
           localVid.srcObject = localMediaStream;
         }
       } catch (err) {
-        toast('Звонок запущен (доступ к камере/микрофону ограничен браузером)');
+        toast('Звонок запущен');
       }
 
       clearInterval(callTimerInterval);
@@ -2190,15 +1986,12 @@
       }
     }
 
-    /* =========================================================================
-       SEARCH & PROFILE PAGES
-       ========================================================================= */
+    /* SEARCH & PROFILE */
     function renderPeopleList(q) {
       const query = q.trim().toLowerCase();
       const users = [
-        { name: appState.profile.name, handle: '@runotoks', role: 'Владелец платформы' },
-        { name: 'Собеседник #4821', handle: '@user4821', role: 'В сети • Чат-рулетка' },
-        { name: 'TechExplorer', handle: '@techexplorer', role: 'Покупатель' }
+        { name: appState.profile.name, handle: '@runotoks', role: 'Владелец' },
+        { name: 'Собеседник #4821', handle: '@user4821', role: 'Чат-рулетка' }
       ].filter(u => !query || u.name.toLowerCase().includes(query) || u.handle.toLowerCase().includes(query));
 
       document.getElementById('peopleListContainer').innerHTML = users.map(u => `
@@ -2207,7 +2000,7 @@
             <div style="font-weight:800;">${esc(u.name)} <span style="font-size:12px; color:#94a3b8;">${esc(u.handle)}</span></div>
             <div style="font-size:12px; color:var(--green);">${esc(u.role)}</div>
           </div>
-          <button type="button" class="pill-stat-btn" onclick="switchPage('roulettePage')">Позвонить / Написать</button>
+          <button type="button" class="pill-stat-btn" onclick="switchPage('roulettePage')">Написать / Позвонить</button>
         </div>
       `).join('');
     }
@@ -2215,7 +2008,7 @@
     function renderProfilePage() {
       document.getElementById('profileLetter').textContent = (appState.profile.name || 'R').slice(0, 1).toUpperCase();
       document.getElementById('profileNameTitle').textContent = appState.profile.name;
-      document.getElementById('profileRoleBadge').textContent = appState.isOwner ? 'Статус: Владелец сайта' : 'Статус: Посетитель';
+      document.getElementById('profileRoleBadge').textContent = appState.isOwner ? 'Владелец' : 'Гость';
       document.getElementById('profileNameInput').value = appState.profile.name;
       document.getElementById('profileBioInput').value = appState.profile.bio;
     }
@@ -2228,7 +2021,7 @@
       appState.profile.bio = bio;
       saveAppState();
       renderProfilePage();
-      toast('Профиль сохранён');
+      toast('Сохранено');
     }
 
     function init() {
