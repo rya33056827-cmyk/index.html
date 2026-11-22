@@ -3,65 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>runotoks — Магазин, лента и ИИ Рунотокси</title>
+  <title>runotoks — Магазин, лента и чат-рулетка</title>
   <style>
     /* =========================================================================
-       RUNOTOKS DESIGN SYSTEM & MASTER STYLESHEET
-       Theme: Dark Slate + Neon Tech Green + Warm Amber + Electric Blue
+       1. DESIGN TOKENS & GLOBAL RESET
        ========================================================================= */
-
     :root {
-      --bg-body: #f3f6fa;
-      --bg-surface: #ffffff;
-      --bg-surface-alt: #f8fafc;
+      --bg-page: #f2f5f9;
+      --bg-card-light: #ffffff;
       --bg-dark: #0f172a;
-      --bg-dark-elevated: #1e293b;
-      --bg-dark-card: #162033;
-      --bg-dark-input: #0b1220;
+      --bg-dark-2: #162033;
+      --bg-dark-3: #1e293b;
+      --bg-input-dark: #0a101d;
 
-      --text-main: #0f172a;
+      --text-dark: #0f172a;
       --text-muted: #64748b;
-      --text-subtle: #94a3b8;
-      --text-on-dark: #f8fafc;
-      --text-on-dark-muted: #cbd5e1;
+      --text-light: #f8fafc;
+      --text-light-muted: #cbd5e1;
 
-      --accent-green: #22c55e;
-      --accent-green-dark: #16a34a;
-      --accent-green-soft: rgba(34, 197, 94, 0.14);
-
-      --accent-amber: #f59e0b;
-      --accent-amber-dark: #d97706;
-      --accent-amber-soft: rgba(245, 158, 11, 0.14);
-
-      --accent-blue: #2563eb;
-      --accent-blue-hover: #1d4ed8;
-      --accent-blue-soft: rgba(37, 99, 235, 0.14);
-
-      --accent-purple: #8b5cf6;
-      --accent-rose: #ef4444;
-      --accent-cyan: #06b6d4;
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --amber: #f59e0b;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --red: #ef4444;
+      --purple: #8b5cf6;
 
       --border-light: #e2e8f0;
-      --border-dark: rgba(148, 163, 184, 0.18);
+      --border-dark: rgba(148, 163, 184, 0.2);
 
-      --radius-xs: 8px;
       --radius-sm: 12px;
       --radius-md: 16px;
       --radius-lg: 22px;
       --radius-xl: 28px;
       --radius-pill: 999px;
 
-      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.10);
-      --shadow-lg: 0 20px 44px rgba(15, 23, 42, 0.20);
-      --shadow-glow-green: 0 0 24px rgba(34, 197, 94, 0.25);
+      --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 20px 48px rgba(2, 6, 23, 0.45);
 
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-
-      --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-base: 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-spring: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --font-default: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-serif: Georgia, 'Times New Roman', Times, serif;
+      --font-rounded: 'Trebuchet MS', 'Comic Sans MS', system-ui, sans-serif;
     }
 
     * {
@@ -71,774 +55,332 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
     body {
-      font-family: var(--font-sans);
-      background: var(--bg-body);
-      color: var(--text-main);
-      line-height: 1.5;
+      font-family: var(--font-default);
+      background: var(--bg-page);
+      color: var(--text-dark);
       min-height: 100vh;
-      padding-bottom: 112px;
+      padding-bottom: 108px;
+      line-height: 1.5;
       overflow-x: hidden;
     }
 
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(100, 116, 139, 0.35);
-      border-radius: var(--radius-pill);
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(100, 116, 139, 0.55);
-    }
-
     /* =========================================================================
-       TOP HEADER BAR
+       2. TOP HEADER
        ========================================================================= */
-    .top-header {
+    .top-bar {
       position: sticky;
       top: 0;
-      z-index: 120;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
       padding: 10px 16px;
     }
 
-    .top-header-inner {
-      max-width: 1120px;
+    .top-bar-inner {
+      max-width: 1080px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .brand-block {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
       cursor: pointer;
-      user-select: none;
     }
 
-    .brand-logo-box {
-      width: 44px;
-      height: 44px;
+    .brand-icon {
+      width: 42px;
+      height: 42px;
       border-radius: 13px;
       background: var(--bg-dark);
-      color: #ffffff;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .brand-title {
+      font-size: 20px;
       font-weight: 800;
-      font-size: 21px;
-      letter-spacing: -0.03em;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: transform var(--transition-spring);
+      color: var(--green);
+      line-height: 1.05;
     }
 
-    .brand-block:hover .brand-logo-box {
-      transform: scale(1.04) rotate(-2deg);
-    }
-
-    .brand-titles {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-name {
-      font-size: 21px;
-      font-weight: 800;
-      color: var(--accent-green);
-      letter-spacing: -0.025em;
-      line-height: 1.08;
-    }
-
-    .brand-sub {
-      font-size: 11px;
+    .brand-subtitle {
+      font-size: 10.5px;
       font-weight: 700;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
+      letter-spacing: 0.12em;
       color: var(--text-muted);
-      margin-top: 2px;
+      text-transform: uppercase;
     }
 
-    .top-actions {
+    .header-controls {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .icon-action-btn {
+    .owner-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+      background: #f8fafc;
+      color: var(--text-dark);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .owner-pill.is-owner {
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(34, 197, 94, 0.45);
+      color: #15803d;
+    }
+
+    .header-icon-btn {
       width: 40px;
       height: 40px;
       border-radius: 12px;
       border: 1px solid var(--border-light);
-      background: var(--bg-surface);
-      color: var(--text-main);
+      background: #fff;
+      font-size: 17px;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
-      cursor: pointer;
-      position: relative;
-      transition: all var(--transition-fast);
     }
 
-    .icon-action-btn:hover {
-      background: var(--bg-surface-alt);
-      border-color: #cbd5e1;
-      transform: translateY(-1px);
-    }
-
-    .icon-action-btn .badge-dot {
-      position: absolute;
-      top: 7px;
-      right: 7px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 0 2px #fff;
-    }
-
-    .cart-pill-btn {
+    .cart-btn {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       background: var(--bg-dark);
-      color: #ffffff;
+      color: #fff;
       border: none;
       border-radius: var(--radius-pill);
-      padding: 8px 14px 8px 12px;
-      font-size: 14px;
+      padding: 8px 14px;
       font-weight: 700;
+      font-size: 14px;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition-fast);
     }
 
-    .cart-pill-btn:hover {
-      background: #1e293b;
-      transform: translateY(-1px);
-    }
-
-    .cart-count-badge {
-      background: var(--accent-blue);
-      color: #ffffff;
+    .cart-badge {
+      background: var(--blue);
+      color: #fff;
       min-width: 24px;
       height: 24px;
-      padding: 0 7px;
       border-radius: var(--radius-pill);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
       font-weight: 800;
-      transition: transform var(--transition-spring);
-    }
-
-    .cart-count-badge.bump {
-      transform: scale(1.25);
-    }
-
-    /* Quick Inline Search Bar under Header */
-    .inline-search-wrap {
-      max-width: 1120px;
-      margin: 10px auto 0;
-      display: none;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .inline-search-wrap.open {
-      display: flex;
-      animation: fadeSlideDown 0.2s ease;
-    }
-
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .inline-search-input {
-      flex: 1;
-      height: 42px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-light);
-      background: var(--bg-surface-alt);
-      padding: 0 14px;
-      font-size: 14px;
-      color: var(--text-main);
-      outline: none;
-    }
-
-    .inline-search-input:focus {
-      border-color: var(--accent-blue);
-      background: #fff;
+      padding: 0 6px;
     }
 
     /* =========================================================================
-       MAIN CONTAINER & SECTIONS
+       3. SEPARATE PAGES ARCHITECTURE (ONLY ONE ACTIVE PAGE VISIBLE AT A TIME)
        ========================================================================= */
-    .main-container {
-      max-width: 1120px;
+    .app-container {
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 18px 16px 32px;
+      padding: 16px;
     }
 
-    /* Hero Banner Card */
-    .hero-card {
-      background: radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.22), transparent 52%),
-                  radial-gradient(circle at 15% 85%, rgba(34, 197, 94, 0.14), transparent 48%),
-                  linear-gradient(155deg, #172238 0%, #0d1524 100%);
-      color: var(--text-on-dark);
+    .page-view {
+      display: none;
+      animation: pageFadeIn 0.2s ease;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================================================
+       4. HERO BANNER
+       ========================================================================= */
+    .hero-box {
+      background: linear-gradient(155deg, #17233a 0%, #0d1524 100%);
+      color: var(--text-light);
       border-radius: var(--radius-xl);
-      padding: 26px 22px 24px;
-      position: relative;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      margin-bottom: 22px;
-    }
-
-    .hero-top-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
+      padding: 22px 20px;
       margin-bottom: 18px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       flex-wrap: wrap;
+      margin-bottom: 14px;
     }
 
-    .hero-pill-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(30, 41, 59, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      color: #e2e8f0;
-      padding: 8px 14px;
+    .hero-tag {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 7px 13px;
       border-radius: var(--radius-pill);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      line-height: 1.3;
+      color: #e2e8f0;
     }
 
-    .hero-chat-top-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .hero-chat-btn {
       background: #1e293b;
-      color: #ffffff;
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      color: #fff;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 9px 16px;
       border-radius: var(--radius-pill);
-      padding: 10px 18px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
     }
 
-    .hero-chat-top-btn:hover {
-      background: #283548;
-      transform: translateY(-1px);
-    }
-
-    .hero-headline {
-      font-size: clamp(32px, 6.2vw, 50px);
+    .hero-title {
+      font-size: clamp(28px, 6vw, 44px);
       font-weight: 800;
-      line-height: 1.07;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-      max-width: 780px;
+      line-height: 1.08;
+      margin-bottom: 12px;
+      letter-spacing: -0.025em;
     }
 
-    .hero-headline .hl-amber {
-      color: var(--accent-amber);
+    .hero-title .amber { color: var(--amber); }
+    .hero-title .green { color: var(--green); }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-light-muted);
+      margin-bottom: 18px;
+      max-width: 640px;
     }
 
-    .hero-headline .hl-green {
-      color: var(--accent-green);
-    }
-
-    .hero-description {
-      font-size: 16px;
-      line-height: 1.58;
-      color: var(--text-on-dark-muted);
-      max-width: 680px;
-      margin-bottom: 24px;
-    }
-
-    .hero-cta-stack {
+    .hero-btns {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 440px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .btn-hero-white {
-      width: 100%;
+    .btn-white {
       background: #ffffff;
       color: #0f172a;
       border: none;
       border-radius: var(--radius-md);
-      padding: 15px 22px;
-      font-size: 16px;
+      padding: 13px 20px;
+      font-size: 15px;
       font-weight: 800;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-fast);
     }
 
-    .btn-hero-white:hover {
-      background: #f1f5f9;
-      transform: translateY(-2px);
-    }
-
-    .btn-hero-blue {
-      width: 100%;
-      background: var(--accent-blue);
+    .btn-blue {
+      background: var(--blue);
       color: #ffffff;
       border: none;
       border-radius: var(--radius-md);
-      padding: 15px 22px;
-      font-size: 16px;
+      padding: 13px 20px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
-      transition: all var(--transition-fast);
-    }
-
-    .btn-hero-blue:hover {
-      background: var(--accent-blue-hover);
-      transform: translateY(-2px);
-    }
-
-    .hero-stats-strip {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(148, 163, 184, 0.16);
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-      gap: 12px;
-    }
-
-    .hero-stat-item {
-      background: rgba(15, 23, 42, 0.55);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-    }
-
-    .hero-stat-val {
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-
-    .hero-stat-lbl {
-      font-size: 12px;
-      color: var(--text-subtle);
     }
 
     /* =========================================================================
-       STORIES BAR
+       5. PURCHASES PAGE ("ПОКУПКИ" — SEPARATE CLEAN PAGE)
        ========================================================================= */
-    .stories-section {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-lg);
-      padding: 14px 16px;
-      margin-bottom: 22px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-mini-header {
+    .page-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-      gap: 8px;
-    }
-
-    .section-mini-title {
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-    }
-
-    .section-mini-link {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--accent-blue);
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .stories-track {
-      display: flex;
-      gap: 14px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: thin;
-    }
-
-    .story-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      min-width: 72px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .story-ring {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      padding: 3px;
-      background: linear-gradient(135deg, var(--accent-green), var(--accent-blue), var(--accent-amber));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform var(--transition-spring);
-    }
-
-    .story-ring.seen {
-      background: #cbd5e1;
-    }
-
-    .story-item:hover .story-ring {
-      transform: scale(1.06);
-    }
-
-    .story-avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: var(--bg-dark);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 800;
-      border: 2px solid #ffffff;
-    }
-
-    .story-label {
-      font-size: 11.5px;
-      font-weight: 600;
-      color: var(--text-main);
-      max-width: 76px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-    }
-
-    /* =========================================================================
-       CATALOG / PURCHASES SECTION
-       ========================================================================= */
-    .catalog-section {
-      margin-bottom: 28px;
-    }
-
-    .catalog-toolbar {
-      display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 16px;
     }
 
-    .section-heading {
+    .page-heading {
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-main);
+      color: var(--text-dark);
     }
 
-    .category-pills {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 16px;
-    }
-
-    .cat-pill {
-      padding: 8px 15px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-light);
-      background: var(--bg-surface);
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all var(--transition-fast);
-    }
-
-    .cat-pill:hover {
-      border-color: #94a3b8;
-    }
-
-    .cat-pill.active {
+    .owner-panel-card {
       background: var(--bg-dark);
-      color: #ffffff;
-      border-color: var(--bg-dark);
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-      gap: 16px;
-    }
-
-    .product-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-light);
+      color: var(--text-light);
       border-radius: var(--radius-lg);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition-base);
-    }
-
-    .product-card:hover {
-      transform: translateY(-3px);
+      padding: 18px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-dark);
       box-shadow: var(--shadow-md);
-      border-color: #cbd5e1;
     }
 
-    .product-visual {
-      height: 132px;
-      border-radius: var(--radius-md);
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 46px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .product-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: var(--accent-green);
-      color: #062812;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: var(--radius-pill);
-    }
-
-    .product-badge.amber {
-      background: var(--accent-amber);
-      color: #291700;
-    }
-
-    .product-fav-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(15, 23, 42, 0.72);
-      color: #fff;
-      font-size: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .product-title {
+    .owner-panel-title {
       font-size: 16px;
       font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
-    .product-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    .product-meta-row {
+      color: var(--green);
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 6px;
-      gap: 8px;
     }
 
-    .product-price {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .product-stock {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent-green-dark);
-    }
-
-    .btn-add-cart {
-      width: 100%;
-      padding: 11px 14px;
-      border-radius: var(--radius-sm);
-      border: none;
-      background: var(--bg-dark);
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-
-    .btn-add-cart:hover {
-      background: var(--accent-blue);
-    }
-
-    /* =========================================================================
-       SOCIAL FEED ("ЛЕНТА") SECTION
-       ========================================================================= */
-    .feed-section {
-      background: var(--bg-dark);
-      color: var(--text-on-dark);
-      border-radius: var(--radius-xl);
-      padding: 22px 18px;
-      border: 1px solid var(--border-dark);
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 28px;
-    }
-
-    .feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .feed-title {
-      font-size: 22px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .feed-tabs {
-      display: flex;
-      gap: 8px;
-    }
-
-    .feed-tab-btn {
-      padding: 7px 14px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-dark);
-      background: var(--bg-dark-elevated);
-      color: var(--text-on-dark-muted);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .feed-tab-btn.active {
-      background: var(--accent-green);
-      color: #062812;
-      border-color: var(--accent-green);
-    }
-
-    /* Composer Box */
-    .composer-card {
-      background: var(--bg-dark-card);
-      border: 1px solid var(--border-dark);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-bottom: 18px;
-    }
-
-    .composer-label {
+    .field-label {
       display: block;
       font-size: 12.5px;
       font-weight: 700;
-      color: var(--text-on-dark-muted);
-      margin-bottom: 6px;
+      color: var(--text-light-muted);
+      margin-bottom: 5px;
     }
 
-    .dark-input, .dark-textarea {
+    .dark-field, .dark-area {
       width: 100%;
-      background: var(--bg-dark-input);
-      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: var(--bg-input-dark);
+      border: 1px solid rgba(148, 163, 184, 0.25);
       border-radius: var(--radius-sm);
-      color: #ffffff;
+      color: #fff;
       font-family: inherit;
       font-size: 14px;
-      padding: 11px 14px;
-      margin-bottom: 12px;
+      padding: 11px 13px;
+      margin-bottom: 11px;
       outline: none;
-      transition: border-color var(--transition-fast);
     }
 
-    .dark-input:focus, .dark-textarea:focus {
-      border-color: var(--accent-green);
+    .dark-field:focus, .dark-area:focus {
+      border-color: var(--green);
     }
 
-    .dark-textarea {
-      min-height: 76px;
+    .dark-area {
+      min-height: 82px;
       resize: vertical;
     }
 
-    .composer-file-row {
+    .file-row {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
-    .file-pick-btn {
+    .btn-file-select {
       background: #e2e8f0;
       color: #0f172a;
       border: none;
@@ -849,120 +391,292 @@
       cursor: pointer;
     }
 
-    .file-name-chip {
+    .file-status {
       font-size: 12.5px;
       font-family: var(--font-mono);
-      color: var(--text-on-dark-muted);
-      background: rgba(15, 23, 42, 0.7);
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.16);
+      color: var(--text-light-muted);
     }
 
-    .btn-publish {
+    .btn-green-full {
       width: 100%;
-      background: var(--accent-green);
-      color: #062812;
+      background: var(--green);
+      color: #052e16;
       border: none;
       border-radius: var(--radius-sm);
       padding: 13px 18px;
       font-size: 15px;
       font-weight: 800;
       cursor: pointer;
-      transition: all var(--transition-fast);
     }
 
-    .btn-publish:hover {
+    .btn-green-full:hover {
       background: #4ade80;
     }
 
-    /* Post Card */
-    .post-card {
-      background: var(--bg-dark-card);
-      border: 1px solid var(--border-dark);
+    .empty-state-box {
+      background: #ffffff;
+      border: 2px dashed #cbd5e1;
       border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 16px;
-      position: relative;
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--text-muted);
     }
 
-    .post-top {
+    .empty-state-box.dark-empty {
+      background: var(--bg-dark-2);
+      border-color: rgba(148, 163, 184, 0.25);
+      color: var(--text-light-muted);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-thumb {
+      width: 100%;
+      height: 170px;
+      border-radius: var(--radius-md);
+      background: #0f172a;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 42px;
+    }
+
+    .product-thumb img, .product-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .product-short-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price-tag {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-top: 6px;
+    }
+
+    .product-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-buy-now {
+      flex: 1;
+      background: var(--green);
+      color: #052e16;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-to-cart {
+      background: var(--bg-dark);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       6. DETAIL SUB-PAGES (PRODUCT DETAIL PAGE & POST DETAIL PAGE)
+       ========================================================================= */
+    .detail-card-light {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .detail-card-dark {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .back-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+      background: #ffffff;
+      color: var(--text-dark);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .back-nav-btn.dark {
+      background: var(--bg-dark-3);
+      color: #fff;
+      border-color: var(--border-dark);
+    }
+
+    .detail-media-large {
+      width: 100%;
+      max-height: 440px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #070b14;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .detail-media-large img, .detail-media-large video {
+      width: 100%;
+      max-height: 440px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* =========================================================================
+       7. FEED PAGE ("ЛЕНТА" — SEPARATE CLEAN PAGE, OWNER UNLIMITED POSTING)
+       ========================================================================= */
+    .feed-wrapper {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      border-radius: var(--radius-xl);
+      padding: 20px 16px;
+      border: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .post-card {
+      background: var(--bg-dark-2);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.18s ease;
+    }
+
+    .post-card:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .post-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
     }
 
-    .post-author-row {
+    .post-user {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .post-avatar {
+    .avatar-circle {
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+      background: linear-gradient(135deg, var(--green), var(--blue));
       color: #fff;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
     }
 
-    .post-author-name {
-      font-weight: 800;
-      font-size: 15px;
-      color: #ffffff;
-    }
-
-    .post-date {
-      font-size: 12px;
-      color: var(--text-subtle);
-    }
-
-    .post-menu-btn {
+    .dots-btn {
       background: none;
       border: none;
-      color: var(--text-on-dark-muted);
-      font-size: 20px;
-      cursor: pointer;
+      color: var(--text-light-muted);
+      font-size: 22px;
       padding: 4px 10px;
       border-radius: 8px;
+      cursor: pointer;
     }
 
-    .post-menu-btn:hover {
+    .dots-btn:hover {
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .post-dropdown {
+    .dots-menu {
       position: absolute;
-      top: 46px;
+      top: 48px;
       right: 16px;
       background: #1e293b;
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.28);
       border-radius: 12px;
       box-shadow: var(--shadow-lg);
-      z-index: 20;
-      min-width: 170px;
+      z-index: 30;
+      min-width: 185px;
       display: none;
       overflow: hidden;
     }
 
-    .post-dropdown.open {
+    .dots-menu.open {
       display: block;
     }
 
-    .post-dropdown button {
+    .dots-menu button {
       width: 100%;
       text-align: left;
-      padding: 10px 14px;
       background: none;
       border: none;
       color: #f8fafc;
-      font-size: 13px;
+      padding: 11px 14px;
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -970,1210 +684,835 @@
       gap: 8px;
     }
 
-    .post-dropdown button:hover {
+    .dots-menu button:hover {
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .post-dropdown button.danger {
+    .dots-menu button.delete-opt {
       color: #f87171;
     }
 
-    .post-body-text {
+    .post-text {
       font-size: 15px;
       line-height: 1.55;
       color: #f1f5f9;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       white-space: pre-wrap;
     }
 
-    .post-media-box {
+    .post-media {
       position: relative;
       border-radius: var(--radius-md);
       overflow: hidden;
-      background: #070c16;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      margin-bottom: 14px;
+      background: #060a12;
+      margin-bottom: 12px;
     }
 
-    .post-media-box img,
-    .post-media-box video {
+    .post-media img, .post-media video {
       width: 100%;
       max-height: 360px;
       object-fit: cover;
       display: block;
     }
 
-    .media-sound-btn {
+    .sound-corner-btn {
       position: absolute;
-      bottom: 12px;
-      right: 12px;
-      width: 40px;
-      height: 40px;
+      bottom: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.84);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
       font-size: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(6px);
     }
 
-    .post-actions-row {
+    .post-footer-btns {
       display: flex;
-      align-items: center;
-      flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
-    .post-pill-btn {
+    .pill-stat-btn {
       background: #233047;
       color: #f8fafc;
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      border: 1px solid rgba(148, 163, 184, 0.22);
       border-radius: var(--radius-pill);
-      padding: 8px 15px;
+      padding: 7px 14px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
+    }
+
+    /* =========================================================================
+       8. CHAT ROULETTE + VIDEO/AUDIO CALLS + FONTS PAGE ("ЧАТ РУЛЕТКА")
+       ========================================================================= */
+    .roulette-card {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      border: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .roulette-top-bar {
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-dark);
+      margin-bottom: 14px;
     }
 
-    .post-pill-btn:hover {
-      background: #2d3d59;
+    .roulette-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 15px;
     }
 
-    .post-pill-btn.liked {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(248, 113, 113, 0.5);
-      color: #fca5a5;
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
     }
 
-    .comments-list {
+    .status-dot.searching {
+      background: var(--amber);
+      box-shadow: 0 0 10px var(--amber);
+    }
+
+    .roulette-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .r-btn {
+      padding: 8px 13px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: var(--bg-dark-3);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .r-btn.next-btn {
+      background: var(--amber);
+      color: #1f1200;
+      border-color: var(--amber);
+    }
+
+    .r-btn.call-btn {
+      background: var(--green);
+      color: #052e16;
+      border-color: var(--green);
+    }
+
+    .r-btn.end-call-btn {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    .call-stage {
+      display: none;
+      background: #060a12;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .call-stage.active {
+      display: block;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .video-box {
+      background: #111827;
+      border-radius: 14px;
+      height: 190px;
+      position: relative;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .video-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-label {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 3px 9px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .font-toolbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: var(--bg-dark-2);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .font-chip {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: var(--bg-input-dark);
+      color: #e2e8f0;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .font-chip.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .roulette-messages {
+      height: 280px;
+      overflow-y: auto;
+      background: var(--bg-input-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-bottom: 12px;
     }
 
-    .comment-bubble {
-      background: #1d283d;
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: 12px;
+    .msg-bubble {
+      max-width: 82%;
       padding: 10px 14px;
-      font-size: 13.5px;
-      color: #e2e8f0;
+      border-radius: 15px;
+      font-size: 14.5px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .msg-bubble.peer {
+      align-self: flex-start;
+      background: #1e293b;
+      color: #f8fafc;
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-bubble.me {
+      align-self: flex-end;
+      background: var(--blue);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-bubble.system {
+      align-self: center;
+      background: rgba(34, 197, 94, 0.14);
+      color: #86efac;
+      font-size: 12.5px;
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+    }
+
+    .roulette-form {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       gap: 8px;
     }
 
-    .comment-author {
-      font-weight: 700;
-      color: var(--accent-green);
-      margin-right: 6px;
-    }
-
-    .comment-form-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .comment-input {
-      flex: 1;
-      background: var(--bg-dark-input);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 12px;
-      padding: 10px 14px;
-      color: #ffffff;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .comment-input:focus {
-      border-color: var(--accent-blue);
-    }
-
-    .comment-send-btn {
-      background: #283650;
-      color: #ffffff;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .comment-send-btn:hover {
-      background: var(--accent-blue);
-    }
-
     /* =========================================================================
-       FLOATING ACCESSIBILITY / SOUND WIDGET (LEFT EDGE)
+       9. BOTTOM NAVIGATION DOCK ("ПОКУПКИ" LEFT OF "ЛЕНТА" IN SAME ROW)
        ========================================================================= */
-    .floating-sound-widget {
-      position: fixed;
-      left: 10px;
-      top: 76%;
-      transform: translateY(-50%);
-      z-index: 130;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(15, 23, 42, 0.88);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: var(--shadow-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: transform var(--transition-fast);
-    }
-
-    .floating-sound-widget:hover {
-      transform: translateY(-50%) scale(1.07);
-    }
-
-    /* =========================================================================
-       FLOATING BOTTOM DOCK BAR
-       ========================================================================= */
-    .bottom-dock-wrapper {
+    .bottom-dock-bar {
       position: fixed;
       bottom: 14px;
       left: 0;
       right: 0;
-      z-index: 140;
+      z-index: 150;
       display: flex;
       justify-content: center;
       padding: 0 12px;
       pointer-events: none;
     }
 
-    .bottom-dock {
+    .bottom-dock-inner {
       pointer-events: auto;
       background: rgba(13, 19, 33, 0.96);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(148, 163, 184, 0.22);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.24);
       border-radius: 26px;
       padding: 8px 12px;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 16px 38px rgba(2, 6, 23, 0.55);
-      max-width: 100%;
-      overflow-x: auto;
+      box-shadow: var(--shadow-lg);
     }
 
-    .dock-pill {
+    .nav-pill {
       display: inline-flex;
       align-items: center;
       gap: 7px;
       padding: 10px 16px;
       border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
+      border: 1px solid rgba(148, 163, 184, 0.24);
       background: #1b2538;
-      color: #f8fafc;
+      color: #ffffff;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: all var(--transition-fast);
+      transition: all 0.16s ease;
     }
 
-    .dock-pill:hover {
-      background: #26344e;
-    }
-
-    .dock-pill.active {
+    .nav-pill.active {
       background: #ffffff;
       color: #0f172a;
       border-color: #ffffff;
     }
 
-    .dock-circle-btn {
+    .nav-round-btn {
       width: 44px;
       height: 44px;
       border-radius: 50%;
       border: none;
-      background: var(--accent-amber);
+      background: var(--amber);
       color: #ffffff;
       font-size: 18px;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
-      transition: transform var(--transition-spring);
     }
 
-    .dock-circle-btn:hover {
-      transform: scale(1.08);
-    }
-
-    .dock-circle-btn.profile-btn {
-      background: var(--accent-green);
+    .nav-round-btn.profile {
+      background: var(--green);
       color: #052e16;
-      box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
     }
 
     /* =========================================================================
-       MODALS & DRAWERS (CHAT / AI, CART, PROFILE, STORIES, SEARCH)
+       10. MODALS & TOASTS
        ========================================================================= */
-    .modal-backdrop {
+    .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(2, 6, 23, 0.72);
-      backdrop-filter: blur(5px);
-      z-index: 200;
+      backdrop-filter: blur(4px);
+      z-index: 220;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
 
-    .modal-backdrop.open {
+    .modal-overlay.open {
       display: flex;
-      animation: fadeIn 0.18s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .modal-dialog {
+    .modal-box {
       width: 100%;
-      max-width: 640px;
-      max-height: 88vh;
+      max-width: 520px;
+      max-height: 85vh;
       background: var(--bg-dark);
-      color: var(--text-on-dark);
-      border: 1px solid rgba(148, 163, 184, 0.24);
+      color: #fff;
+      border: 1px solid var(--border-dark);
       border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-lg);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
-    .modal-dialog.light {
-      background: var(--bg-surface);
-      color: var(--text-main);
-      border-color: var(--border-light);
+    .modal-box.light {
+      background: #ffffff;
+      color: var(--text-dark);
     }
 
     .modal-head {
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      padding: 15px 18px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-    }
-
-    .modal-dialog.light .modal-head {
-      border-bottom-color: var(--border-light);
-    }
-
-    .modal-title {
-      font-size: 18px;
       font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .modal-close-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(148, 163, 184, 0.16);
-      color: inherit;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 17px;
     }
 
     .modal-body {
-      padding: 18px 20px;
+      padding: 18px;
       overflow-y: auto;
       flex: 1;
     }
 
-    .modal-foot {
-      padding: 14px 20px;
-      border-top: 1px solid rgba(148, 163, 184, 0.16);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .modal-dialog.light .modal-foot {
-      border-top-color: var(--border-light);
-    }
-
-    /* Chat & AI Messages */
-    .chat-mode-switch {
-      display: flex;
-      gap: 6px;
-      background: var(--bg-dark-input);
-      padding: 4px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-    }
-
-    .chat-mode-btn {
-      padding: 5px 12px;
-      border-radius: var(--radius-pill);
-      border: none;
-      background: transparent;
-      color: var(--text-on-dark-muted);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .chat-mode-btn.active {
-      background: var(--accent-blue);
-      color: #ffffff;
-    }
-
-    .chat-messages-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 260px;
-    }
-
-    .chat-msg {
-      max-width: 84%;
-      padding: 11px 14px;
-      border-radius: 16px;
-      font-size: 14px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    .chat-msg.bot {
-      align-self: flex-start;
-      background: var(--bg-dark-card);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      color: #f1f5f9;
-      border-bottom-left-radius: 4px;
-    }
-
-    .chat-msg.user {
-      align-self: flex-end;
-      background: var(--accent-blue);
-      color: #ffffff;
-      border-bottom-right-radius: 4px;
-    }
-
-    .chat-msg-meta {
-      font-size: 11px;
-      opacity: 0.7;
-      margin-top: 4px;
-    }
-
-    .quick-prompts-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .quick-prompt-chip {
-      background: rgba(37, 99, 235, 0.16);
-      border: 1px solid rgba(96, 165, 250, 0.35);
-      color: #bfdbfe;
-      border-radius: var(--radius-pill);
-      padding: 5px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .quick-prompt-chip:hover {
-      background: rgba(37, 99, 235, 0.3);
-    }
-
-    /* Cart Items */
-    .cart-item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .qty-ctrl {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .qty-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      border: 1px solid var(--border-light);
-      background: var(--bg-surface-alt);
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* Toast Notification */
-    .toast-container {
+    .toast-box {
       position: fixed;
-      top: 72px;
+      top: 70px;
       right: 16px;
       z-index: 300;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-width: 340px;
     }
 
-    .toast-item {
+    .toast {
       background: var(--bg-dark);
-      color: #ffffff;
-      border: 1px solid rgba(34, 197, 94, 0.45);
-      border-left: 4px solid var(--accent-green);
+      color: #fff;
+      border-left: 4px solid var(--green);
+      padding: 11px 15px;
       border-radius: 12px;
-      padding: 12px 15px;
       font-size: 13.5px;
       font-weight: 600;
       box-shadow: var(--shadow-lg);
-      animation: toastIn 0.22s ease;
-    }
-
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateX(18px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    /* Story Viewer Overlay */
-    .story-progress-bar {
-      height: 4px;
-      background: rgba(255, 255, 255, 0.22);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    .story-progress-fill {
-      height: 100%;
-      background: var(--accent-green);
-      width: 100%;
-      transition: width 0.25s linear;
-    }
-
-    .story-stage {
-      background: linear-gradient(145deg, #1e293b, #090d16);
-      border-radius: var(--radius-lg);
-      padding: 28px 22px;
-      text-align: center;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-    }
-
-    .story-stage-emoji {
-      font-size: 56px;
-      margin-bottom: 12px;
-    }
-
-    .story-stage-title {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .story-stage-text {
-      font-size: 15px;
-      color: var(--text-on-dark-muted);
-      line-height: 1.55;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 600px) {
-      .hero-card {
-        padding: 20px 16px;
-        border-radius: 22px;
-      }
-      .dock-pill {
-        padding: 9px 13px;
-        font-size: 13px;
-      }
-      .floating-sound-widget {
-        top: auto;
-        bottom: 78px;
-        transform: none;
-      }
-      .floating-sound-widget:hover {
-        transform: scale(1.06);
-      }
     }
   </style>
 </head>
 <body>
 
   <!-- =======================================================================
-       TOP NAVIGATION HEADER
+       TOP HEADER
        ======================================================================= -->
-  <header class="top-header">
-    <div class="top-header-inner">
-      <div class="brand-block" onclick="navigateTo('top')" title="На главную runotoks">
-        <div class="brand-logo-box">R</div>
-        <div class="brand-titles">
-          <span class="brand-name">runotoks</span>
-          <span class="brand-sub">TECH STORE</span>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="brand" onclick="switchPage('feedPage')">
+        <div class="brand-icon">R</div>
+        <div>
+          <div class="brand-title">runotoks</div>
+          <div class="brand-subtitle">TECH STORE</div>
         </div>
       </div>
 
-      <div class="top-actions">
-        <button class="icon-action-btn" onclick="toggleInlineSearch()" title="Быстрый поиск по каталогу и ленте">
-          🔍
+      <div class="header-controls">
+        <button type="button" class="owner-pill is-owner" id="ownerModeBtn" onclick="openModal('ownerAuthModal')" title="Режим владельца сайта">
+          👑 Владелец
         </button>
-        <button class="icon-action-btn" onclick="openModal('ordersModal')" title="Мои заказы и статусы">
-          📦
-          <span class="badge-dot" id="ordersDot"></span>
+        <button type="button" class="header-icon-btn" onclick="switchPage('roulettePage')" title="Чат-рулетка и звонки">
+          💬
         </button>
-        <button class="cart-pill-btn" onclick="openModal('cartModal')" title="Открыть корзину">
+        <button type="button" class="cart-btn" onclick="openModal('cartModal')" title="Корзина">
           <span>🛒</span>
-          <span class="cart-count-badge" id="cartCountBadge">0</span>
+          <span class="cart-badge" id="cartBadge">0</span>
         </button>
       </div>
-    </div>
-
-    <div class="inline-search-wrap" id="inlineSearchWrap">
-      <input
-        type="text"
-        id="inlineSearchInput"
-        class="inline-search-input"
-        placeholder="Поиск гаджетов, постов, пользователей или ИИ-тем..."
-        oninput="handleGlobalFilter(this.value)"
-      />
-      <button class="btn-add-cart" style="width:auto; padding:0 14px; height:42px;" onclick="clearGlobalFilter()">
-        Сброс
-      </button>
     </div>
   </header>
 
-  <!-- Toast Notifications -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-box" id="toastBox"></div>
 
-  <!-- Left Floating Sound / Voice Assistant Button -->
-  <button class="floating-sound-widget" id="soundToggleWidget" onclick="toggleSoundFeedback()" title="Звуковые уведомления и озвучка">
-    🔊
-  </button>
+  <main class="app-container">
 
-  <!-- =======================================================================
-       MAIN CONTENT WRAPPER
-       ======================================================================= -->
-  <main class="main-container" id="top">
-
-    <!-- HERO SECTION -->
-    <section class="hero-card" id="heroSection">
-      <div class="hero-top-row">
-        <div class="hero-pill-badge">
-          <span>✨</span>
-          <span><strong>runotoks</strong> • Магазин, лента и ИИ Рунотокси</span>
+    <!-- =====================================================================
+         PAGE 1: ЛЕНТА (ПОЛНОСТЬЮ ОТДЕЛЬНАЯ ЧИСТАЯ СТРАНИЦА)
+         ===================================================================== -->
+    <section class="page-view active" id="feedPage">
+      <div class="hero-box">
+        <div class="hero-top">
+          <div class="hero-tag">✨ <strong>runotoks</strong> • Магазин, лента и чат-рулетка</div>
+          <button type="button" class="hero-chat-btn" onclick="switchPage('roulettePage')">
+            💬 Чат-рулетка
+          </button>
         </div>
 
-        <button class="hero-chat-top-btn" onclick="openChatModal('chat')">
-          <span>💬</span>
-          <span>Чат</span>
-        </button>
+        <h1 class="hero-title">
+          Технологии, <span class="amber">общение</span> и <span class="green">чат</span><br />
+          <span class="green">Рунотокси</span> в одном месте
+        </h1>
+
+        <p class="hero-desc">
+          Отдельная страница «Покупки» для товаров владельца, чистая «Лента» для публикаций и чат-рулетка со звонками и шрифтами.
+        </p>
+
+        <div class="hero-btns">
+          <button type="button" class="btn-white" onclick="switchPage('purchasesPage')">
+            Перейти в покупки →
+          </button>
+          <button type="button" class="btn-blue" onclick="switchPage('roulettePage')">
+            Открыть чат-рулетку и звонки
+          </button>
+        </div>
       </div>
 
-      <h1 class="hero-headline">
-        Технологии, <span class="hl-amber">общение</span> и <span class="hl-green">ИИ</span><br />
-        <span class="hl-green">Рунотокси</span> в одном месте
-      </h1>
+      <div class="feed-wrapper">
+        <div class="page-header-row">
+          <h2 style="font-size:22px; font-weight:800;">🏠 Лента публикаций</h2>
+          <span style="font-size:12.5px; color:#94a3b8;" id="feedOwnerHint">Доступ владельца: без ограничений</span>
+        </div>
 
-      <p class="hero-description">
-        Выбирайте гаджеты, смотрите ленту и сторис, находите людей через нижний поиск, открывайте профиль рядом с ним или переходите в чат.
-      </p>
+        <!-- Форма публикации (только для владельца) -->
+        <div class="owner-panel-card" id="feedComposerBox" style="background:#162033; margin-bottom:18px;">
+          <div class="owner-panel-title">
+            <span>✍️ Новая публикация владельца</span>
+            <span style="font-size:12px; color:#94a3b8;">Фото, видео, текст без ограничений</span>
+          </div>
 
-      <div class="hero-cta-stack">
-        <button class="btn-hero-white" onclick="scrollToCatalog()">
-          <span>Перейти в каталог ↓</span>
-        </button>
-        <button class="btn-hero-blue" onclick="openChatModal('ai')">
-          <span>Открыть чат и ИИ Рунотокси</span>
-        </button>
-      </div>
+          <label class="field-label">Ссылка на фото или видео (необязательно)</label>
+          <input type="text" id="feedUrlInput" class="dark-field" placeholder="https://... (фото или видео)" />
 
-      <div class="hero-stats-strip">
-        <div class="hero-stat-item">
-          <div class="hero-stat-val" id="statProductsCount">8+</div>
-          <div class="hero-stat-lbl">Гаджетов и девайсов</div>
+          <label class="field-label">Текст публикации</label>
+          <textarea id="feedTextInput" class="dark-area" placeholder="Напишите любой текст публикации..."></textarea>
+
+          <div class="file-row">
+            <span class="field-label" style="margin:0;">Файл фото/видео:</span>
+            <button type="button" class="btn-file-select" onclick="document.getElementById('feedFileInput').click()">
+              Вибрати файл
+            </button>
+            <input type="file" id="feedFileInput" accept="image/*,video/*" style="display:none;" onchange="onFeedFileChange(this)" />
+            <span class="file-status" id="feedFileLabel">Файл не выбран</span>
+          </div>
+
+          <button type="button" class="btn-green-full" onclick="createFeedPost()">
+            Опубликовать в ленту
+          </button>
         </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-val" id="statPostsCount">0</div>
-          <div class="hero-stat-lbl">Публикаций в ленте</div>
+
+        <div id="feedRestrictedNotice" class="empty-state-box dark-empty" style="display:none; margin-bottom:16px;">
+          Публиковать посты в ленте может только владелец сайта. Нажмите «👑 Владелец» вверху для входа.
         </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-val">24/7</div>
-          <div class="hero-stat-lbl">ИИ Рунотокси онлайн</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-val" id="statBalanceVal">1 500 ₴</div>
-          <div class="hero-stat-lbl">Бонусный баланс</div>
-        </div>
+
+        <!-- Список постов (изначально абсолютно чистый) -->
+        <div id="feedPostsList"></div>
       </div>
     </section>
 
-    <!-- STORIES BAR -->
-    <section class="stories-section" id="storiesSection">
-      <div class="section-mini-header">
-        <span class="section-mini-title">Сторис сообщества и дропов</span>
-        <button class="section-mini-link" onclick="openModal('createStoryModal')">+ Добавить сторис</button>
-      </div>
-      <div class="stories-track" id="storiesTrack"></div>
+    <!-- =====================================================================
+         PAGE 2: ОТДЕЛЬНАЯ СТРАНИЦА ПОСТА (ОТКРЫВАЕТСЯ ПО НАЖАТИЮ НА ПОСТ)
+         ===================================================================== -->
+    <section class="page-view" id="postDetailPage">
+      <button type="button" class="back-nav-btn dark" onclick="switchPage('feedPage')">
+        ← Назад в ленту
+      </button>
+      <div class="detail-card-dark" id="postDetailContainer"></div>
     </section>
 
-    <!-- CATALOG ("ПОКУПКИ") SECTION -->
-    <section class="catalog-section" id="catalogSection">
-      <div class="catalog-toolbar">
-        <h2 class="section-heading">Покупки и каталог</h2>
-        <span id="catalogCounterText" style="font-size:13px; color:var(--text-muted); font-weight:600;"></span>
+    <!-- =====================================================================
+         PAGE 3: ПОКУПКИ (ПОЛНОСТЬЮ ОТДЕЛЬНАЯ ЧИСТАЯ СТРАНИЦА)
+         ===================================================================== -->
+    <section class="page-view" id="purchasesPage">
+      <div class="page-header-row">
+        <h2 class="page-heading">🛍️ Покупки</h2>
+        <span style="font-size:13px; color:var(--text-muted); font-weight:700;" id="productsCountLabel">Товаров: 0</span>
       </div>
 
-      <div class="category-pills" id="categoryPills">
-        <button class="cat-pill active" data-cat="all" onclick="selectCategory('all', this)">Все товары</button>
-        <button class="cat-pill" data-cat="audio" onclick="selectCategory('audio', this)">Аудио и бас</button>
-        <button class="cat-pill" data-cat="power" onclick="selectCategory('power', this)">Питание и АКБ</button>
-        <button class="cat-pill" data-cat="smart" onclick="selectCategory('smart', this)">Умные девайсы</button>
-        <button class="cat-pill" data-cat="setup" onclick="selectCategory('setup', this)">Сетап и кабели</button>
-      </div>
-
-      <div class="products-grid" id="productsGrid"></div>
-    </section>
-
-    <!-- SOCIAL FEED ("ЛЕНТА") SECTION -->
-    <section class="feed-section" id="feedSection">
-      <div class="feed-header">
-        <h2 class="feed-title">
-          <span>🎬</span>
-          <span>Лента runotoks</span>
-        </h2>
-        <div class="feed-tabs">
-          <button class="feed-tab-btn active" data-feed-tab="all" onclick="setFeedTab('all', this)">Все посты</button>
-          <button class="feed-tab-btn" data-feed-tab="media" onclick="setFeedTab('media', this)">С медиа</button>
-          <button class="feed-tab-btn" data-feed-tab="mine" onclick="setFeedTab('mine', this)">Мои</button>
+      <!-- Панель добавления товара (ТОЛЬКО ВЛАДЕЛЕЦ) -->
+      <div class="owner-panel-card" id="productComposerBox">
+        <div class="owner-panel-title">
+          <span>➕ Добавить свой товар (только владелец)</span>
+          <span style="font-size:12px; color:#94a3b8;">Витрина магазина</span>
         </div>
-      </div>
 
-      <!-- Post Composer -->
-      <div class="composer-card" id="postComposer">
-        <label class="composer-label" for="postMediaUrlInput">Ссылка на фото или видео (необязательно)</label>
-        <input
-          type="text"
-          id="postMediaUrlInput"
-          class="dark-input"
-          placeholder="https://... (фото или .mp4 / .webm)"
-        />
+        <label class="field-label">Название товара</label>
+        <input type="text" id="prodNameInput" class="dark-field" placeholder="Например: Наушники П47 Pro" />
 
-        <label class="composer-label" for="postTextInput">Текст публикации</label>
-        <textarea
-          id="postTextInput"
-          class="dark-textarea"
-          placeholder="Привет! Расскажи о новом сетапе, треке, гаджете или идее..."
-        ></textarea>
+        <label class="field-label">Стоимость (в ₴ / грн)</label>
+        <input type="number" id="prodPriceInput" class="dark-field" placeholder="Например: 750" min="0" />
 
-        <div class="composer-file-row">
-          <span class="composer-label" style="margin:0;">Файл фото/видео:</span>
-          <button type="button" class="file-pick-btn" onclick="document.getElementById('postFileInput').click()">
+        <label class="field-label">Полное описание товара</label>
+        <textarea id="prodDescInput" class="dark-area" placeholder="Характеристики, комплектация, состояние..."></textarea>
+
+        <label class="field-label">Ссылка на фото/видео товара (необязательно)</label>
+        <input type="text" id="prodUrlInput" class="dark-field" placeholder="https://..." />
+
+        <div class="file-row">
+          <span class="field-label" style="margin:0;">Фото/видео с устройства:</span>
+          <button type="button" class="btn-file-select" onclick="document.getElementById('prodFileInput').click()">
             Вибрати файл
           </button>
-          <input
-            type="file"
-            id="postFileInput"
-            accept="image/*,video/mp4,video/webm,video/ogg"
-            style="display:none;"
-            onchange="handlePostFileSelected(this)"
-          />
-          <span class="file-name-chip" id="selectedPostFileName">Файл не выбран</span>
+          <input type="file" id="prodFileInput" accept="image/*,video/*" style="display:none;" onchange="onProdFileChange(this)" />
+          <span class="file-status" id="prodFileLabel">Файл не выбран</span>
         </div>
 
-        <button type="button" class="btn-publish" onclick="publishNewPost()">
-          Опубликовать
+        <button type="button" class="btn-green-full" onclick="addOwnerProduct()">
+          Выставить товар на витрину
         </button>
       </div>
 
-      <!-- Posts Container -->
-      <div id="postsListContainer"></div>
+      <div id="prodRestrictedNotice" class="empty-state-box" style="display:none; margin-bottom:16px;">
+        Добавлять товары на страницу «Покупки» может только владелец. Вы можете просматривать товары, добавлять в корзину и нажимать «Купить».
+      </div>
+
+      <!-- Сетка товаров (изначально абсолютно чистая) -->
+      <div id="productsGridContainer"></div>
+    </section>
+
+    <!-- =====================================================================
+         PAGE 4: ОТДЕЛЬНАЯ СТРАНИЦА ТОВАРА (ОТКРЫВАЕТСЯ ПО НАЖАТИЮ НА ТОВАР)
+         ===================================================================== -->
+    <section class="page-view" id="productDetailPage">
+      <button type="button" class="back-nav-btn" onclick="switchPage('purchasesPage')">
+        ← Назад в покупки
+      </button>
+      <div class="detail-card-light" id="productDetailContainer"></div>
+    </section>
+
+    <!-- =====================================================================
+         PAGE 5: ЧАТ С РУЛЕТКОЙ, ЗВОНКАМИ И ВЫБОРОМ ШРИФТОВ
+         ===================================================================== -->
+    <section class="page-view" id="roulettePage">
+      <div class="roulette-card">
+        <div class="roulette-top-bar">
+          <div class="roulette-status">
+            <span class="status-dot" id="rouletteDot"></span>
+            <span id="roulettePeerTitle">Собеседник #4821 (Онлайн)</span>
+          </div>
+
+          <div class="roulette-actions">
+            <button type="button" class="r-btn next-btn" onclick="rouletteNextPeer()">🎲 Следующий</button>
+            <button type="button" class="r-btn call-btn" onclick="startCall('audio')">📞 Аудиозвонок</button>
+            <button type="button" class="r-btn call-btn" onclick="startCall('video')">📹 Видеозвонок</button>
+            <button type="button" class="r-btn end-call-btn" id="endCallBtn" style="display:none;" onclick="endCall()">📵 Сбросить</button>
+          </div>
+        </div>
+
+        <!-- Экран видео/аудио звонка -->
+        <div class="call-stage" id="callStage">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong id="callStatusText" style="color:var(--green);">🔊 Идёт звонок...</strong>
+            <span id="callTimerText" style="font-family:var(--font-mono); font-size:13px;">00:00</span>
+          </div>
+          <div class="video-grid">
+            <div class="video-box">
+              <video id="localVideo" autoplay muted playsinline></video>
+              <span class="video-label">Вы (Камера / Микрофон)</span>
+            </div>
+            <div class="video-box">
+              <div style="font-size:46px;">👤</div>
+              <div style="font-size:13px; color:#94a3b8; margin-top:6px;" id="remotePeerCallName">Собеседник на связи</div>
+              <span class="video-label">Собеседник</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Панель выбора шрифтов для сообщений -->
+        <div class="font-toolbar">
+          <span style="font-size:12px; font-weight:700; color:#94a3b8; margin-right:4px;">Шрифт текста:</span>
+          <button type="button" class="font-chip active" data-font="default" onclick="setChatFont('default', this)">Обычный</button>
+          <button type="button" class="font-chip" data-font="mono" style="font-family:var(--font-mono);" onclick="setChatFont('mono', this)">Моно (Код)</button>
+          <button type="button" class="font-chip" data-font="serif" style="font-family:var(--font-serif);" onclick="setChatFont('serif', this)">Классика</button>
+          <button type="button" class="font-chip" data-font="rounded" style="font-family:var(--font-rounded);" onclick="setChatFont('rounded', this)">Мягкий</button>
+          <button type="button" class="font-chip" data-font="bold-caps" style="font-weight:800; letter-spacing:0.06em;" onclick="setChatFont('bold-caps', this)">ЖИРНЫЙ</button>
+          <button type="button" class="font-chip" data-font="fancy" onclick="setChatFont('fancy', this)">𝔖𝔱𝔶𝔩𝔢 / Декор</button>
+        </div>
+
+        <!-- Окно переписки рулетки -->
+        <div class="roulette-messages" id="rouletteMessages"></div>
+
+        <!-- Ввод сообщения -->
+        <form class="roulette-form" onsubmit="sendRouletteMessage(event)">
+          <input
+            type="text"
+            id="rouletteInput"
+            class="dark-field"
+            style="margin-bottom:0; flex:1;"
+            placeholder="Напишите сообщение собеседнику выбранным шрифтом..."
+            required
+          />
+          <button type="submit" class="btn-blue" style="padding:11px 18px; border-radius:12px;">
+            Отпр.
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PAGE 6: ПОИСК ЛЮДЕЙ
+         ===================================================================== -->
+    <section class="page-view" id="searchPage">
+      <div class="roulette-card">
+        <h2 style="font-size:20px; font-weight:800; margin-bottom:12px;">🔍 Поиск людей и каналов</h2>
+        <input
+          type="text"
+          id="peopleSearchInput"
+          class="dark-field"
+          placeholder="Введите имя или @никнейм..."
+          oninput="renderPeopleList(this.value)"
+        />
+        <div id="peopleListContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PAGE 7: ПРОФИЛЬ
+         ===================================================================== -->
+    <section class="page-view" id="profilePage">
+      <div class="roulette-card">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+          <div class="avatar-circle" style="width:56px; height:56px; font-size:22px;" id="profileLetter">R</div>
+          <div>
+            <div style="font-size:19px; font-weight:800;" id="profileNameTitle">runotoks</div>
+            <div style="font-size:13px; color:#94a3b8;" id="profileRoleBadge">Статус: Владелец сайта</div>
+          </div>
+        </div>
+
+        <label class="field-label">Имя профиля</label>
+        <input type="text" id="profileNameInput" class="dark-field" />
+
+        <label class="field-label">О себе</label>
+        <textarea id="profileBioInput" class="dark-area" style="min-height:66px;"></textarea>
+
+        <button type="button" class="btn-green-full" onclick="saveProfile()">
+          Сохранить профиль
+        </button>
+      </div>
     </section>
 
   </main>
 
   <!-- =======================================================================
-       FLOATING BOTTOM NAVIGATION DOCK
+       BOTTOM NAVIGATION DOCK ("ПОКУПКИ" IN SAME ROW AND TO THE LEFT OF "ЛЕНТА")
        ======================================================================= -->
-  <nav class="bottom-dock-wrapper" aria-label="Нижняя навигация">
-    <div class="bottom-dock">
-      <button class="dock-pill" id="dockPurchasesBtn" onclick="dockGoPurchases()">
+  <nav class="bottom-dock-bar">
+    <div class="bottom-dock-inner">
+      <button type="button" class="nav-pill" id="navPurchasesBtn" onclick="switchPage('purchasesPage')">
         <span>🛍️</span>
         <span>Покупки</span>
       </button>
 
-      <button class="dock-pill active" id="dockFeedBtn" onclick="dockGoFeed()">
+      <button type="button" class="nav-pill active" id="navFeedBtn" onclick="switchPage('feedPage')">
         <span>🏠</span>
         <span>Лента</span>
       </button>
 
-      <button class="dock-circle-btn" onclick="openModal('peopleSearchModal')" title="Найти людей и сообщества">
+      <button type="button" class="nav-round-btn" onclick="switchPage('searchPage')" title="Поиск">
         🔍
       </button>
 
-      <button class="dock-circle-btn profile-btn" onclick="openModal('profileModal')" title="Открыть профиль">
+      <button type="button" class="nav-round-btn profile" onclick="switchPage('profilePage')" title="Профиль">
         👤
       </button>
     </div>
   </nav>
 
   <!-- =======================================================================
-       MODAL 1: CHAT & AI RUNOTOKS ("ИИ Рунотокси")
+       MODAL: CART ("КОРЗИНА")
        ======================================================================= -->
-  <div class="modal-backdrop" id="chatModal">
-    <div class="modal-dialog">
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-box light">
       <div class="modal-head">
-        <div class="modal-title">
-          <span id="chatModalTitle">🤖 Чат и ИИ Рунотокси</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div class="chat-mode-switch">
-            <button type="button" class="chat-mode-btn active" id="modeAiBtn" onclick="switchChatMode('ai')">ИИ</button>
-            <button type="button" class="chat-mode-btn" id="modeChatBtn" onclick="switchChatMode('chat')">Чат</button>
-          </div>
-          <button type="button" class="modal-close-btn" onclick="closeModal('chatModal')">✕</button>
-        </div>
+        <span>🛒 Корзина покупок</span>
+        <button type="button" style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="closeModal('cartModal')">✕</button>
       </div>
-
-      <div class="modal-body">
-        <div class="quick-prompts-row" id="quickPromptsRow">
-          <button type="button" class="quick-prompt-chip" onclick="sendQuickPrompt('Посоветуй наушники и бас-сетап до 2500 грн')">🎧 Бас-сетап</button>
-          <button type="button" class="quick-prompt-chip" onclick="sendQuickPrompt('Как оформить заказ и получить бонусы?')">📦 Заказ и бонусы</button>
-          <button type="button" class="quick-prompt-chip" onclick="sendQuickPrompt('Идеи для поста в ленту runotoks')">✨ Идеи для поста</button>
-          <button type="button" class="quick-prompt-chip" onclick="sendQuickPrompt('Статус моего профиля и баланс')">👤 Мой статус</button>
-        </div>
-
-        <div class="chat-messages-list" id="chatMessagesList"></div>
-      </div>
-
-      <form class="modal-foot" onsubmit="handleChatSubmit(event)">
-        <input
-          type="text"
-          id="chatInputField"
-          class="dark-input"
-          style="margin-bottom:0; flex:1;"
-          placeholder="Напиши сообщение или вопрос ИИ Рунотокси..."
-          required
-        />
-        <button type="submit" class="btn-hero-blue" style="width:auto; padding:11px 18px;">
-          Отпр.
-        </button>
-      </form>
+      <div class="modal-body" id="cartBody"></div>
     </div>
   </div>
 
   <!-- =======================================================================
-       MODAL 2: SHOPPING CART & CHECKOUT
+       MODAL: OWNER ACCESS SWITCH ("ДОСТУП ВЛАДЕЛЬЦА")
        ======================================================================= -->
-  <div class="modal-backdrop" id="cartModal">
-    <div class="modal-dialog light">
+  <div class="modal-overlay" id="ownerAuthModal">
+    <div class="modal-box">
       <div class="modal-head">
-        <div class="modal-title">🛒 Корзина покупок</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('cartModal')">✕</button>
-      </div>
-      <div class="modal-body" id="cartItemsContainer"></div>
-      <div class="modal-foot" style="flex-direction:column; align-items:stretch;">
-        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:17px;">
-          <span>Итого к оплате:</span>
-          <span id="cartTotalPrice">0 ₴</span>
-        </div>
-        <div style="display:flex; gap:10px; margin-top:6px;">
-          <button type="button" class="btn-add-cart" style="background:#e2e8f0; color:#0f172a; width:auto;" onclick="clearCart()">
-            Очистить
-          </button>
-          <button type="button" class="btn-publish" style="flex:1;" onclick="checkoutCart()">
-            Оформить заказ
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- =======================================================================
-       MODAL 3: ORDERS HISTORY
-       ======================================================================= -->
-  <div class="modal-backdrop" id="ordersModal">
-    <div class="modal-dialog light">
-      <div class="modal-head">
-        <div class="modal-title">📦 История заказов</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('ordersModal')">✕</button>
-      </div>
-      <div class="modal-body" id="ordersListContainer"></div>
-    </div>
-  </div>
-
-  <!-- =======================================================================
-       MODAL 4: PROFILE MODAL
-       ======================================================================= -->
-  <div class="modal-backdrop" id="profileModal">
-    <div class="modal-dialog">
-      <div class="modal-head">
-        <div class="modal-title">👤 Профиль пользователя runotoks</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('profileModal')">✕</button>
+        <span>👑 Управление доступом владельца</span>
+        <button type="button" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="closeModal('ownerAuthModal')">✕</button>
       </div>
       <div class="modal-body">
-        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
-          <div class="post-avatar" style="width:58px; height:58px; font-size:24px;" id="profileAvatarLetter">R</div>
-          <div>
-            <div style="font-size:19px; font-weight:800;" id="profileDisplayName">runotoks</div>
-            <div style="font-size:13px; color:var(--text-subtle);" id="profileDisplayHandle">@runotoks_official • Участник Tech &amp; Feed</div>
-          </div>
+        <p style="font-size:14px; color:#cbd5e1; margin-bottom:14px;">
+          Сейчас включён режим <strong>Владельца</strong>: вам доступно добавление товаров в «Покупки» и публикация постов в «Ленте» без ограничений. Вы можете проверить, как сайт видят обычные посетители, переключив режим ниже.
+        </p>
+        <label class="field-label">PIN-код владельца (по умолчанию: 1234)</label>
+        <input type="password" id="ownerPinInput" class="dark-field" placeholder="Введите PIN (1234)" value="1234" />
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-green-full" onclick="setOwnerMode(true)">Войти как Владелец</button>
+          <button type="button" class="btn-blue" style="width:100%; border-radius:12px;" onclick="setOwnerMode(false)">Режим Гостя</button>
         </div>
-
-        <label class="composer-label" for="editProfileNameInput">Имя или никнейм</label>
-        <input type="text" id="editProfileNameInput" class="dark-input" />
-
-        <label class="composer-label" for="editProfileBioInput">О себе / статус</label>
-        <textarea id="editProfileBioInput" class="dark-textarea" style="min-height:64px;"></textarea>
-
-        <div class="hero-stats-strip" style="margin-top:8px;">
-          <div class="hero-stat-item">
-            <div class="hero-stat-val" id="profilePostsCount">0</div>
-            <div class="hero-stat-lbl">Моих постов</div>
-          </div>
-          <div class="hero-stat-item">
-            <div class="hero-stat-val" id="profileOrdersCount">0</div>
-            <div class="hero-stat-lbl">Заказов</div>
-          </div>
-          <div class="hero-stat-item">
-            <div class="hero-stat-val" id="profileBalanceCount">1 500 ₴</div>
-            <div class="hero-stat-lbl">Баланс</div>
-          </div>
-        </div>
-
-        <button type="button" class="btn-publish" style="margin-top:16px;" onclick="saveProfileChanges()">
-          Сохранить профиль
-        </button>
       </div>
     </div>
   </div>
 
-  <!-- =======================================================================
-       MODAL 5: PEOPLE & COMMUNITY SEARCH
-       ======================================================================= -->
-  <div class="modal-backdrop" id="peopleSearchModal">
-    <div class="modal-dialog">
-      <div class="modal-head">
-        <div class="modal-title">🔍 Поиск людей и авторов</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('peopleSearchModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <input
-          type="text"
-          id="peopleQueryInput"
-          class="dark-input"
-          placeholder="Введите имя, тег или интерес (например: аудио, ИИ, сборки)..."
-          oninput="renderPeopleDirectory(this.value)"
-        />
-        <div id="peopleResultsList" style="display:flex; flex-direction:column; gap:10px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- =======================================================================
-       MODAL 6: STORY VIEWER & CREATOR
-       ======================================================================= -->
-  <div class="modal-backdrop" id="storyViewerModal">
-    <div class="modal-dialog">
-      <div class="modal-head">
-        <div class="modal-title" id="storyViewerTitle">Сторис</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('storyViewerModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="story-progress-bar">
-          <div class="story-progress-fill" id="storyProgressFill"></div>
-        </div>
-        <div class="story-stage">
-          <div class="story-stage-emoji" id="storyStageEmoji">⚡</div>
-          <div class="story-stage-title" id="storyStageTitle">Заголовок сторис</div>
-          <div class="story-stage-text" id="storyStageText">Текст сторис</div>
-        </div>
-      </div>
-      <div class="modal-foot" style="justify-content:space-between;">
-        <button type="button" class="post-pill-btn" onclick="stepStory(-1)">← Назад</button>
-        <button type="button" class="btn-hero-blue" style="width:auto; padding:9px 18px;" onclick="stepStory(1)">Далее →</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-backdrop" id="createStoryModal">
-    <div class="modal-dialog">
-      <div class="modal-head">
-        <div class="modal-title">✨ Новая сторис</div>
-        <button type="button" class="modal-close-btn" onclick="closeModal('createStoryModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <label class="composer-label">Эмодзи / иконка</label>
-        <input type="text" id="newStoryEmoji" class="dark-input" value="🔥" maxlength="4" />
-        <label class="composer-label">Заголовок</label>
-        <input type="text" id="newStoryTitle" class="dark-input" placeholder="Например: Новая сборка готова" />
-        <label class="composer-label">Текст сторис</label>
-        <textarea id="newStoryText" class="dark-textarea" placeholder="Коротко опиши момент дня..."></textarea>
-        <button type="button" class="btn-publish" onclick="createStoryItem()">Опубликовать сторис</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- =======================================================================
-       APPLICATION JAVASCRIPT ENGINE
-       ======================================================================= -->
   <script>
-    const STORAGE_KEY = 'runotoks_platform_state_v1';
+    const DB_KEY = 'runotoks_clean_pages_v2';
 
-    const DEFAULT_PRODUCTS = [
-      {
-        id: 'p-1',
-        title: 'П47 Wireless Bass Headphones',
-        category: 'audio',
-        price: 690,
-        stock: 'В наличии',
-        badge: 'ХИТ',
-        badgeClass: '',
-        emoji: '🎧',
-        desc: 'Беспроводные наушники П47 с глубоким басом, слотом MicroSD, FM и режимом гарнитуры.'
+    const DEFAULT_STATE = {
+      isOwner: true,
+      ownerPin: '1234',
+      profile: {
+        name: 'runotoks',
+        bio: 'Владелец магазина и ленты runotoks'
       },
-      {
-        id: 'p-2',
-        title: '21700 High-Drain Li-Ion Pack (2x)',
-        category: 'power',
-        price: 840,
-        stock: 'В наличии',
-        badge: 'POWER',
-        badgeClass: 'amber',
-        emoji: '🔋',
-        desc: 'Пара высокотоковых аккумуляторов формата 21700 для портативных устройств и кастомных сборок.'
-      },
-      {
-        id: 'p-3',
-        title: 'Runotoks AI Pocket Hub Mini',
-        category: 'smart',
-        price: 2150,
-        stock: 'Осталось 5 шт.',
-        badge: 'NEW',
-        badgeClass: '',
-        emoji: '🤖',
-        desc: 'Компактный настольный модуль с быстрой кнопкой голосового/текстового вызова ассистента и подсветкой.'
-      },
-      {
-        id: 'p-4',
-        title: 'SubBass Desktop Amplifier 120W',
-        category: 'audio',
-        price: 1890,
-        stock: 'В наличии',
-        badge: 'BASS+',
-        badgeClass: 'amber',
-        emoji: '🔊',
-        desc: 'Усилитель с раздельной регулировкой НЧ/ВЧ и чистым трактом для рабочего стола.'
-      },
-      {
-        id: 'p-5',
-        title: 'GaN 100W Multi-Port Charger',
-        category: 'power',
-        price: 1120,
-        stock: 'В наличии',
-        badge: 'FAST',
-        badgeClass: '',
-        emoji: '⚡',
-        desc: 'Компактное зарядное устройство на нитриде галлия с USB-C PD для ноутбуков, смартов и пауэрбанков.'
-      },
-      {
-        id: 'p-6',
-        title: 'Braided USB-C 240W Cable (2m)',
-        category: 'setup',
-        price: 320,
-        stock: 'В наличии',
-        badge: 'PRO',
-        badgeClass: '',
-        emoji: '🔌',
-        desc: 'Усиленный кабель в нейлоновой оплётке с встроенным чипом E-Marker и индикатором мощности.'
-      },
-      {
-        id: 'p-7',
-        title: 'RGB Mechanical Macro Pad 6-Key',
-        category: 'setup',
-        price: 960,
-        stock: 'Осталось 8 шт.',
-        badge: 'SETUP',
-        badgeClass: 'amber',
-        emoji: '⌨️',
-        desc: 'Программируемый мини-пульт для горячих клавиш, треков, стримов и быстрых сценариев.'
-      },
-      {
-        id: 'p-8',
-        title: 'Smart Ambient Light Bar',
-        category: 'smart',
-        price: 780,
-        stock: 'В наличии',
-        badge: 'LED',
-        badgeClass: '',
-        emoji: '🌈',
-        desc: 'Световая панель для монитора или стены с синхронизацией под ритм музыки и тёмный режим.'
-      }
-    ];
+      // Оба списка изначально абсолютно чистые!
+      products: [],
+      posts: [],
+      cart: [],
+      selectedFont: 'default',
+      roulettePeer: 'Собеседник #4821',
+      rouletteChat: [
+        { type: 'system', text: 'Вы подключены к чат-рулетке runotoks. Выберите шрифт выше или начните аудио/видео звонок.' }
+      ]
+    };
 
-    const DEFAULT_STORIES = [
-      { id: 's-1', author: 'runotoks', emoji: '🚀', title: 'Запуск экосистемы', text: 'Магазин, лента постов, сторис и ИИ Рунотокси объединены в одном интерфейсе.' },
-      { id: 's-2', author: 'BassLab', emoji: '🎧', title: 'Тест низких частот', text: 'Проверяем звучание на П47 и настольных усилителях — чистый бас без искажений.' },
-      { id: 's-3', author: 'VoltCraft', emoji: '🔋', title: 'Формат 21700', text: 'Свежая партия ячеек 21700 для автономных проектов и сборок.' },
-      { id: 's-4', author: 'AI Core', emoji: '🤖', title: 'Ассистент Рунотокси', text: 'Спрашивай об идеях, настройках, товарах и сценариях прямо в чате.' }
-    ];
+    let appState = loadAppState();
+    let pendingProdMedia = { url: '', type: 'none' };
+    let pendingFeedMedia = { url: '', type: 'none' };
+    let callTimerInterval = null;
+    let callSeconds = 0;
+    let localMediaStream = null;
 
-    const DEFAULT_POSTS = [
-      {
-        id: 'post-seed-1',
-        author: 'runotoks',
-        isMine: true,
-        date: '22.11.2026',
-        text: 'Первый пост в ленте. Нажмите на три точки сверху для действий или на кнопку звука в нижнем углу медиа.',
-        mediaUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
-        mediaType: 'image',
-        fileName: '1000002321.mp4',
-        soundEnabled: false,
-        likes: 8,
-        likedByMe: false,
-        comments: [
-          { id: 'c-1', author: 'AlexTech', text: 'Отличный запуск!' },
-          { id: 'c-2', author: 'NovaFeed', text: 'Ждём новые посты и видео' }
-        ]
-      }
-    ];
-
-    const PEOPLE_DIRECTORY = [
-      { id: 'u-1', name: 'runotoks', handle: '@runotoks_official', role: 'Магазин • Лента • ИИ', bio: 'Официальный аккаунт платформы технологий, общения и ИИ Рунотокси.', avatar: 'R' },
-      { id: 'u-2', name: 'BassLab UA', handle: '@basslab_ua', role: 'Аудио & Phonk', bio: 'Тестируем наушники П47, усилители и низкочастотные треки.', avatar: 'B' },
-      { id: 'u-3', name: 'VoltCraft', handle: '@voltcraft_lab', role: 'Питание & 21700', bio: 'Аккумуляторы 21700, зарядные станции и кастомная электроника.', avatar: 'V' },
-      { id: 'u-4', name: 'ИИ Рунотокси', handle: '@ai_runotoks', role: 'Нейро-ассистент', bio: 'Помогаю с идеями, кодом, подбором гаджетов и навигацией по сайту.', avatar: 'AI' }
-    ];
-
-    function createInitialState() {
-      return {
-        profile: {
-          name: 'runotoks',
-          handle: '@runotoks_official',
-          bio: 'Технологии, общение и ИИ Рунотокси в одном месте.',
-          balance: 1500
-        },
-        soundEnabled: true,
-        selectedCategory: 'all',
-        feedTab: 'all',
-        globalFilter: '',
-        cart: [],
-        favorites: ['p-1'],
-        orders: [
-          {
-            id: 'ORD-2026-104',
-            date: '20.11.2026',
-            status: 'Доставлен',
-            total: 690,
-            itemsSummary: 'П47 Wireless Bass Headphones × 1'
-          }
-        ],
-        stories: DEFAULT_STORIES,
-        seenStoryIds: [],
-        posts: DEFAULT_POSTS,
-        chatMode: 'ai',
-        chatHistory: [
-          {
-            sender: 'bot',
-            mode: 'ai',
-            text: 'Привет! Я ИИ Рунотокси. Могу помочь подобрать гаджеты в каталоге, придумать текст поста для ленты или ответить на вопросы по работе сайта.',
-            time: '20:13'
-          }
-        ]
-      };
-    }
-
-    let state = loadState();
-    let activeStoryIndex = 0;
-    let pendingUploadedFileDataUrl = '';
-    let pendingUploadedFileType = '';
-    let pendingUploadedFileName = '';
-
-    function loadState() {
+    function loadAppState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return createInitialState();
-        const parsed = JSON.parse(raw);
-        return {
-          ...createInitialState(),
-          ...parsed,
-          profile: { ...createInitialState().profile, ...(parsed.profile || {}) }
-        };
-      } catch (err) {
-        return createInitialState();
+        const raw = localStorage.getItem(DB_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+        return { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...JSON.parse(raw) };
+      } catch (e) {
+        return JSON.parse(JSON.stringify(DEFAULT_STATE));
       }
     }
 
-    function saveState() {
+    function saveAppState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (err) {
-        console.warn('LocalStorage quota/error:', err);
-      }
+        localStorage.setItem(DB_KEY, JSON.stringify(appState));
+      } catch (e) {}
     }
 
-    function showToast(message) {
-      const container = document.getElementById('toastContainer');
-      const el = document.createElement('div');
-      el.className = 'toast-item';
-      el.textContent = message;
-      container.appendChild(el);
-
-      if (state.soundEnabled && 'speechSynthesis' in window) {
-        try {
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(message);
-          utter.lang = 'ru-RU';
-          utter.rate = 1.08;
-          utter.volume = 0.35;
-          window.speechSynthesis.speak(utter);
-        } catch (e) {}
-      }
-
-      setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(16px)';
-        el.style.transition = 'all 0.2s ease';
-        setTimeout(() => el.remove(), 220);
-      }, 2800);
+    function toast(msg) {
+      const box = document.getElementById('toastBox');
+      const div = document.createElement('div');
+      div.className = 'toast';
+      div.textContent = msg;
+      box.appendChild(div);
+      setTimeout(() => div.remove(), 2600);
     }
 
-    function formatUAH(amount) {
-      return `${Number(amount).toLocaleString('ru-RU')} ₴`;
-    }
-
-    function escapeHtml(str) {
+    function esc(str) {
       return String(str || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -2181,762 +1520,725 @@
         .replace(/"/g, '&quot;');
     }
 
-    function navigateTo(targetId) {
-      const el = document.getElementById(targetId);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* =========================================================================
+       NAVIGATION BETWEEN SEPARATE PAGES
+       ========================================================================= */
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(sec => sec.classList.remove('active'));
+      const target = document.getElementById(pageId);
+      if (target) target.classList.add('active');
+
+      document.getElementById('navPurchasesBtn').classList.toggle('active', pageId === 'purchasesPage' || pageId === 'productDetailPage');
+      document.getElementById('navFeedBtn').classList.toggle('active', pageId === 'feedPage' || pageId === 'postDetailPage');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (pageId === 'purchasesPage') renderProductsPage();
+      if (pageId === 'feedPage') renderFeedPage();
+      if (pageId === 'roulettePage') renderRouletteChat();
+      if (pageId === 'searchPage') renderPeopleList('');
+      if (pageId === 'profilePage') renderProfilePage();
     }
 
-    function scrollToCatalog() {
-      setDockActive('purchases');
-      navigateTo('catalogSection');
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+      if (id === 'cartModal') renderCartModal();
     }
 
-    function dockGoPurchases() {
-      setDockActive('purchases');
-      navigateTo('catalogSection');
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
     }
 
-    function dockGoFeed() {
-      setDockActive('feed');
-      navigateTo('feedSection');
-    }
-
-    function setDockActive(tab) {
-      document.getElementById('dockPurchasesBtn').classList.toggle('active', tab === 'purchases');
-      document.getElementById('dockFeedBtn').classList.toggle('active', tab === 'feed');
-    }
-
-    function toggleSoundFeedback() {
-      state.soundEnabled = !state.soundEnabled;
-      saveState();
-      const btn = document.getElementById('soundToggleWidget');
-      btn.textContent = state.soundEnabled ? '🔊' : '🔇';
-      showToast(state.soundEnabled ? 'Звуковые уведомления включены' : 'Звуковые уведомления отключены');
-    }
-
-    function toggleInlineSearch() {
-      const wrap = document.getElementById('inlineSearchWrap');
-      wrap.classList.toggle('open');
-      if (wrap.classList.contains('open')) {
-        document.getElementById('inlineSearchInput').focus();
-      }
-    }
-
-    function handleGlobalFilter(val) {
-      state.globalFilter = val.trim().toLowerCase();
-      renderCatalog();
-      renderFeedPosts();
-    }
-
-    function clearGlobalFilter() {
-      document.getElementById('inlineSearchInput').value = '';
-      state.globalFilter = '';
-      renderCatalog();
-      renderFeedPosts();
-      showToast('Фильтр поиска сброшен');
-    }
-
-    function openModal(modalId) {
-      document.querySelectorAll('.post-dropdown.open').forEach(d => d.classList.remove('open'));
-      const modal = document.getElementById(modalId);
-      if (!modal) return;
-      modal.classList.add('open');
-
-      if (modalId === 'cartModal') renderCartModal();
-      if (modalId === 'ordersModal') renderOrdersModal();
-      if (modalId === 'profileModal') populateProfileModal();
-      if (modalId === 'peopleSearchModal') {
-        document.getElementById('peopleQueryInput').value = '';
-        renderPeopleDirectory('');
-      }
-    }
-
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) modal.classList.remove('open');
-    }
-
-    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-      backdrop.addEventListener('click', (e) => {
-        if (e.target === backdrop) {
-          backdrop.classList.remove('open');
+    /* =========================================================================
+       OWNER ACCESS CONTROL
+       ========================================================================= */
+    function setOwnerMode(enableOwner) {
+      if (enableOwner) {
+        const pin = document.getElementById('ownerPinInput').value.trim();
+        if (pin !== appState.ownerPin) {
+          toast('Неверный PIN-код владельца');
+          return;
         }
-      });
-    });
-
-    function renderStories() {
-      const track = document.getElementById('storiesTrack');
-      track.innerHTML = '';
-
-      state.stories.forEach((story, idx) => {
-        const seen = state.seenStoryIds.includes(story.id);
-        const item = document.createElement('div');
-        item.className = 'story-item';
-        item.onclick = () => openStoryAt(idx);
-        item.innerHTML = `
-          <div class="story-ring ${seen ? 'seen' : ''}">
-            <div class="story-avatar">${escapeHtml(story.emoji)}</div>
-          </div>
-          <span class="story-label">${escapeHtml(story.author)}</span>
-        `;
-        track.appendChild(item);
-      });
-    }
-
-    function openStoryAt(index) {
-      activeStoryIndex = index;
-      const story = state.stories[activeStoryIndex];
-      if (!story) return;
-
-      if (!state.seenStoryIds.includes(story.id)) {
-        state.seenStoryIds.push(story.id);
-        saveState();
-        renderStories();
-      }
-
-      document.getElementById('storyViewerTitle').textContent = `Сторис • ${story.author}`;
-      document.getElementById('storyStageEmoji').textContent = story.emoji;
-      document.getElementById('storyStageTitle').textContent = story.title;
-      document.getElementById('storyStageText').textContent = story.text;
-      const pct = Math.round(((activeStoryIndex + 1) / Math.max(1, state.stories.length)) * 100);
-      document.getElementById('storyProgressFill').style.width = `${pct}%`;
-
-      openModal('storyViewerModal');
-    }
-
-    function stepStory(delta) {
-      if (!state.stories.length) return;
-      activeStoryIndex = (activeStoryIndex + delta + state.stories.length) % state.stories.length;
-      openStoryAt(activeStoryIndex);
-    }
-
-    function createStoryItem() {
-      const emoji = document.getElementById('newStoryEmoji').value.trim() || '⚡';
-      const title = document.getElementById('newStoryTitle').value.trim();
-      const text = document.getElementById('newStoryText').value.trim();
-      if (!title || !text) {
-        showToast('Заполни заголовок и текст сторис');
-        return;
-      }
-      state.stories.unshift({
-        id: 's-' + Date.now(),
-        author: state.profile.name,
-        emoji,
-        title,
-        text
-      });
-      saveState();
-      renderStories();
-      document.getElementById('newStoryTitle').value = '';
-      document.getElementById('newStoryText').value = '';
-      closeModal('createStoryModal');
-      showToast('Сторис опубликована!');
-    }
-
-    function selectCategory(cat, btnEl) {
-      state.selectedCategory = cat;
-      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-      renderCatalog();
-    }
-
-    function toggleFavoriteProduct(prodId, ev) {
-      ev.stopPropagation();
-      const idx = state.favorites.indexOf(prodId);
-      if (idx >= 0) {
-        state.favorites.splice(idx, 1);
-        showToast('Убрано из избранного');
+        appState.isOwner = true;
+        toast('Режим Владельца активирован');
       } else {
-        state.favorites.push(prodId);
-        showToast('Добавлено в избранное');
+        appState.isOwner = false;
+        toast('Включён режим Гостя (только просмотр и покупки)');
       }
-      saveState();
-      renderCatalog();
+      saveAppState();
+      applyOwnerPermissions();
+      closeModal('ownerAuthModal');
     }
 
-    function renderCatalog() {
-      const grid = document.getElementById('productsGrid');
-      const q = state.globalFilter;
+    function applyOwnerPermissions() {
+      const isOwner = Boolean(appState.isOwner);
+      const pill = document.getElementById('ownerModeBtn');
+      pill.classList.toggle('is-owner', isOwner);
+      pill.textContent = isOwner ? '👑 Владелец' : '👀 Гость';
 
-      const filtered = DEFAULT_PRODUCTS.filter(p => {
-        const catMatch = state.selectedCategory === 'all' || p.category === state.selectedCategory;
-        const qMatch = !q ||
-          p.title.toLowerCase().includes(q) ||
-          p.desc.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q);
-        return catMatch && qMatch;
-      });
+      document.getElementById('productComposerBox').style.display = isOwner ? 'block' : 'none';
+      document.getElementById('prodRestrictedNotice').style.display = isOwner ? 'none' : 'block';
 
-      document.getElementById('catalogCounterText').textContent = `Показано: ${filtered.length} из ${DEFAULT_PRODUCTS.length}`;
-      grid.innerHTML = '';
-
-      if (!filtered.length) {
-        grid.innerHTML = `<div style="grid-column:1/-1; background:#fff; padding:24px; border-radius:16px; text-align:center; color:#64748b;">По заданному фильтру товаров не найдено.</div>`;
-        return;
-      }
-
-      filtered.forEach(prod => {
-        const isFav = state.favorites.includes(prod.id);
-        const card = document.createElement('article');
-        card.className = 'product-card';
-        card.innerHTML = `
-          <div>
-            <div class="product-visual">
-              <span class="product-badge ${prod.badgeClass}">${escapeHtml(prod.badge)}</span>
-              <button type="button" class="product-fav-btn" onclick="toggleFavoriteProduct('${prod.id}', event)" title="В избранное">
-                ${isFav ? '❤️' : '🤍'}
-              </button>
-              <span>${prod.emoji}</span>
-            </div>
-            <div style="margin-top:12px;">
-              <div class="product-title">${escapeHtml(prod.title)}</div>
-              <p class="product-desc">${escapeHtml(prod.desc)}</p>
-            </div>
-          </div>
-          <div>
-            <div class="product-meta-row">
-              <span class="product-price">${formatUAH(prod.price)}</span>
-              <span class="product-stock">${escapeHtml(prod.stock)}</span>
-            </div>
-            <button type="button" class="btn-add-cart" style="margin-top:10px;" onclick="addToCart('${prod.id}')">
-              В корзину
-            </button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
+      document.getElementById('feedComposerBox').style.display = isOwner ? 'block' : 'none';
+      document.getElementById('feedRestrictedNotice').style.display = isOwner ? 'none' : 'block';
     }
 
-    function addToCart(prodId) {
-      const prod = DEFAULT_PRODUCTS.find(p => p.id === prodId);
-      if (!prod) return;
-
-      const existing = state.cart.find(item => item.id === prodId);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        state.cart.push({ id: prod.id, title: prod.title, price: prod.price, emoji: prod.emoji, qty: 1 });
-      }
-      saveState();
-      updateCartBadge(true);
-      showToast(`Добавлено: ${prod.title}`);
-    }
-
-    function updateCartBadge(animate = false) {
-      const totalQty = state.cart.reduce((sum, item) => sum + item.qty, 0);
-      const badge = document.getElementById('cartCountBadge');
-      badge.textContent = totalQty;
-      if (animate) {
-        badge.classList.remove('bump');
-        void badge.offsetWidth;
-        badge.classList.add('bump');
-      }
-    }
-
-    function renderCartModal() {
-      const container = document.getElementById('cartItemsContainer');
-      const totalEl = document.getElementById('cartTotalPrice');
-
-      if (!state.cart.length) {
-        container.innerHTML = `<div style="text-align:center; padding:28px 12px; color:#64748b;">Корзина пока пуста. Выберите товары в каталоге «Покупки».</div>`;
-        totalEl.textContent = formatUAH(0);
-        return;
-      }
-
-      let total = 0;
-      container.innerHTML = '';
-
-      state.cart.forEach(item => {
-        total += item.price * item.qty;
-        const row = document.createElement('div');
-        row.className = 'cart-item-row';
-        row.innerHTML = `
-          <div>
-            <div style="font-weight:800; font-size:15px;">${item.emoji} ${escapeHtml(item.title)}</div>
-            <div style="font-size:13px; color:#64748b;">${formatUAH(item.price)} за шт.</div>
-          </div>
-          <div class="qty-ctrl">
-            <button type="button" class="qty-btn" onclick="changeCartQty('${item.id}', -1)">−</button>
-            <span style="font-weight:800; min-width:20px; text-align:center;">${item.qty}</span>
-            <button type="button" class="qty-btn" onclick="changeCartQty('${item.id}', 1)">+</button>
-          </div>
-        `;
-        container.appendChild(row);
-      });
-
-      totalEl.textContent = formatUAH(total);
-    }
-
-    function changeCartQty(prodId, delta) {
-      const item = state.cart.find(i => i.id === prodId);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) {
-        state.cart = state.cart.filter(i => i.id !== prodId);
-      }
-      saveState();
-      updateCartBadge();
-      renderCartModal();
-    }
-
-    function clearCart() {
-      state.cart = [];
-      saveState();
-      updateCartBadge();
-      renderCartModal();
-      showToast('Корзина очищена');
-    }
-
-    function checkoutCart() {
-      if (!state.cart.length) {
-        showToast('Корзина пуста');
-        return;
-      }
-      const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-      const summary = state.cart.map(i => `${i.title} × ${i.qty}`).join(', ');
-      const newOrder = {
-        id: 'ORD-2026-' + String(Math.floor(100 + Math.random() * 899)),
-        date: new Date().toLocaleDateString('ru-RU'),
-        status: 'Принят в обработку',
-        total,
-        itemsSummary: summary
-      };
-
-      state.orders.unshift(newOrder);
-      state.cart = [];
-      saveState();
-      updateCartBadge();
-      renderCartModal();
-      closeModal('cartModal');
-      updateTopStats();
-      showToast(`Заказ ${newOrder.id} оформлен на ${formatUAH(total)}!`);
-    }
-
-    function renderOrdersModal() {
-      const container = document.getElementById('ordersListContainer');
-      if (!state.orders.length) {
-        container.innerHTML = `<div style="text-align:center; padding:24px; color:#64748b;">Заказов пока нет.</div>`;
-        return;
-      }
-      container.innerHTML = state.orders.map(o => `
-        <div style="border:1px solid #e2e8f0; border-radius:14px; padding:14px; margin-bottom:12px;">
-          <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px;">
-            <span>${escapeHtml(o.id)}</span>
-            <span style="color:#16a34a;">${escapeHtml(o.status)}</span>
-          </div>
-          <div style="font-size:13px; color:#64748b; margin-bottom:6px;">Дата: ${escapeHtml(o.date)}</div>
-          <div style="font-size:14px; margin-bottom:6px;">${escapeHtml(o.itemsSummary)}</div>
-          <div style="font-weight:800;">Сумма: ${formatUAH(o.total)}</div>
-        </div>
-      `).join('');
-    }
-
-    function setFeedTab(tab, btnEl) {
-      state.feedTab = tab;
-      document.querySelectorAll('.feed-tab-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-      renderFeedPosts();
-    }
-
-    function handlePostFileSelected(input) {
+    /* =========================================================================
+       PURCHASES PAGE & PRODUCT DETAIL PAGE
+       ========================================================================= */
+    function onProdFileChange(input) {
       const file = input.files && input.files[0];
-      const chip = document.getElementById('selectedPostFileName');
       if (!file) {
-        pendingUploadedFileDataUrl = '';
-        pendingUploadedFileType = '';
-        pendingUploadedFileName = '';
-        chip.textContent = 'Файл не выбран';
+        pendingProdMedia = { url: '', type: 'none' };
+        document.getElementById('prodFileLabel').textContent = 'Файл не выбран';
         return;
       }
-
-      pendingUploadedFileName = file.name;
-      pendingUploadedFileType = file.type.startsWith('video/') ? 'video' : 'image';
-      chip.textContent = file.name;
-
+      document.getElementById('prodFileLabel').textContent = file.name;
+      const type = file.type.startsWith('video/') ? 'video' : 'image';
       const reader = new FileReader();
-      reader.onload = function(e) {
-        pendingUploadedFileDataUrl = e.target.result;
+      reader.onload = e => {
+        pendingProdMedia = { url: e.target.result, type };
       };
       reader.readAsDataURL(file);
     }
 
-    function publishNewPost() {
-      const urlVal = document.getElementById('postMediaUrlInput').value.trim();
-      const textVal = document.getElementById('postTextInput').value.trim();
+    function addOwnerProduct() {
+      if (!appState.isOwner) {
+        toast('Только владелец может добавлять товары');
+        return;
+      }
+      const name = document.getElementById('prodNameInput').value.trim();
+      const price = Number(document.getElementById('prodPriceInput').value);
+      const desc = document.getElementById('prodDescInput').value.trim();
+      const url = document.getElementById('prodUrlInput').value.trim();
 
-      if (!textVal && !urlVal && !pendingUploadedFileDataUrl) {
-        showToast('Добавь текст поста, ссылку или файл');
+      if (!name || !price || !desc) {
+        toast('Заполните название, стоимость и описание товара');
         return;
       }
 
       let mediaUrl = '';
       let mediaType = 'none';
-
-      if (pendingUploadedFileDataUrl) {
-        mediaUrl = pendingUploadedFileDataUrl;
-        mediaType = pendingUploadedFileType || 'image';
-      } else if (urlVal) {
-        mediaUrl = urlVal;
-        mediaType = /\.(mp4|webm|ogg)(\?|$)/i.test(urlVal) ? 'video' : 'image';
+      if (pendingProdMedia.url) {
+        mediaUrl = pendingProdMedia.url;
+        mediaType = pendingProdMedia.type;
+      } else if (url) {
+        mediaUrl = url;
+        mediaType = /\.(mp4|webm|ogg)(\?|$)/i.test(url) ? 'video' : 'image';
       }
 
-      const newPost = {
-        id: 'post-' + Date.now(),
-        author: state.profile.name,
-        isMine: true,
-        date: new Date().toLocaleDateString('ru-RU'),
-        text: textVal || 'Новая публикация в runotoks',
+      const product = {
+        id: 'prod-' + Date.now(),
+        name,
+        price,
+        desc,
         mediaUrl,
         mediaType,
-        fileName: pendingUploadedFileName || '',
-        soundEnabled: false,
-        likes: 0,
-        likedByMe: false,
-        comments: []
+        createdAt: new Date().toLocaleDateString('ru-RU')
       };
 
-      state.posts.unshift(newPost);
-      saveState();
+      appState.products.unshift(product);
+      saveAppState();
 
-      document.getElementById('postMediaUrlInput').value = '';
-      document.getElementById('postTextInput').value = '';
-      document.getElementById('postFileInput').value = '';
-      document.getElementById('selectedPostFileName').textContent = 'Файл не выбран';
-      pendingUploadedFileDataUrl = '';
-      pendingUploadedFileType = '';
-      pendingUploadedFileName = '';
+      document.getElementById('prodNameInput').value = '';
+      document.getElementById('prodPriceInput').value = '';
+      document.getElementById('prodDescInput').value = '';
+      document.getElementById('prodUrlInput').value = '';
+      document.getElementById('prodFileInput').value = '';
+      document.getElementById('prodFileLabel').textContent = 'Файл не выбран';
+      pendingProdMedia = { url: '', type: 'none' };
 
-      updateTopStats();
-      renderFeedPosts();
-      showToast('Публикация добавлена в ленту!');
+      renderProductsPage();
+      toast('Товар добавлен на страницу «Покупки»');
     }
 
-    function togglePostDropdown(postId, ev) {
-      ev.stopPropagation();
-      document.querySelectorAll('.post-dropdown').forEach(d => {
-        if (d.id !== `dropdown-${postId}`) d.classList.remove('open');
-      });
-      const menu = document.getElementById(`dropdown-${postId}`);
-      if (menu) menu.classList.toggle('open');
-    }
+    function renderProductsPage() {
+      const container = document.getElementById('productsGridContainer');
+      document.getElementById('productsCountLabel').textContent = `Товаров: ${appState.products.length}`;
 
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.post-dropdown.open').forEach(d => d.classList.remove('open'));
-    });
+      if (!appState.products.length) {
+        container.innerHTML = `
+          <div class="empty-state-box">
+            <div style="font-size:38px; margin-bottom:8px;">🛍️</div>
+            <div style="font-weight:800; font-size:17px; color:#0f172a; margin-bottom:4px;">Страница покупок пока чистая</div>
+            <div>Владелец может выставить свой первый товар через форму выше.</div>
+          </div>
+        `;
+        return;
+      }
 
-    function togglePostLike(postId) {
-      const post = state.posts.find(p => p.id === postId);
-      if (!post) return;
-      post.likedByMe = !post.likedByMe;
-      post.likes += post.likedByMe ? 1 : -1;
-      if (post.likes < 0) post.likes = 0;
-      saveState();
-      renderFeedPosts();
-    }
+      const grid = document.createElement('div');
+      grid.className = 'products-grid';
 
-    function togglePostSound(postId) {
-      const post = state.posts.find(p => p.id === postId);
-      if (!post) return;
-      post.soundEnabled = !post.soundEnabled;
-      saveState();
-      renderFeedPosts();
-      showToast(post.soundEnabled ? 'Звук медиа включён' : 'Звук медиа выключён');
-    }
+      appState.products.forEach(prod => {
+        let thumbHtml = '📦';
+        if (prod.mediaUrl) {
+          thumbHtml = prod.mediaType === 'video'
+            ? `<video src="${esc(prod.mediaUrl)}" muted playsinline></video>`
+            : `<img src="${esc(prod.mediaUrl)}" alt="${esc(prod.name)}" />`;
+        }
 
-    function copyPostLink(postId) {
-      const shareUrl = `${window.location.origin}${window.location.pathname}#${postId}`;
-      navigator.clipboard?.writeText(shareUrl).catch(() => {});
-      showToast('Ссылка на пост скопирована');
-    }
-
-    function deletePost(postId) {
-      state.posts = state.posts.filter(p => p.id !== postId);
-      saveState();
-      updateTopStats();
-      renderFeedPosts();
-      showToast('Пост удалён');
-    }
-
-    function addCommentToPost(event, postId) {
-      event.preventDefault();
-      const input = document.getElementById(`commentInput-${postId}`);
-      const txt = input.value.trim();
-      if (!txt) return;
-
-      const post = state.posts.find(p => p.id === postId);
-      if (!post) return;
-
-      post.comments.push({
-        id: 'c-' + Date.now(),
-        author: state.profile.name,
-        text: txt
-      });
-      saveState();
-      input.value = '';
-      renderFeedPosts();
-      showToast('Комментарий добавлен');
-    }
-
-    function renderFeedPosts() {
-      const container = document.getElementById('postsListContainer');
-      const q = state.globalFilter;
-
-      const filtered = state.posts.filter(post => {
-        const tabMatch =
-          state.feedTab === 'all' ||
-          (state.feedTab === 'media' && Boolean(post.mediaUrl)) ||
-          (state.feedTab === 'mine' && Boolean(post.isMine));
-
-        const qMatch = !q ||
-          post.text.toLowerCase().includes(q) ||
-          post.author.toLowerCase().includes(q) ||
-          post.comments.some(c => c.text.toLowerCase().includes(q));
-
-        return tabMatch && qMatch;
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.onclick = () => openProductDetailPage(prod.id);
+        card.innerHTML = `
+          <div>
+            <div class="product-thumb">${thumbHtml}</div>
+            <div style="margin-top:12px;">
+              <div class="product-name">${esc(prod.name)}</div>
+              <div class="product-short-desc">${esc(prod.desc)}</div>
+              <div class="product-price-tag">${prod.price.toLocaleString('ru-RU')} ₴</div>
+            </div>
+          </div>
+          <div class="product-card-actions" onclick="event.stopPropagation()">
+            <button type="button" class="btn-buy-now" onclick="buyProductInstant('${prod.id}')">Купить</button>
+            <button type="button" class="btn-to-cart" onclick="addProductToCart('${prod.id}')">🛒 В корзину</button>
+          </div>
+        `;
+        grid.appendChild(card);
       });
 
       container.innerHTML = '';
+      container.appendChild(grid);
+    }
 
-      if (!filtered.length) {
-        container.innerHTML = `<div class="post-card" style="text-align:center; color:var(--text-subtle);">Публикаций по выбранному фильтру пока нет.</div>`;
+    function openProductDetailPage(prodId) {
+      const prod = appState.products.find(p => p.id === prodId);
+      if (!prod) return;
+
+      let mediaBlock = `<div class="detail-media-large" style="height:240px; font-size:64px; color:#fff;">📦</div>`;
+      if (prod.mediaUrl) {
+        mediaBlock = prod.mediaType === 'video'
+          ? `<div class="detail-media-large"><video src="${esc(prod.mediaUrl)}" controls playsinline></video></div>`
+          : `<div class="detail-media-large"><img src="${esc(prod.mediaUrl)}" alt="${esc(prod.name)}" /></div>`;
+      }
+
+      const deleteBtnHtml = appState.isOwner
+        ? `<button type="button" style="background:#ef4444; color:#fff; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer;" onclick="deleteOwnerProduct('${prod.id}')">🗑️ Удалить товар</button>`
+        : '';
+
+      document.getElementById('productDetailContainer').innerHTML = `
+        ${mediaBlock}
+        <div style="font-size:12.5px; color:#64748b; margin-bottom:4px;">Опубликовано: ${esc(prod.createdAt)}</div>
+        <h2 style="font-size:26px; font-weight:800; margin-bottom:8px;">${esc(prod.name)}</h2>
+        <div style="font-size:24px; font-weight:800; color:#16a34a; margin-bottom:14px;">${prod.price.toLocaleString('ru-RU')} ₴</div>
+        <div style="font-size:15.5px; line-height:1.65; color:#1e293b; white-space:pre-wrap; margin-bottom:20px;">${esc(prod.desc)}</div>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <button type="button" class="btn-buy-now" style="padding:14px 22px; font-size:16px;" onclick="buyProductInstant('${prod.id}')">Купить сейчас</button>
+          <button type="button" class="btn-to-cart" style="padding:14px 22px; font-size:16px;" onclick="addProductToCart('${prod.id}')">🛒 Добавить в корзину</button>
+          ${deleteBtnHtml}
+        </div>
+      `;
+
+      switchPage('productDetailPage');
+    }
+
+    function deleteOwnerProduct(prodId) {
+      appState.products = appState.products.filter(p => p.id !== prodId);
+      saveAppState();
+      toast('Товар удалён');
+      switchPage('purchasesPage');
+    }
+
+    function addProductToCart(prodId) {
+      const prod = appState.products.find(p => p.id === prodId);
+      if (!prod) return;
+      const item = appState.cart.find(c => c.id === prodId);
+      if (item) item.qty += 1;
+      else appState.cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
+      saveAppState();
+      updateCartCounter();
+      toast(`«${prod.name}» добавлен в корзину`);
+    }
+
+    function buyProductInstant(prodId) {
+      addProductToCart(prodId);
+      openModal('cartModal');
+    }
+
+    function updateCartCounter() {
+      const count = appState.cart.reduce((s, i) => s + i.qty, 0);
+      document.getElementById('cartBadge').textContent = count;
+    }
+
+    function renderCartModal() {
+      const body = document.getElementById('cartBody');
+      if (!appState.cart.length) {
+        body.innerHTML = `<div style="text-align:center; padding:24px; color:#64748b;">Корзина пуста.</div>`;
+        return;
+      }
+      let sum = 0;
+      const itemsHtml = appState.cart.map(item => {
+        sum += item.price * item.qty;
+        return `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #e2e8f0;">
+            <div>
+              <div style="font-weight:800;">${esc(item.name)}</div>
+              <div style="font-size:13px; color:#64748b;">${item.price.toLocaleString('ru-RU')} ₴ × ${item.qty}</div>
+            </div>
+            <button type="button" style="background:#ef4444; color:#fff; border:none; border-radius:8px; padding:5px 10px; cursor:pointer;" onclick="removeFromCart('${item.id}')">✕</button>
+          </div>
+        `;
+      }).join('');
+
+      body.innerHTML = `
+        ${itemsHtml}
+        <div style="font-size:18px; font-weight:800; margin:14px 0;">Итого: ${sum.toLocaleString('ru-RU')} ₴</div>
+        <button type="button" class="btn-green-full" onclick="completePurchase()">Подтвердить покупку</button>
+      `;
+    }
+
+    function removeFromCart(id) {
+      appState.cart = appState.cart.filter(i => i.id !== id);
+      saveAppState();
+      updateCartCounter();
+      renderCartModal();
+    }
+
+    function completePurchase() {
+      appState.cart = [];
+      saveAppState();
+      updateCartCounter();
+      closeModal('cartModal');
+      toast('Покупка успешно оформлена!');
+    }
+
+    /* =========================================================================
+       FEED PAGE & SEPARATE POST DETAIL PAGE (UNLIMITED OWNER POSTING + 3 DOTS)
+       ========================================================================= */
+    function onFeedFileChange(input) {
+      const file = input.files && input.files[0];
+      if (!file) {
+        pendingFeedMedia = { url: '', type: 'none' };
+        document.getElementById('feedFileLabel').textContent = 'Файл не выбран';
+        return;
+      }
+      document.getElementById('feedFileLabel').textContent = file.name;
+      const type = file.type.startsWith('video/') ? 'video' : 'image';
+      const reader = new FileReader();
+      reader.onload = e => {
+        pendingFeedMedia = { url: e.target.result, type };
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function createFeedPost() {
+      if (!appState.isOwner) {
+        toast('Только владелец может публиковать в ленту');
+        return;
+      }
+      const url = document.getElementById('feedUrlInput').value.trim();
+      const text = document.getElementById('feedTextInput').value.trim();
+
+      if (!text && !url && !pendingFeedMedia.url) {
+        toast('Добавьте текст, фото или видео');
         return;
       }
 
-      filtered.forEach(post => {
+      let mediaUrl = '';
+      let mediaType = 'none';
+      if (pendingFeedMedia.url) {
+        mediaUrl = pendingFeedMedia.url;
+        mediaType = pendingFeedMedia.type;
+      } else if (url) {
+        mediaUrl = url;
+        mediaType = /\.(mp4|webm|ogg)(\?|$)/i.test(url) ? 'video' : 'image';
+      }
+
+      const post = {
+        id: 'post-' + Date.now(),
+        author: appState.profile.name,
+        date: new Date().toLocaleDateString('ru-RU'),
+        text,
+        mediaUrl,
+        mediaType,
+        soundOn: false,
+        likes: 0,
+        liked: false,
+        comments: []
+      };
+
+      appState.posts.unshift(post);
+      saveAppState();
+
+      document.getElementById('feedUrlInput').value = '';
+      document.getElementById('feedTextInput').value = '';
+      document.getElementById('feedFileInput').value = '';
+      document.getElementById('feedFileLabel').textContent = 'Файл не выбран';
+      pendingFeedMedia = { url: '', type: 'none' };
+
+      renderFeedPage();
+      toast('Пост опубликован в ленте');
+    }
+
+    function renderFeedPage() {
+      const list = document.getElementById('feedPostsList');
+      if (!appState.posts.length) {
+        list.innerHTML = `
+          <div class="empty-state-box dark-empty">
+            <div style="font-size:36px; margin-bottom:8px;">🎬</div>
+            <div style="font-weight:800; font-size:17px; color:#fff; margin-bottom:4px;">Лента сейчас абсолютно пуста</div>
+            <div>Опубликуйте первое фото, видео или текст без ограничений.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = '';
+      appState.posts.forEach(post => {
         let mediaHtml = '';
         if (post.mediaUrl) {
-          if (post.mediaType === 'video') {
-            mediaHtml = `
-              <div class="post-media-box">
-                <video src="${escapeHtml(post.mediaUrl)}" ${post.soundEnabled ? '' : 'muted'} playsinline loop autoplay controls></video>
-                <button type="button" class="media-sound-btn" onclick="togglePostSound('${post.id}')" title="Переключить звук медиа">
-                  ${post.soundEnabled ? '🔊' : '🔇'}
-                </button>
-              </div>
-            `;
-          } else {
-            mediaHtml = `
-              <div class="post-media-box">
-                <img src="${escapeHtml(post.mediaUrl)}" alt="Медиа поста" onerror="this.style.display='none';" />
-                <button type="button" class="media-sound-btn" onclick="togglePostSound('${post.id}')" title="Звуковой сигнал поста">
-                  ${post.soundEnabled ? '🔊' : '🔇'}
-                </button>
-              </div>
-            `;
-          }
+          mediaHtml = post.mediaType === 'video'
+            ? `<div class="post-media" onclick="event.stopPropagation()">
+                 <video src="${esc(post.mediaUrl)}" ${post.soundOn ? '' : 'muted'} controls playsinline></video>
+                 <button type="button" class="sound-corner-btn" onclick="toggleFeedSound('${post.id}')">${post.soundOn ? '🔊' : '🔇'}</button>
+               </div>`
+            : `<div class="post-media">
+                 <img src="${esc(post.mediaUrl)}" alt="Фото поста" />
+                 <button type="button" class="sound-corner-btn" onclick="event.stopPropagation(); toggleFeedSound('${post.id}')">${post.soundOn ? '🔊' : '🔇'}</button>
+               </div>`;
         }
 
-        const commentsHtml = post.comments.map(c => `
-          <div class="comment-bubble">
-            <div>
-              <span class="comment-author">${escapeHtml(c.author)}:</span>
-              <span>${escapeHtml(c.text)}</span>
-            </div>
-          </div>
-        `).join('');
+        const deleteMenuHtml = appState.isOwner
+          ? `<button type="button" class="delete-opt" onclick="deleteFeedPost('${post.id}')">🗑️ Удалить пост</button>`
+          : '';
 
         const card = document.createElement('article');
         card.className = 'post-card';
-        card.id = post.id;
+        card.onclick = () => openPostDetailPage(post.id);
         card.innerHTML = `
-          <div class="post-top">
-            <div class="post-author-row">
-              <div class="post-avatar">${escapeHtml(post.author.slice(0, 1).toUpperCase())}</div>
+          <div class="post-header">
+            <div class="post-user">
+              <div class="avatar-circle">${esc(post.author.slice(0, 1).toUpperCase())}</div>
               <div>
-                <div class="post-author-name">${escapeHtml(post.author)}</div>
-                <div class="post-date">${escapeHtml(post.date)}</div>
+                <div style="font-weight:800; font-size:15px;">${esc(post.author)}</div>
+                <div style="font-size:12px; color:#94a3b8;">${esc(post.date)}</div>
               </div>
             </div>
-            <button type="button" class="post-menu-btn" onclick="togglePostDropdown('${post.id}', event)" title="Действия">⋮</button>
+            <button type="button" class="dots-btn" onclick="event.stopPropagation(); toggleDotsMenu('${post.id}')">⋮</button>
           </div>
 
-          <div class="post-dropdown" id="dropdown-${post.id}">
-            <button type="button" onclick="copyPostLink('${post.id}')">🔗 Копировать ссылку</button>
-            <button type="button" onclick="togglePostSound('${post.id}')">${post.soundEnabled ? '🔇 Выключить звук' : '🔊 Включить звук'}</button>
-            <button type="button" class="danger" onclick="deletePost('${post.id}')">🗑️ Удалить пост</button>
+          <div class="dots-menu" id="dots-${post.id}" onclick="event.stopPropagation()">
+            <button type="button" onclick="shareFeedPost('${post.id}')">📤 Отправить / Поделиться</button>
+            <button type="button" onclick="openPostDetailPage('${post.id}')">📄 Открыть полностью</button>
+            ${deleteMenuHtml}
           </div>
 
-          <div class="post-body-text">${escapeHtml(post.text)}</div>
+          ${post.text ? `<div class="post-text">${esc(post.text)}</div>` : ''}
           ${mediaHtml}
 
-          <div class="post-actions-row">
-            <button type="button" class="post-pill-btn ${post.likedByMe ? 'liked' : ''}" onclick="togglePostLike('${post.id}')">
-              <span>${post.likedByMe ? '❤️' : '♡'}</span>
-              <span>Лайк (${post.likes})</span>
+          <div class="post-footer-btns" onclick="event.stopPropagation()">
+            <button type="button" class="pill-stat-btn" onclick="likeFeedPost('${post.id}')">
+              ${post.liked ? '❤️' : '♡'} Лайк (${post.likes})
             </button>
-            <button type="button" class="post-pill-btn" onclick="document.getElementById('commentInput-${post.id}').focus()">
-              <span>💬</span>
-              <span>Комментарии (${post.comments.length})</span>
+            <button type="button" class="pill-stat-btn" onclick="openPostDetailPage('${post.id}')">
+              💬 Комментарии (${post.comments.length})
             </button>
           </div>
-
-          <div class="comments-list">${commentsHtml}</div>
-
-          <form class="comment-form-row" onsubmit="addCommentToPost(event, '${post.id}')">
-            <input
-              type="text"
-              id="commentInput-${post.id}"
-              class="comment-input"
-              placeholder="Добавить комментарий..."
-              required
-            />
-            <button type="submit" class="comment-send-btn">Отпр.</button>
-          </form>
         `;
-        container.appendChild(card);
+        list.appendChild(card);
       });
     }
 
-    function openChatModal(mode = 'ai') {
-      switchChatMode(mode);
-      openModal('chatModal');
-      renderChatMessages();
-    }
-
-    function switchChatMode(mode) {
-      state.chatMode = mode;
-      saveState();
-      document.getElementById('modeAiBtn').classList.toggle('active', mode === 'ai');
-      document.getElementById('modeChatBtn').classList.toggle('active', mode === 'chat');
-      document.getElementById('chatModalTitle').textContent =
-        mode === 'ai' ? '🤖 ИИ Рунотокси' : '💬 Чат сообщества runotoks';
-      renderChatMessages();
-    }
-
-    function renderChatMessages() {
-      const list = document.getElementById('chatMessagesList');
-      list.innerHTML = '';
-
-      state.chatHistory.forEach(msg => {
-        const div = document.createElement('div');
-        div.className = `chat-msg ${msg.sender === 'user' ? 'user' : 'bot'}`;
-        div.innerHTML = `
-          <div>${escapeHtml(msg.text)}</div>
-          <div class="chat-msg-meta">${escapeHtml(msg.time || '')}</div>
-        `;
-        list.appendChild(div);
+    function toggleDotsMenu(postId) {
+      document.querySelectorAll('.dots-menu').forEach(m => {
+        if (m.id !== `dots-${postId}`) m.classList.remove('open');
       });
-
-      list.scrollTop = list.scrollHeight;
+      const el = document.getElementById(`dots-${postId}`);
+      if (el) el.classList.toggle('open');
     }
 
-    function sendQuickPrompt(promptText) {
-      document.getElementById('chatInputField').value = promptText;
-      handleChatSubmit(new Event('submit'));
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.dots-menu.open').forEach(m => m.classList.remove('open'));
+    });
+
+    function toggleFeedSound(postId) {
+      const p = appState.posts.find(x => x.id === postId);
+      if (!p) return;
+      p.soundOn = !p.soundOn;
+      saveAppState();
+      renderFeedPage();
     }
 
-    function generateRunotoksAiReply(userText) {
-      const lower = userText.toLowerCase();
-      if (lower.includes('наушники') || lower.includes('бас') || lower.includes('сетап')) {
-        return 'Для мощного баса и удобного сетапа посмотри в каталоге «П47 Wireless Bass Headphones» (690 ₴), «SubBass Desktop Amplifier 120W» (1 890 ₴) и кабель USB-C 240W (320 ₴). Всё можно добавить в корзину прямо из раздела «Покупки».';
-      }
-      if (lower.includes('заказ') || lower.includes('бонус') || lower.includes('корзин')) {
-        return `Нажми «В корзину» у нужного товара, затем открой иконку корзины вверху справа. Твой текущий бонусный баланс: ${formatUAH(state.profile.balance)}.`;
-      }
-      if (lower.includes('пост') || lower.includes('лент') || lower.includes('идеи')) {
-        return 'Отличные темы для поста в ленте runotoks:\n1) Обзор твоего рабочего места или гаджета;\n2) Подборка любимых треков и тест звука;\n3) Мини-гайд или вопрос подписчикам в комментариях.';
-      }
-      if (lower.includes('профиль') || lower.includes('статус') || lower.includes('баланс')) {
-        return `Профиль: ${state.profile.name} (${state.profile.handle}). Публикаций: ${state.posts.filter(p => p.isMine).length}, заказов: ${state.orders.length}, баланс: ${formatUAH(state.profile.balance)}.`;
-      }
-      return `ИИ Рунотокси принял запрос: «${userText}». Ты можешь открыть каталог «Покупки», опубликовать пост в «Ленте» или найти авторов через кнопку поиска в нижнем меню.`;
+    function likeFeedPost(postId) {
+      const p = appState.posts.find(x => x.id === postId);
+      if (!p) return;
+      p.liked = !p.liked;
+      p.likes += p.liked ? 1 : -1;
+      saveAppState();
+      renderFeedPage();
     }
 
-    function handleChatSubmit(event) {
-      event.preventDefault();
-      const input = document.getElementById('chatInputField');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const nowTime = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-      state.chatHistory.push({ sender: 'user', mode: state.chatMode, text, time: nowTime });
-
-      const replyText = state.chatMode === 'ai'
-        ? generateRunotoksAiReply(text)
-        : `Сообщение отправлено в чат комнаты runotoks. Участники скоро ответят на: «${text}».`;
-
-      state.chatHistory.push({ sender: 'bot', mode: state.chatMode, text: replyText, time: nowTime });
-      saveState();
-      input.value = '';
-      renderChatMessages();
-    }
-
-    function populateProfileModal() {
-      document.getElementById('profileAvatarLetter').textContent = (state.profile.name || 'R').slice(0, 1).toUpperCase();
-      document.getElementById('profileDisplayName').textContent = state.profile.name;
-      document.getElementById('profileDisplayHandle').textContent = `${state.profile.handle} • runotoks`;
-      document.getElementById('editProfileNameInput').value = state.profile.name;
-      document.getElementById('editProfileBioInput').value = state.profile.bio;
-
-      document.getElementById('profilePostsCount').textContent = state.posts.filter(p => p.isMine).length;
-      document.getElementById('profileOrdersCount').textContent = state.orders.length;
-      document.getElementById('profileBalanceCount').textContent = formatUAH(state.profile.balance);
-    }
-
-    function saveProfileChanges() {
-      const newName = document.getElementById('editProfileNameInput').value.trim();
-      const newBio = document.getElementById('editProfileBioInput').value.trim();
-      if (!newName) {
-        showToast('Имя профиля не может быть пустым');
-        return;
+    function shareFeedPost(postId) {
+      const link = `${window.location.origin}${window.location.pathname}#${postId}`;
+      if (navigator.share) {
+        navigator.share({ title: 'Публикация runotoks', url: link }).catch(() => {});
+      } else {
+        navigator.clipboard?.writeText(link).catch(() => {});
+        toast('Ссылка на пост скопирована для отправки');
       }
-      state.profile.name = newName;
-      state.profile.bio = newBio;
-      saveState();
-      populateProfileModal();
-      updateTopStats();
-      showToast('Профиль обновлён');
+      document.querySelectorAll('.dots-menu.open').forEach(m => m.classList.remove('open'));
     }
 
-    function renderPeopleDirectory(query) {
-      const q = (query || '').trim().toLowerCase();
-      const list = document.getElementById('peopleResultsList');
-      const matches = PEOPLE_DIRECTORY.filter(u =>
-        !q ||
-        u.name.toLowerCase().includes(q) ||
-        u.handle.toLowerCase().includes(q) ||
-        u.role.toLowerCase().includes(q) ||
-        u.bio.toLowerCase().includes(q)
-      );
+    function deleteFeedPost(postId) {
+      appState.posts = appState.posts.filter(p => p.id !== postId);
+      saveAppState();
+      toast('Пост удалён');
+      if (document.getElementById('postDetailPage').classList.contains('active')) {
+        switchPage('feedPage');
+      } else {
+        renderFeedPage();
+      }
+    }
 
-      if (!matches.length) {
-        list.innerHTML = `<div style="text-align:center; padding:18px; color:var(--text-subtle);">Никого не найдено по запросу «${escapeHtml(query)}».</div>`;
-        return;
+    function openPostDetailPage(postId) {
+      const post = appState.posts.find(p => p.id === postId);
+      if (!post) return;
+
+      let mediaHtml = '';
+      if (post.mediaUrl) {
+        mediaHtml = post.mediaType === 'video'
+          ? `<div class="detail-media-large"><video src="${esc(post.mediaUrl)}" controls playsinline></video></div>`
+          : `<div class="detail-media-large"><img src="${esc(post.mediaUrl)}" alt="Медиа" /></div>`;
       }
 
-      list.innerHTML = matches.map(u => `
-        <div style="background:var(--bg-dark-card); border:1px solid var(--border-dark); border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div class="post-avatar">${escapeHtml(u.avatar)}</div>
+      const commentsHtml = post.comments.map(c => `
+        <div style="background:#1e293b; padding:10px 14px; border-radius:12px; margin-bottom:8px; font-size:14px;">
+          <strong style="color:var(--green);">${esc(c.author)}:</strong> ${esc(c.text)}
+        </div>
+      `).join('');
+
+      document.getElementById('postDetailContainer').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="avatar-circle">${esc(post.author.slice(0, 1).toUpperCase())}</div>
             <div>
-              <div style="font-weight:800;">${escapeHtml(u.name)} <span style="font-size:12px; color:var(--text-subtle); font-weight:600;">${escapeHtml(u.handle)}</span></div>
-              <div style="font-size:12px; color:var(--accent-green); font-weight:700;">${escapeHtml(u.role)}</div>
-              <div style="font-size:12.5px; color:var(--text-on-dark-muted);">${escapeHtml(u.bio)}</div>
+              <div style="font-weight:800;">${esc(post.author)}</div>
+              <div style="font-size:12px; color:#94a3b8;">${esc(post.date)}</div>
             </div>
           </div>
-          <button type="button" class="post-pill-btn" onclick="closeModal('peopleSearchModal'); openChatModal('chat');">
-            Написать
-          </button>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="pill-stat-btn" onclick="shareFeedPost('${post.id}')">📤 Отправить</button>
+            ${appState.isOwner ? `<button type="button" class="pill-stat-btn" style="color:#f87171;" onclick="deleteFeedPost('${post.id}')">🗑️ Удалить</button>` : ''}
+          </div>
+        </div>
+        ${mediaHtml}
+        <div style="font-size:16px; line-height:1.65; white-space:pre-wrap; margin-bottom:18px;">${esc(post.text)}</div>
+        <div style="margin-bottom:12px; font-weight:700;">Комментарии (${post.comments.length})</div>
+        <div>${commentsHtml}</div>
+        <form style="display:flex; gap:8px; margin-top:10px;" onsubmit="addDetailComment(event, '${post.id}')">
+          <input type="text" id="detailCommentInput" class="dark-field" style="margin-bottom:0; flex:1;" placeholder="Написать комментарий..." required />
+          <button type="submit" class="btn-blue" style="padding:10px 16px; border-radius:12px;">Отпр.</button>
+        </form>
+      `;
+
+      switchPage('postDetailPage');
+    }
+
+    function addDetailComment(e, postId) {
+      e.preventDefault();
+      const input = document.getElementById('detailCommentInput');
+      const val = input.value.trim();
+      if (!val) return;
+      const post = appState.posts.find(p => p.id === postId);
+      if (!post) return;
+      post.comments.push({ author: appState.profile.name, text: val });
+      saveAppState();
+      openPostDetailPage(postId);
+    }
+
+    /* =========================================================================
+       CHAT ROULETTE + VIDEO/AUDIO CALLS + TEXT FONTS
+       ========================================================================= */
+    function setChatFont(fontKey, btn) {
+      appState.selectedFont = fontKey;
+      document.querySelectorAll('.font-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    function transformTextWithFont(text, fontKey) {
+      if (fontKey === 'fancy') {
+        const normal = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const fancy  = '𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹𝑒𝒻𝑔𝒽𝒾𝒿𝓀𝓁𝓂𝓃𝑜𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏';
+        return text.split('').map(ch => {
+          const idx = normal.indexOf(ch);
+          return idx >= 0 ? Array.from(fancy)[idx] : ch;
+        }).join('');
+      }
+      return text;
+    }
+
+    function getFontCssStyle(fontKey) {
+      if (fontKey === 'mono') return 'font-family: var(--font-mono);';
+      if (fontKey === 'serif') return 'font-family: var(--font-serif);';
+      if (fontKey === 'rounded') return 'font-family: var(--font-rounded);';
+      if (fontKey === 'bold-caps') return 'font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;';
+      return '';
+    }
+
+    function rouletteNextPeer() {
+      endCall();
+      const dot = document.getElementById('rouletteDot');
+      const title = document.getElementById('roulettePeerTitle');
+      dot.classList.add('searching');
+      title.textContent = 'Поиск нового собеседника...';
+      appState.rouletteChat = [{ type: 'system', text: 'Ищем нового случайного собеседника в рулетке...' }];
+      renderRouletteChat();
+
+      setTimeout(() => {
+        const randId = Math.floor(1000 + Math.random() * 8999);
+        appState.roulettePeer = `Собеседник #${randId}`;
+        dot.classList.remove('searching');
+        title.textContent = `${appState.roulettePeer} (Онлайн)`;
+        appState.rouletteChat = [
+          { type: 'system', text: `Соединение установлено! Вы общаетесь с ${appState.roulettePeer}.` },
+          { type: 'peer', font: 'default', text: 'Привет! Как дела? Можем пообщаться или созвониться.' }
+        ];
+        saveAppState();
+        renderRouletteChat();
+      }, 650);
+    }
+
+    function renderRouletteChat() {
+      const box = document.getElementById('rouletteMessages');
+      box.innerHTML = '';
+      appState.rouletteChat.forEach(m => {
+        const div = document.createElement('div');
+        if (m.type === 'system') {
+          div.className = 'msg-bubble system';
+          div.textContent = m.text;
+        } else {
+          div.className = `msg-bubble ${m.type === 'me' ? 'me' : 'peer'}`;
+          div.style = getFontCssStyle(m.font || 'default');
+          div.textContent = m.text;
+        }
+        box.appendChild(div);
+      });
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function sendRouletteMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('rouletteInput');
+      const rawText = input.value.trim();
+      if (!rawText) return;
+
+      const styledText = transformTextWithFont(rawText, appState.selectedFont);
+      appState.rouletteChat.push({
+        type: 'me',
+        font: appState.selectedFont,
+        text: styledText
+      });
+      input.value = '';
+      saveAppState();
+      renderRouletteChat();
+
+      setTimeout(() => {
+        const replies = [
+          'Крутой шрифт! Слышно и видно отлично 👍',
+          'Понял тебя! Нажимай видеозвонок или аудиозвонок сверху, если хочешь голосом.',
+          'Ого, классная тема! Расскажи подробнее.'
+        ];
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        appState.rouletteChat.push({ type: 'peer', font: 'default', text: reply });
+        saveAppState();
+        renderRouletteChat();
+      }, 700);
+    }
+
+    async function startCall(mode) {
+      const stage = document.getElementById('callStage');
+      const endBtn = document.getElementById('endCallBtn');
+      const statusText = document.getElementById('callStatusText');
+      const localVid = document.getElementById('localVideo');
+
+      stage.classList.add('active');
+      endBtn.style.display = 'inline-block';
+      statusText.textContent = mode === 'video' ? '📹 Видеозвонок активен' : '📞 Аудиозвонок активен';
+      document.getElementById('remotePeerCallName').textContent = `${appState.roulettePeer} в звонке`;
+
+      try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          localMediaStream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: mode === 'video'
+          });
+          localVid.srcObject = localMediaStream;
+        }
+      } catch (err) {
+        toast('Звонок запущен (доступ к камере/микрофону ограничен браузером)');
+      }
+
+      clearInterval(callTimerInterval);
+      callSeconds = 0;
+      callTimerInterval = setInterval(() => {
+        callSeconds += 1;
+        const mm = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+        const ss = String(callSeconds % 60).padStart(2, '0');
+        document.getElementById('callTimerText').textContent = `${mm}:${ss}`;
+      }, 1000);
+    }
+
+    function endCall() {
+      clearInterval(callTimerInterval);
+      document.getElementById('callStage').classList.remove('active');
+      document.getElementById('endCallBtn').style.display = 'none';
+      document.getElementById('callTimerText').textContent = '00:00';
+      if (localMediaStream) {
+        localMediaStream.getTracks().forEach(t => t.stop());
+        localMediaStream = null;
+      }
+    }
+
+    /* =========================================================================
+       SEARCH & PROFILE PAGES
+       ========================================================================= */
+    function renderPeopleList(q) {
+      const query = q.trim().toLowerCase();
+      const users = [
+        { name: appState.profile.name, handle: '@runotoks', role: 'Владелец платформы' },
+        { name: 'Собеседник #4821', handle: '@user4821', role: 'В сети • Чат-рулетка' },
+        { name: 'TechExplorer', handle: '@techexplorer', role: 'Покупатель' }
+      ].filter(u => !query || u.name.toLowerCase().includes(query) || u.handle.toLowerCase().includes(query));
+
+      document.getElementById('peopleListContainer').innerHTML = users.map(u => `
+        <div style="background:#162033; padding:12px 14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-weight:800;">${esc(u.name)} <span style="font-size:12px; color:#94a3b8;">${esc(u.handle)}</span></div>
+            <div style="font-size:12px; color:var(--green);">${esc(u.role)}</div>
+          </div>
+          <button type="button" class="pill-stat-btn" onclick="switchPage('roulettePage')">Позвонить / Написать</button>
         </div>
       `).join('');
     }
 
-    function updateTopStats() {
-      document.getElementById('statProductsCount').textContent = `${DEFAULT_PRODUCTS.length}+`;
-      document.getElementById('statPostsCount').textContent = state.posts.length;
-      document.getElementById('statBalanceVal').textContent = formatUAH(state.profile.balance);
-      document.getElementById('soundToggleWidget').textContent = state.soundEnabled ? '🔊' : '🔇';
+    function renderProfilePage() {
+      document.getElementById('profileLetter').textContent = (appState.profile.name || 'R').slice(0, 1).toUpperCase();
+      document.getElementById('profileNameTitle').textContent = appState.profile.name;
+      document.getElementById('profileRoleBadge').textContent = appState.isOwner ? 'Статус: Владелец сайта' : 'Статус: Посетитель';
+      document.getElementById('profileNameInput').value = appState.profile.name;
+      document.getElementById('profileBioInput').value = appState.profile.bio;
     }
 
-    function initApp() {
-      updateCartBadge(false);
-      updateTopStats();
-      renderStories();
-      renderCatalog();
-      renderFeedPosts();
+    function saveProfile() {
+      const name = document.getElementById('profileNameInput').value.trim();
+      const bio = document.getElementById('profileBioInput').value.trim();
+      if (!name) return;
+      appState.profile.name = name;
+      appState.profile.bio = bio;
+      saveAppState();
+      renderProfilePage();
+      toast('Профиль сохранён');
     }
 
-    document.addEventListener('DOMContentLoaded', initApp);
+    function init() {
+      applyOwnerPermissions();
+      updateCartCounter();
+      renderFeedPage();
+      renderProductsPage();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
