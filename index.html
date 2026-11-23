@@ -3599,13 +3599,7 @@
 </head>
 <body>
 
-  <header>
-    <div class="logo">RUNO<span>TOKS</span></div>
-    <div class="hdr-btns">
-      <button onclick="openSearch()">🔍 Поиск</button>
-      <button id="ownerBtn" class="accent-pill" onclick="togglePublisher()">＋ Новый пост</button>
-    </div>
-  </header>
+  <
 
   <div class="wrap">
     <!-- Публикация (доступна только в режиме владельца) -->
@@ -3615,41 +3609,4 @@
         <span class="muted" id="ownerHint">Только ты можешь публиковать</span>
       </div>
 
-      <input id="ownerPass" type="text" placeholder="Код владельца (по умолчанию: runotoks)" />
-      <textarea id="postCaption" placeholder="Напиши текст к посту..."></textarea>
-
-      <div>
-        <input id="mediaFiles" type="file" accept="image/*,video/*" multiple onchange="previewSelectedFiles(this.files)" />
-        <div class="muted" style="margin-top:4px;">Можно выбрать сразу много фото и видео в один пост (свайп влево).</div>
-      </div>
-
-      <div class="selected-preview" id="selectedPreview"></div>
-
-      <div style="display:flex; gap:8px; justify-content:flex-end;">
-        <button onclick="togglePublisher()">Отмена</button>
-        <button class="primary" onclick="publishPost()">Опубликовать</button>
-      </div>
-    </section>
-
-    <!-- Лента постов -->
-    <main class="feed" id="feed"></main>
-  </div>
-
-  <!-- Полноэкранный просмотр поста с листанием всех элементов и кнопкой назад -->
-  <div class="viewer" id="postViewer">
-    <div class="viewer-bar">
-      <button onclick="closeViewer()">← Назад</button>
-      <div id="viewerCounter" style="font-weight:700; font-size:14px;">1 / 1</div>
-      <div class="views-badge" id="viewerViews">👁 0</div>
-    </div>
-    <div class="viewer-track" id="viewerTrack" onscroll="updateViewerCounter()"></div>
-    <div class="viewer-bottom">
-      <div id="viewerCaption" style="font-size:14px;"></div>
-      <div style="display:flex; gap:8px;">
-        <button onclick="stepViewer(-1)">‹</button>
-        <button onclick="stepViewer(1)">›</button>
-      </div>
-    </div>
-  </div>
-
-  
+      
