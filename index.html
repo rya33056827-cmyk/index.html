@@ -3711,8 +3711,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
       } catch (e) {
-        alert('Память браузера заполнена большими видео/файлами. Выбери файлы поменьше или подключи Firebase Storage.');
-      }
+        
     }
 
     function togglePublisher() {
@@ -3742,17 +3741,4 @@
       });
     }
 
-    function publishPost() {
-      const code = (document.getElementById('ownerPass').value || '').trim().toLowerCase();
-      if (code !== OWNER_KEY) {
-        alert('Публиковать может только владелец. Введите код владельца: runotoks');
-        return;
-      }
-
-      const caption = (document.getElementById('postCaption').value || '').trim();
-      if (!draftMedia.length && !caption) {
-        alert('Выберите фото/видео или напишите текст поста.');
-        return;
-      }
-
-      
+    
