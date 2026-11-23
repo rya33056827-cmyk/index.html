@@ -3789,5 +3789,1282 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RUNOTOKS & TARBEX — Платформа, Лента, Магазин, Чат и Звонки</title>
+  <style>
+    :root {
+      --bg: #090b10;
+      --card: #121722;
+      --card-2: #192030;
+      --card-3: #222b40;
+      --text: #f5f7fb;
+      --muted: #9aa5b8;
+      --accent: #6c5ce7;
+      --accent-hover: #7d6ff0;
+      --accent-2: #00cec9;
+      --gold: #fdcb6e;
+      --danger: #ff4d4f;
+      --success: #00b894;
+      --border: rgba(255, 255, 255, 0.09);
+      --chat-font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-bottom: 84px;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    /* Верхняя панель */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(9, 11, 16, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      font-size: 18px;
+    }
+
+    .brand span {
+      color: var(--accent-2);
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hdr-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    button:hover {
+      background: var(--card-3);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button.primary {
+      background: var(--accent);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    button.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    button.donate {
+      background: linear-gradient(135deg, #ff7675, #fdcb6e);
+      color: #101218;
+      font-weight: 800;
+      border: none;
+    }
+
+    button.active-pill {
+      background: var(--accent-2);
+      color: #061014;
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Анимированная сцена персонажа у клавиатуры RUNOTOKS & TARBEX */
+    .stage-box {
+      background: linear-gradient(180deg, #161c2c 0%, #0d1018 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    .stage-signs {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 900;
+      letter-spacing: 2px;
+      font-size: 13px;
+      color: var(--accent-2);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .scene {
+      position: relative;
+      height: 175px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(108, 92, 231, 0.28), transparent 55%),
+        radial-gradient(circle at 75% 30%, rgba(0, 206, 201, 0.2), transparent 55%),
+        #090c13;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 22px;
+      padding-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      max-width: 78%;
+      background: linear-gradient(135deg, var(--accent-2), #74b9ff);
+      color: #061016;
+      font-weight: 800;
+      padding: 7px 12px;
+      border-radius: 14px 14px 14px 4px;
+      font-size: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      animation: bubbleBounce 2.2s infinite ease-in-out;
+    }
+
+    .character {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: characterDance 0.95s infinite ease-in-out;
+    }
+
+    .char-head {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #ffeaa7;
+      color: #111;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      border: 2px solid #fff;
+    }
+
+    .char-body {
+      width: 48px;
+      height: 54px;
+      border-radius: 14px 14px 8px 8px;
+      background: linear-gradient(180deg, var(--accent), #4834d4);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .char-legs {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .leg {
+      width: 10px;
+      height: 16px;
+      border-radius: 4px;
+      background: #dfe6e9;
+    }
+
+    .keyboard-desk {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sign-plate {
+      background: rgba(0, 206, 201, 0.14);
+      border: 1px solid rgba(0, 206, 201, 0.45);
+      color: var(--accent-2);
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .keyboard-prop {
+      width: 128px;
+      height: 40px;
+      border-radius: 9px;
+      background: linear-gradient(180deg, #2b344b, #1a2030);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      box-shadow: 0 5px 0 #0c1018;
+      animation: keyTap 0.6s infinite alternate;
+    }
+
+    @keyframes characterDance {
+      0%, 100% { transform: translateY(0) rotate(-4deg) scaleX(1); }
+      25% { transform: translateY(-9px) rotate(3deg) scaleX(1.03); }
+      50% { transform: translateY(-3px) rotate(-2deg) scaleX(0.98); }
+      75% { transform: translateY(-11px) rotate(5deg) scaleX(1.03); }
+    }
+
+    @keyframes bubbleBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-3px) scale(1.03); }
+    }
+
+    @keyframes keyTap {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(2px); }
+    }
+
+    /* Крупная лента и посты-товары в стиле Instagram */
+    .feed {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .post-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+    }
+
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .price-tag {
+      background: rgba(0, 206, 201, 0.14);
+      border: 1px solid rgba(0, 206, 201, 0.35);
+      color: var(--accent-2);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    /* Плавный горизонтальный свайп фото и видео внутри поста-товара */
+    .carousel-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      min-height: 360px;
+      background: #05070b;
+      cursor: pointer;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #05070b;
+    }
+
+    .slide img,
+    .slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(9, 11, 16, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 0 2px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .dot.active {
+      width: 18px;
+      border-radius: 999px;
+      background: var(--accent-2);
+    }
+
+    .post-body {
+      padding: 12px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-title {
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .post-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 4px;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Чат, 20 шрифтов, подарки, стикеры и поддержка */
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 10px 0 12px;
+      padding: 10px;
+      background: #0c0f17;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .msg {
+      background: var(--card-2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-family: var(--chat-font);
+      font-size: 16px;
+      word-break: break-word;
+    }
+
+    .msg.gift-msg {
+      background: linear-gradient(135deg, rgba(253, 203, 110, 0.16), rgba(108, 92, 231, 0.18));
+      border-color: rgba(253, 203, 110, 0.45);
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    select,
+    input.text-input {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    select:focus,
+    input.text-input:focus {
+      border-color: var(--accent-2);
+    }
+
+    input.text-input {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .saved-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .saved-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    /* Полноэкранный просмотр поста-товара */
+    .fullscreen-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(7, 9, 14, 0.98);
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .fullscreen-overlay.active {
+      display: block;
+    }
+
+    .overlay-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(7, 9, 14, 0.92);
+      padding: 6px 0;
+      backdrop-filter: blur(8px);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .result-item {
+      padding: 12px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .result-item:hover {
+      border-color: var(--accent-2);
+    }
+
+    /* Полноэкранный звонок как в Telegram с камерой */
+    .call-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: radial-gradient(circle at 50% 15%, #233058, #06080d 72%);
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 20px 36px;
+      text-align: center;
+    }
+
+    .call-screen.active {
+      display: flex;
+    }
+
+    .call-avatar-big {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      font-weight: 900;
+      margin: 14px auto;
+      box-shadow: 0 0 35px rgba(0, 206, 201, 0.25);
+    }
+
+    .video-preview {
+      width: 100%;
+      max-width: 460px;
+      height: 290px;
+      border-radius: 20px;
+      background: #020407;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: none;
+    }
+
+    .video-preview.active {
+      display: block;
+    }
+
+    .call-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .call-btn {
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight: 700;
+    }
+
+    .end-call {
+      background: var(--danger);
+      border: none;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    /* Нижняя навигация */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 35;
+      display: flex;
+      justify-content: space-around;
+      gap: 6px;
+      padding: 10px 8px;
+      background: rgba(9, 11, 16, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+    }
+
+    nav.bottom-nav button {
+      flex: 1;
+      padding: 8px 6px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-wrap">
+      <div class="brand">RUNO<span>TOKS</span></div>
+      <div class="brand-sub">Лента • Магазин • Чат • Видеозвонки</div>
+    </div>
+    <div class="hdr-actions">
+      <button onclick="openSearch()">🔍 Поиск</button>
+      <button onclick="startCall('Абонент RUNOTOKS')">📞 Звонок</button>
+      <button class="donate" onclick="supportProject()">💛 Поддержка</button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Персонаж танцует и говорит у клавиатуры с надписями RUNOTOKS и TARBEX -->
+    <section class="stage-box" id="stageSection">
+      <div class="stage-signs">
+        <span>RUNOTOKS</span>
+        <span>TARBEX</span>
+      </div>
+      <div class="scene">
+        <div class="speech-bubble" id="speechLine">Рунотокс тарбекс!</div>
+        <div class="character" id="dancerChar">
+          <div class="char-head">RT</div>
+          <div class="char-body">RUNOTOKS</div>
+          <div class="char-legs">
+            <div class="leg"></div>
+            <div class="leg"></div>
+          </div>
+        </div>
+        <div class="keyboard-desk">
+          <div class="sign-plate">RUNOTOKS • TARBEX</div>
+          <div class="keyboard-prop">
+            <span>RUNOTOKS</span>
+            <span style="color:var(--accent-2);">TARBEX</span>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <button onclick="sayPhrase('Рунотокс тарбекс!')">🕺 Танец и фраза</button>
+        <button onclick="sendFreeSticker('💃 Танец RUNOTOKS')">💃 Бесплатный стикер</button>
+        <button onclick="sendFreeSticker('🔥 Эмодзи TARBEX')">🔥 Бесплатное эмодзи</button>
+        <button onclick="sendPaidGift('👑 Корона TARBEX', '199 ₽')">👑 Эксклюзивный подарок</button>
+        <button onclick="sendPaidGift('💎 Алмаз RUNOTOKS', '499 ₽')">💎 Платный стикер</button>
+      </div>
+    </section>
+
+    <!-- Крупная лента с постами и товарами -->
+    <main class="feed" id="feed"></main>
+
+    <!-- Чат с 20 шрифтами для первых 1000 пользователей, подарками, стикерами и поддержкой -->
+    <section class="panel" id="chatSection">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Чат RUNOTOKS & TARBEX</div>
+          <div class="muted" id="earlyUserInfo"></div>
+        </div>
+        <button class="donate" onclick="supportProject()">💛 Поддержать проект</button>
+      </div>
+
+      <div class="toolbar-row">
+        <label for="fontSelect" class="muted">Шрифт переписки (20 для топ-1000):</label>
+        <select id="fontSelect" onchange="applyFont(this.value)"></select>
+      </div>
+
+      <div class="toolbar-row">
+        <button onclick="sendFreeSticker('🎉 Ура RUNOTOKS!')">🎉 Стикер</button>
+        <button onclick="sendFreeSticker('⚡ TARBEX на связи')">⚡ Эмодзи</button>
+        <button onclick="sendPaidGift('🚀 Ракета TARBEX', '99 ₽')">🚀 Подарок 99 ₽</button>
+        <button onclick="sendPaidGift('🏆 VIP-стикер RUNOTOKS', '249 ₽')">🏆 VIP-стикер 249 ₽</button>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="msg">Добро пожаловать! Выбери шрифт из списка (для первых 1000 участников), отправь стикер или подарок.</div>
+      </div>
+
+      <div class="toolbar-row" style="margin-top:0;">
+        <input id="chatInput" class="text-input" placeholder="Написать сообщение в чат..." onkeydown="if(event.key==='Enter') sendMessage()" />
+        <button class="primary" onclick="sendMessage()">Отправить</button>
+      </div>
+    </section>
+
+    <!-- Профиль и сохранённые посты/товары -->
+    <section class="panel" id="profileSection">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Мой профиль и сохранённое</div>
+          <div class="muted" id="profileStats">Сохранено элементов: 0</div>
+        </div>
+        <button onclick="clearSaved()">Очистить</button>
+      </div>
+      <div class="saved-grid" id="savedList"></div>
+    </section>
+
+  </div>
+
+  <!-- Полноэкранный поиск как в Instagram -->
+  <div class="fullscreen-overlay" id="searchOverlay">
+    <div class="overlay-inner">
+      <div class="overlay-top">
+        <div class="panel-title">Поиск в RUNOTOKS</div>
+        <button onclick="closeSearch()">✕ Закрыть</button>
+      </div>
+      <input id="searchInput" class="text-input" style="width:100%;" placeholder="Поиск товаров, постов, авторов и тегов..." oninput="renderSearch()" />
+      <div class="filter-row">
+        <button id="f-all" class="active-pill" onclick="setSearchFilter('all')">Всё</button>
+        <button id="f-product" onclick="setSearchFilter('product')">Товары</button>
+        <button id="f-post" onclick="setSearchFilter('post')">Посты</button>
+      </div>
+      <div id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- Полноэкранный просмотр поста-товара с плавным свайпом фото/видео -->
+  <div class="fullscreen-overlay" id="detailOverlay">
+    <div class="overlay-inner">
+      <div class="overlay-top">
+        <div class="panel-title" id="detailTitle">Просмотр</div>
+        <button onclick="closeDetail()">✕ Закрыть</button>
+      </div>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- Полноэкранный звонок как в Telegram с камерой и микрофоном -->
+  <div class="call-screen" id="callScreen">
+    <div style="width:100%;">
+      <div style="font-size:12px; letter-spacing:1.5px; color:var(--accent-2); font-weight:800;">
+        ПОЛНОЭКРАННЫЙ ЗВОНОК • RUNOTOKS
+      </div>
+      <div class="call-avatar-big" id="callAvatar">RT</div>
+      <h2 id="callPeer" style="font-size:24px;">Абонент</h2>
+      <p id="callStatus" class="muted" style="margin-top:6px;">Вызов активен — можно включить камеру</p>
+    </div>
+
+    <video id="callVideo" class="video-preview" autoplay playsinline muted></video>
+
+    <div class="call-controls">
+      <button class="call-btn primary" id="camBtn" onclick="toggleCamera()">📷 Включить камеру</button>
+      <button class="call-btn" id="micBtn" onclick="toggleMic()">🎙️ Микрофон вкл</button>
+      <button class="call-btn end-call" onclick="endCall()">📵 Завершить</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button onclick="window.scrollTo({top:0, behavior:'smooth'})">🏠 Лента</button>
+    <button onclick="openSearch()">🔍 Поиск</button>
+    <button onclick="document.getElementById('chatSection').scrollIntoView({behavior:'smooth'})">💬 Чат</button>
+    <button onclick="document.getElementById('profileSection').scrollIntoView({behavior:'smooth'})">🔖 Профиль</button>
+  </nav>
+
+  <script>
+    // Номер пользователя (первые 1000 получают доступ к 20 шрифтам)
+    const userSlot = Number(localStorage.getItem('runotoks_user_slot') || 77);
+    localStorage.setItem('runotoks_user_slot', userSlot);
+    document.getElementById('earlyUserInfo').textContent =
+      userSlot <= 1000
+        ? `Участник #${userSlot} (входит в первые 1000) • Доступны все 20 шрифтов`
+        : `Участник #${userSlot}`;
+
+    // 20 шрифтов переписки
+    const fonts20 = [
+      ['1. Системный (по умолчанию)', 'system-ui, -apple-system, sans-serif'],
+      ['2. Классика Serif', 'Georgia, "Times New Roman", serif'],
+      ['3. Печатная машинка', '"Courier New", Courier, monospace'],
+      ['4. Современный гротеск', '"Trebuchet MS", sans-serif'],
+      ['5. Техно-код', 'Consolas, Monaco, monospace'],
+      ['6. Элегантный Palatino', 'Palatino, "Book Antiqua", serif'],
+      ['7. Узкий акцент', '"Arial Narrow", Arial, sans-serif'],
+      ['8. Строгий Verdana', 'Verdana, Geneva, sans-serif'],
+      ['9. Мощный Impact', 'Impact, Haettenschweiler, sans-serif'],
+      ['10. Лёгкий Segoe', '"Segoe UI", Tahoma, sans-serif'],
+      ['11. Книжный Cambria', 'Cambria, Georgia, serif'],
+      ['12. Консольный Lucida', '"Lucida Console", Monaco, monospace'],
+      ['13. Широкий Franklin', '"Franklin Gothic Medium", Arial, sans-serif'],
+      ['14. Мягкий округлый', '"Comic Sans MS", cursive, sans-serif'],
+      ['15. Деловой Garamond', 'Garamond, serif'],
+      ['16. Чёткий Tahoma', 'Tahoma, sans-serif'],
+      ['17. Минимал Optima', 'Optima, Candara, sans-serif'],
+      ['18. Ретро Copperplate', 'Copperplate, Papyrus, fantasy'],
+      ['19. Скрипт рукописный', '"Brush Script MT", cursive'],
+      ['20. Моноширинный DejaVu', '"DejaVu Sans Mono", monospace']
+    ];
+
+    const fontSelect = document.getElementById('fontSelect');
+    fonts20.forEach(([label, cssValue]) => {
+      const option = document.createElement('option');
+      option.value = cssValue;
+      option.textContent = label;
+      fontSelect.appendChild(option);
+    });
+
+    function applyFont(fontCss) {
+      if (userSlot > 1000) {
+        alert('20 шрифтов открыты для первых 1000 пользователей.');
+        return;
+      }
+      document.documentElement.style.setProperty('--chat-font', fontCss);
+    }
+
+    // Посты и товары с несколькими фото/видео для плавного свайпа
+    const items = [
+      {
+        id: 'item-1',
+        kind: 'product',
+        author: 'tarbex_store',
+        title: 'Худи TARBEX Oversize — свайпай все ракурсы',
+        price: '2 490 ₽',
+        desc: 'Нажми на товар или свайпай влево-вправо, чтобы посмотреть фото и видео. Можно сохранить в профиль.',
+        media: [
+          { type: 'img', src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900', tag: 'Фото 1' },
+          { type: 'img', src: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900', tag: 'Фото 2' },
+          { type: 'video', src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', tag: 'Видео' }
+        ]
+      },
+      {
+        id: 'item-2',
+        kind: 'post',
+        author: 'runotoks_live',
+        title: 'Сцена RUNOTOKS & TARBEX: живой вайб и звук',
+        price: 'Пост',
+        desc: 'Крупная карточка ленты: листай медиа, звони автору с камерой или сохраняй пост себе на страницу.',
+        media: [
+          { type: 'img', src: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=900', tag: 'Фото 1' },
+          { type: 'img', src: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900', tag: 'Фото 2' }
+        ]
+      },
+      {
+        id: 'item-3',
+        kind: 'product',
+        author: 'tarbex_gear',
+        title: 'Клавиатура & аксессуары RUNOTOKS Edition',
+        price: '3 890 ₽',
+        desc: 'Компактный сетап для быстрой работы и стримов. Нажми для открытия на весь экран.',
+        media: [
+          { type: 'img', src: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=900', tag: 'Фото 1' },
+          { type: 'img', src: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=900', tag: 'Фото 2' }
+        ]
+      }
+    ];
+
+    const savedSet = new Set(JSON.parse(localStorage.getItem('runotoks_saved_items') || '[]'));
+
+    function renderMediaSlide(mediaObj) {
+      if (mediaObj.type === 'video') {
+        return `
+          <div class="slide">
+            <video src="${mediaObj.src}" controls playsinline preload="metadata"></video>
+            <span class="slide-badge">${mediaObj.tag}</span>
+          </div>
+        `;
+      }
+      return `
+        <div class="slide">
+          <img src="${mediaObj.src}" alt="${mediaObj.tag}" loading="lazy" />
+          <span class="slide-badge">${mediaObj.tag}</span>
+        </div>
+      `;
+    }
+
+    function renderFeed() {
+      const feed = document.getElementById('feed');
+      feed.innerHTML = '';
+
+      items.forEach(item => {
+        const isSaved = savedSet.has(item.id);
+        const article = document.createElement('article');
+        article.className = 'post';
+        article.innerHTML = `
+          <div class="post-head">
+            <div class="user-meta">
+              <div class="avatar">${item.author.slice(0, 2).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:800;">@${item.author}</div>
+                <div class="muted">${item.kind === 'product' ? 'Товар • свайпай фото и видео' : 'Пост ленты • нажми для открытия'}</div>
+              </div>
+            </div>
+            <div class="price-tag">${item.price}</div>
+          </div>
+
+          <div class="carousel-wrap">
+            <div class="carousel" id="car-${item.id}" onscroll="updateDots('${item.id}', ${item.media.length})">
+              ${item.media.map(renderMediaSlide).join('')}
+            </div>
+            <div class="carousel-dots" id="dots-${item.id}">
+              ${item.media.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}"></span>`).join('')}
+            </div>
+          </div>
+
+          <div class="post-body">
+            <div class="post-title" onclick="openDetail('${item.id}')">${item.title}</div>
+            <div class="post-desc">${item.desc}</div>
+            <div class="post-actions">
+              <div class="action-group">
+                <button onclick="openDetail('${item.id}')">⛶ Открыть</button>
+                <button onclick="sendFreeSticker('❤️ Лайк для @${item.author}')">❤️ Лайк</button>
+                <button onclick="startCall('@${item.author}')">📞 Звонок</button>
+              </div>
+              <button class="primary" onclick="toggleSave('${item.id}')">
+                ${isSaved ? '✓ В профиле' : '🔖 Сохранить'}
+              </button>
+            </div>
+          </div>
+        `;
+        feed.appendChild(article);
+      });
+
+      renderSaved();
+    }
+
+    function updateDots(itemId, count) {
+      const car = document.getElementById('car-' + itemId);
+      const dotsWrap = document.getElementById('dots-' + itemId);
+      if (!car || !dotsWrap || !car.clientWidth) return;
+      const activeIdx = Math.min(count - 1, Math.max(0, Math.round(car.scrollLeft / car.clientWidth)));
+      [...dotsWrap.children].forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIdx);
+      });
+    }
+
+    function toggleSave(id) {
+      if (savedSet.has(id)) {
+        savedSet.delete(id);
+      } else {
+        savedSet.add(id);
+      }
+      localStorage.setItem('runotoks_saved_items', JSON.stringify([...savedSet]));
+      renderFeed();
+    }
+
+    function clearSaved() {
+      savedSet.clear();
+      localStorage.setItem('runotoks_saved_items', '[]');
+      renderFeed();
+    }
+
+    function renderSaved() {
+      const list = document.getElementById('savedList');
+      const stats = document.getElementById('profileStats');
+      const savedItems = items.filter(i => savedSet.has(i.id));
+      stats.textContent = `Сохранено элементов на странице: ${savedItems.length}`;
+
+      if (!savedItems.length) {
+        list.innerHTML = `<div class="muted">Пока ничего не сохранено. Нажми «Сохранить» на любом посте или товаре.</div>`;
+        return;
+      }
+
+      list.innerHTML = savedItems.map(item => `
+        <div class="saved-card">
+          <div>
+            <div style="font-weight:700;">${item.title}</div>
+            <div class="muted">@${item.author} • ${item.price}</div>
+          </div>
+          <div class="action-group">
+            <button onclick="openDetail('${item.id}')">Открыть</button>
+            <button onclick="toggleSave('${item.id}')">Убрать</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Полноэкранный просмотр поста-товара
+    function openDetail(itemId) {
+      const item = items.find(i => i.id === itemId);
+      if (!item) return;
+      const isSaved = savedSet.has(item.id);
+      document.getElementById('detailTitle').textContent = item.title;
+      document.getElementById('detailContent').innerHTML = `
+        <div class="post">
+          <div class="post-head">
+            <div class="user-meta">
+              <div class="avatar">${item.author.slice(0, 2).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:800;">@${item.author}</div>
+                <div class="muted">Листай фото и видео свайпом</div>
+              </div>
+            </div>
+            <div class="price-tag">${item.price}</div>
+          </div>
+          <div class="carousel" style="aspect-ratio:1/1; min-height:420px;">
+            ${item.media.map(renderMediaSlide).join('')}
+          </div>
+          <div class="post-body">
+            <div class="post-desc">${item.desc}</div>
+            <div class="post-actions">
+              <div class="action-group">
+                <button onclick="startCall('@${item.author}')">📞 Позвонить с камерой</button>
+                <button onclick="sendPaidGift('🎁 Подарок для @${item.author}', '149 ₽')">🎁 Подарить</button>
+              </div>
+              <button class="primary" onclick="toggleSave('${item.id}'); openDetail('${item.id}');">
+                ${isSaved ? '✓ Сохранено' : '🔖 Сохранить в профиль'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('detailOverlay').classList.add('active');
+    }
+
+    function closeDetail() {
+      document.getElementById('detailOverlay').classList.remove('active');
+    }
+
+    // Полноэкранный поиск
+    let currentSearchFilter = 'all';
+
+    function openSearch() {
+      document.getElementById('searchOverlay').classList.add('active');
+      renderSearch();
+      setTimeout(() => document.getElementById('searchInput').focus(), 50);
+    }
+
+    function closeSearch() {
+      document.getElementById('searchOverlay').classList.remove('active');
+    }
+
+    function setSearchFilter(filterName) {
+      currentSearchFilter = filterName;
+      ['all', 'product', 'post'].forEach(key => {
+        document.getElementById('f-' + key).classList.toggle('active-pill', key === filterName);
+      });
+      renderSearch();
+    }
+
+    function renderSearch() {
+      const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+      const box = document.getElementById('searchResults');
+
+      const matched = items.filter(item => {
+        const matchesKind = currentSearchFilter === 'all' || item.kind === currentSearchFilter;
+        const matchesQuery = !q ||
+          item.title.toLowerCase().includes(q) ||
+          item.author.toLowerCase().includes(q) ||
+          item.desc.toLowerCase().includes(q) ||
+          item.price.toLowerCase().includes(q);
+        return matchesKind && matchesQuery;
+      });
+
+      if (!matched.length) {
+        box.innerHTML = `<div class="muted">Ничего не найдено по запросу.</div>`;
+        return;
+      }
+
+      box.innerHTML = matched.map(item => `
+        <div class="result-item" onclick="closeSearch(); openDetail('${item.id}');">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <strong>${item.title}</strong>
+            <span class="price-tag">${item.price}</span>
+          </div>
+          <div class="muted" style="margin-top:4px;">@${item.author} • ${item.kind === 'product' ? 'Товар' : 'Пост'}</div>
+        </div>
+      `).join('');
+    }
+
+    // Чат, стикеры, подарки, поддержка и анимация
+    function appendChat(htmlText, isGift = false) {
+      const messages = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg' + (isGift ? ' gift-msg' : '');
+      div.innerHTML = htmlText;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      appendChat(escapeHtml(text), false);
+      input.value = '';
+    }
+
+    function sayPhrase(phrase) {
+      document.getElementById('speechLine').textContent = phrase;
+      appendChat(`🕺 Персонаж у клавиатуры (RUNOTOKS & TARBEX): <b>${escapeHtml(phrase)}</b>`, false);
+    }
+
+    function sendFreeSticker(stickerLabel) {
+      appendChat(`Бесплатный стикер/эмодзи: <b>${escapeHtml(stickerLabel)}</b>`, false);
+    }
+
+    function sendPaidGift(giftName, priceLabel) {
+      appendChat(`🎁 Отправлен эксклюзивный подарок: <b>${escapeHtml(giftName)}</b> <span style="color:var(--gold);">(${escapeHtml(priceLabel)})</span>`, true);
+    }
+
+    function supportProject() {
+      appendChat(`💛 Поддержка проекта <b>RUNOTOKS & TARBEX</b> активирована! Спасибо за вклад в развитие.`, true);
+      alert('Спасибо за поддержку проекта RUNOTOKS & TARBEX!');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Полноэкранный звонок как в Telegram с камерой и микрофоном
+    let mediaStream = null;
+    let micEnabled = true;
+
+    function startCall(peerName) {
+      document.getElementById('callPeer').textContent = peerName;
+      document.getElementById('callAvatar').textContent = peerName.replace('@', '').slice(0, 2).toUpperCase();
+      document.getElementById('callStatus').textContent = 'Звонок на весь экран — нажмите «Включить камеру» для видео';
+      document.getElementById('callScreen').classList.add('active');
+    }
+
+    async function toggleCamera() {
+      const videoEl = document.getElementById('callVideo');
+      const camBtn = document.getElementById('camBtn');
+
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+        videoEl.srcObject = null;
+        videoEl.classList.remove('active');
+        camBtn.textContent = '📷 Включить камеру';
+        document.getElementById('callStatus').textContent = 'Камера выключена';
+        return;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Браузер не поддерживает доступ к камере на этом устройстве или требуется HTTPS.');
+        return;
+      }
+
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user' },
+          audio: true
+        });
+        videoEl.srcObject = mediaStream;
+        videoEl.classList.add('active');
+        camBtn.textContent = '📷 Выключить камеру';
+        document.getElementById('callStatus').textContent = 'Камера и микрофон активны';
+      } catch (e) {
+        alert('Не удалось включить камеру. Разрешите доступ к камере в настройках браузера.');
+      }
+    }
+
+    function toggleMic() {
+      const micBtn = document.getElementById('micBtn');
+      if (!mediaStream) {
+        micEnabled = !micEnabled;
+        micBtn.textContent = micEnabled ? '🎙️ Микрофон вкл' : '🔇 Микрофон выкл';
+        document.getElementById('callStatus').textContent = micEnabled ? 'Микрофон включён' : 'Микрофон выключен';
+        return;
+      }
+
+      const audioTracks = mediaStream.getAudioTracks();
+      if (audioTracks.length > 0) {
+        audioTracks[0].enabled = !audioTracks[0].enabled;
+        micEnabled = audioTracks[0].enabled;
+        micBtn.textContent = micEnabled ? '🎙️ Микрофон вкл' : '🔇 Микрофон выкл';
+        document.getElementById('callStatus').textContent = micEnabled ? 'Микрофон включён' : 'Микрофон выключен';
+      }
+    }
+
+    function endCall() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+      const videoEl = document.getElementById('callVideo');
+      videoEl.srcObject = null;
+      videoEl.classList.remove('active');
+      document.getElementById('camBtn').textContent = '📷 Включить камеру';
+      document.getElementById('callScreen').classList.remove('active');
+    }
+
+    renderFeed();
+  </script>
+</body>
+</html>
 
 </html>
